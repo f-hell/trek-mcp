@@ -1,0 +1,126 @@
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { z } from "zod";
+import type { TrekService } from "./service.js";
+
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD");
+const serviceLevel = z.enum(["staffed", "self-service", "no-service", "emergency", "closed", "unknown"]);
+const grading = z.enum(["easy", "moderate", "tough", "expert", "unknown"]);
+const near = z
+  .object({ lat: z.number(), lon: z.number(), radiusKm: z.number().positive().max(200) })
+  .describe("Search around a point (WGS84).");
+
+const json = (value: unknown) => ({ content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }] });
+
+export function registerTools(server: McpServer, svc: TrekService): void {
+  server.registerTool(
+    "search_cabins",
+    {
+      title: "Search cabins",
+      description:
+        "Find DNT and other cabins on ut.no by name, area, service level (staffed = betjent, self-service = selvbetjent, no-service = ubetjent) or proximity.",
+      inputSchema: {
+        text: z.string().optional(),
+        areaId: z.string().optional(),
+        serviceLevels: z.array(serviceLevel).optional(),
+        near: near.optional(),
+        limit: z.number().int().min(1).max(50).default(20),
+      },
+    },
+    async (args) => {
+      const res = await svc.trails.searchCabins(args);
+      return json({ ...res, items: res.items.map((c) => svc.withBookingId(c)) });
+    },
+  );
+
+  server.registerTool(
+    "get_cabin",
+    {
+      title: "Get cabin",
+      description: "Full details for one cabin: beds, service level, key requirement, location, and booking id if bookable.",
+      inputSchema: { id: z.string() },
+    },
+    async ({ id }) => json(await svc.getCabin(id)),
+  );
+
+  server.registerTool(
+    "search_trips",
+    {
+      title: "Search trips",
+      description: "Find suggested hikes on ut.no by text, area, grading, max duration or proximity.",
+      inputSchema: {
+        text: z.string().optional(),
+        areaId: z.string().optional(),
+        gradings: z.array(grading).optional(),
+        maxDurationHours: z.number().positive().optional(),
+        near: near.optional(),
+        limit: z.number().int().min(1).max(50).default(20),
+      },
+    },
+    async (args) => json(await svc.trails.searchTrips(args)),
+  );
+
+  server.registerTool(
+    "get_trip",
+    {
+      title: "Get trip",
+      description: "Full details for one hike: distance, duration, ascent, grading, and cabins along the way.",
+      inputSchema: { id: z.string() },
+    },
+    async ({ id }) => {
+      const trip = await svc.trails.getTrip(id);
+      if (!trip) throw new Error(`No trip with id ${id}`);
+      return json(trip);
+    },
+  );
+
+  server.registerTool(
+    "search_areas",
+    {
+      title: "Search areas",
+      description: "Find hiking areas (e.g. Jotunheimen, Hardangervidda) on ut.no; use the id to narrow cabin and trip searches.",
+      inputSchema: { text: z.string(), limit: z.number().int().min(1).max(50).default(20) },
+    },
+    async ({ text, limit }) => json(await svc.trails.searchAreas(text, limit)),
+  );
+
+  server.registerTool(
+    "check_availability",
+    {
+      title: "Check cabin availability",
+      description:
+        "Nightly availability for a cabin on hyttebestilling.dnt.no between two dates (to is exclusive). Read-only; returns the booking link, never books.",
+      inputSchema: { cabinId: z.string().describe("ut.no cabin id"), from: isoDate, to: isoDate },
+    },
+    async ({ cabinId, from, to }) => {
+      const cabin = await svc.getCabin(cabinId);
+      if (!cabin.bookingId) {
+        return json({ cabin: cabin.name, bookable: false, note: "Not bookable on hyttebestilling (often first come, first served)." });
+      }
+      return json({
+        cabin: cabin.name,
+        bookable: true,
+        bookingUrl: svc.booking.bookingUrl(cabin.bookingId),
+        nights: await svc.availability(cabin, from, to),
+      });
+    },
+  );
+
+  server.registerTool(
+    "plan_hut_to_hut",
+    {
+      title: "Plan hut-to-hut trip",
+      description:
+        "Check a chain of cabins night by night for a group, report blocked nights and straight-line leg distances, and optionally find alternative start dates within a flexible window.",
+      inputSchema: {
+        stops: z
+          .array(z.object({ cabinId: z.string(), nights: z.number().int().min(1).max(7).default(1) }))
+          .min(1)
+          .max(15),
+        startDate: isoDate,
+        guests: z.number().int().min(1).max(30),
+        flexDays: z.number().int().min(0).max(60).default(0).describe("Also try start dates up to this many days later."),
+      },
+    },
+    async (args) => json(await svc.planHutToHut(args)),
+  );
+}

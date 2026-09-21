@@ -1,0 +1,150 @@
+[
+  {
+    "id": "fx-gjendesheim",
+    "name": "Gjendesheim",
+    "serviceLevel": "staffed",
+    "dntCabin": true,
+    "beds": {
+      "total": 150
+    },
+    "location": {
+      "lat": 61.4945,
+      "lon": 8.8117,
+      "elevationM": 995
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no",
+    "bookingId": "fx-9001"
+  },
+  {
+    "id": "fx-memurubu",
+    "name": "Memurubu",
+    "serviceLevel": "staffed",
+    "dntCabin": true,
+    "beds": {
+      "total": 150
+    },
+    "location": {
+      "lat": 61.5025,
+      "lon": 8.57,
+      "elevationM": 1008
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no",
+    "bookingId": "fx-9002"
+  },
+  {
+    "id": "fx-gjendebu",
+    "name": "Gjendebu",
+    "serviceLevel": "staffed",
+    "dntCabin": true,
+    "beds": {
+      "total": 110
+    },
+    "location": {
+      "lat": 61.4779,
+      "lon": 8.3926,
+      "elevationM": 995
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no",
+    "bookingId": "fx-9003"
+  },
+  {
+    "id": "fx-leirvassbu",
+    "name": "Leirvassbu",
+    "serviceLevel": "staffed",
+    "dntCabin": true,
+    "beds": {
+      "total": 180
+    },
+    "location": {
+      "lat": 61.551,
+      "lon": 8.247,
+      "elevationM": 1400
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no",
+    "bookingId": "fx-9004"
+  },
+  {
+    "id": "fx-glitterheim",
+    "name": "Glitterheim",
+    "serviceLevel": "staffed",
+    "dntCabin": true,
+    "beds": {
+      "total": 130
+    },
+    "location": {
+      "lat": 61.6524,
+      "lon": 8.5577,
+      "elevationM": 1384
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no",
+    "bookingId": "fx-9005"
+  },
+  {
+    "id": "fx-olavsbu",
+    "name": "Olavsbu",
+    "serviceLevel": "self-service",
+    "dntCabin": true,
+    "beds": {
+      "total": 48
+    },
+    "location": {
+      "lat": 61.421,
+      "lon": 8.418,
+      "elevationM": 1440
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no",
+    "requiresDntKey": true,
+    "bookingId": "fx-9006"
+  },
+  {
+    "id": "fx-skogadalsboen-bu",
+    "name": "Example ubetjent bu",
+    "serviceLevel": "no-service",
+    "dntCabin": true,
+    "beds": {
+      "total": 6
+    },
+    "location": {
+      "lat": 61.45,
+      "lon": 8.15,
+      "elevationM": 840
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no",
+    "requiresDntKey": true
+  }
+]

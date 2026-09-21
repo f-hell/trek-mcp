@@ -1,0 +1,80 @@
+[
+  {
+    "id": "fx-t1",
+    "name": "Gjendesheim – Memurubu over Besseggen",
+    "grading": "tough",
+    "distanceKm": 14,
+    "durationHours": 7,
+    "ascentM": 1100,
+    "start": {
+      "lat": 61.4945,
+      "lon": 8.8117
+    },
+    "end": {
+      "lat": 61.5025,
+      "lon": 8.57
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "cabinIds": [
+      "fx-gjendesheim",
+      "fx-memurubu"
+    ],
+    "description": "ILLUSTRATIVE FIXTURE.",
+    "url": "https://ut.no"
+  },
+  {
+    "id": "fx-t2",
+    "name": "Memurubu – Gjendebu",
+    "grading": "moderate",
+    "distanceKm": 13,
+    "durationHours": 5,
+    "ascentM": 700,
+    "start": {
+      "lat": 61.5025,
+      "lon": 8.57
+    },
+    "end": {
+      "lat": 61.4779,
+      "lon": 8.3926
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "cabinIds": [
+      "fx-memurubu",
+      "fx-gjendebu"
+    ],
+    "description": "ILLUSTRATIVE FIXTURE.",
+    "url": "https://ut.no"
+  },
+  {
+    "id": "fx-t3",
+    "name": "Gjendebu – Leirvassbu",
+    "grading": "moderate",
+    "distanceKm": 17,
+    "durationHours": 6,
+    "ascentM": 800,
+    "start": {
+      "lat": 61.4779,
+      "lon": 8.3926
+    },
+    "end": {
+      "lat": 61.551,
+      "lon": 8.247
+    },
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "cabinIds": [
+      "fx-gjendebu",
+      "fx-leirvassbu"
+    ],
+    "description": "ILLUSTRATIVE FIXTURE.",
+    "url": "https://ut.no"
+  }
+]

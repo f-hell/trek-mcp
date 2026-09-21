@@ -1,0 +1,3 @@
+{
+  "_comment": "Manual ut.no cabin id -> hyttebestilling.dnt.no id overrides, used when ut.no data does not expose the booking link. Example: \"12345\": \"101265\"."
+}
