@@ -1,0 +1,633 @@
+{
+  "data": {
+    "availabilityList": [
+      {
+        "date": "2026-09-30T00:00:00.000Z",
+        "products": [
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1961
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1962
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 642
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 643
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 644
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 645
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-10-01T00:00:00.000Z",
+        "products": [
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1961
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1962
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 642
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 643
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 644
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 645
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-10-02T00:00:00.000Z",
+        "products": [
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1961
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1962
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 642
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 643
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 644
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 645
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-10-03T00:00:00.000Z",
+        "products": [
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1961
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1962
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 642
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 643
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 644
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 645
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-10-04T00:00:00.000Z",
+        "products": [
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1961
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 1962
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 642
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 643
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 644
+            }
+          },
+          {
+            "available": 1,
+            "product": {
+              "company_id": 2189,
+              "product_id": 70,
+              "unit_id": 645
+            }
+          }
+        ]
+      }
+    ],
+    "products": [
+      {
+        "product_id": 70,
+        "unit_id": 1961,
+        "company_id": 2189,
+        "unit_name": "Skarvheim, rom 2, seng 1 underkøye",
+        "attributes": [
+          {
+            "id": 330193,
+            "group": {
+              "group_id": 1795,
+              "company_id": 0,
+              "name": "persons_min",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 330192,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 494742,
+            "group": {
+              "group_id": 15061,
+              "company_id": 2189,
+              "name": "dropin_beds",
+              "type": "NUMERIC"
+            },
+            "value": "6",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 485078,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 70,
+        "unit_id": 1962,
+        "company_id": 2189,
+        "unit_name": "Skarvheim, rom 2, seng 2 overkøye",
+        "attributes": [
+          {
+            "id": 330193,
+            "group": {
+              "group_id": 1795,
+              "company_id": 0,
+              "name": "persons_min",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 330192,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 494742,
+            "group": {
+              "group_id": 15061,
+              "company_id": 2189,
+              "name": "dropin_beds",
+              "type": "NUMERIC"
+            },
+            "value": "6",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 485078,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 70,
+        "unit_id": 642,
+        "company_id": 2189,
+        "unit_name": "Skarvheim, rom 2, seng 3 enkeltseng",
+        "attributes": [
+          {
+            "id": 330193,
+            "group": {
+              "group_id": 1795,
+              "company_id": 0,
+              "name": "persons_min",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 330192,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 494742,
+            "group": {
+              "group_id": 15061,
+              "company_id": 2189,
+              "name": "dropin_beds",
+              "type": "NUMERIC"
+            },
+            "value": "6",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 485078,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 70,
+        "unit_id": 643,
+        "company_id": 2189,
+        "unit_name": "Skarvheim, rom 3, seng 1 underkøye",
+        "attributes": [
+          {
+            "id": 330193,
+            "group": {
+              "group_id": 1795,
+              "company_id": 0,
+              "name": "persons_min",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 330192,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 494742,
+            "group": {
+              "group_id": 15061,
+              "company_id": 2189,
+              "name": "dropin_beds",
+              "type": "NUMERIC"
+            },
+            "value": "6",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 485078,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 70,
+        "unit_id": 644,
+        "company_id": 2189,
+        "unit_name": "Skarvheim, rom 3, seng 3 enkeltseng",
+        "attributes": [
+          {
+            "id": 330193,
+            "group": {
+              "group_id": 1795,
+              "company_id": 0,
+              "name": "persons_min",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 330192,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 494742,
+            "group": {
+              "group_id": 15061,
+              "company_id": 2189,
+              "name": "dropin_beds",
+              "type": "NUMERIC"
+            },
+            "value": "6",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 485078,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 70,
+        "unit_id": 645,
+        "company_id": 2189,
+        "unit_name": "Skarvheim, rom 3, seng 2 overkøye",
+        "attributes": [
+          {
+            "id": 330193,
+            "group": {
+              "group_id": 1795,
+              "company_id": 0,
+              "name": "persons_min",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 330192,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 494742,
+            "group": {
+              "group_id": 15061,
+              "company_id": 2189,
+              "name": "dropin_beds",
+              "type": "NUMERIC"
+            },
+            "value": "6",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          },
+          {
+            "id": 485078,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 70,
+            "unit_id": 0
+          }
+        ]
+      }
+    ]
+  }
+}

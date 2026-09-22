@@ -1,0 +1,50 @@
+{
+  "data": {
+    "areas": {
+      "edges": [
+        {
+          "node": {
+            "id": 12255,
+            "name": "Jotunheimen nasjonalpark",
+            "areaType": "PROTECTED_AREA",
+            "centerPointGeojson": {
+              "type": "Point",
+              "coordinates": [
+                8.538098,
+                61.558799
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": 124766,
+            "name": "Vest-Jotunheimen villreinområde",
+            "areaType": "REINDEER_AREA",
+            "centerPointGeojson": {
+              "type": "Point",
+              "coordinates": [
+                7.748439,
+                61.425528
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": 124470,
+            "name": "Jotunheimen villreinområde",
+            "areaType": "DNT_AREA",
+            "centerPointGeojson": {
+              "type": "Point",
+              "coordinates": [
+                7.780516,
+                61.431233
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

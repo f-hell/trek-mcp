@@ -1,0 +1,39 @@
+{
+  "data": {
+    "trip": {
+      "id": 116978,
+      "name": "Fottur til Høgeloft 1920 moh",
+      "grading": "VERY_TOUGH",
+      "distance": 24348,
+      "durationDays": null,
+      "durationHours": 7,
+      "durationMinutes": 30,
+      "elevationGain": 833,
+      "elevationLoss": 833,
+      "season": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "direction": "ABA",
+      "primaryActivityType": "HIKING",
+      "startPointGeojson": {
+        "type": "Point",
+        "coordinates": [
+          8.107338,
+          61.008291,
+          1126
+        ]
+      },
+      "cabinIds": [],
+      "areaIds": [
+        1232,
+        124410,
+        124427,
+        124764
+      ],
+      "encodedPolyline": "ytjsJ{mnp@BWsCaCwAk@ICkFi@a@Ea@GWCi@DgApA??gBrBaA~Bo@tCGTk@xB}@j@IEkAc@w@B{@X??s@TqAe@k@y@kDsL}FwQuAgE}@wCoBmGgAmD_CiFkHgNq@oA[g@??U_@g@y@Um@m@cB_@wA[mAe@i@QQUCa@XuAtBoAlA??gCbCiDbD??QP]RiAKy@NC@y@j@}Dh@eD{BgAu@w@mBe@cCy@aBSAqEQkBiB_A_AaAuAc@mAs@wLaAqPk@kE_@uAkAgEu@sB{@_@}AHaDNaBi@}@@uA{@y@_ACEaAa@kAiB_AiFu@{F_@{AWWWW??e@e@ACeEuAAAUIu@WqN}B}Ii@sCWgEa@]AU?g@AqAl@yChCQR}CnDgAp@yBXqAAA@yAZIB_A@kJ{BmNcCoBC}@}@gAOgAHw@T{Ad@_GHcAO{@u@_@I_BnAiNoDqFw@MCkJsBsA]oFyA?Apc@g`F??zi@{dB??rBqrC"
+    }
+  }
+}

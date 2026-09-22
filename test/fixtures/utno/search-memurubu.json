@@ -1,0 +1,21 @@
+{
+  "data": {
+    "search": {
+      "prioritizedResult": [
+        "e;144017;8.631971,61.491023;Memurubu;trip record"
+      ],
+      "result": [
+        "e;144017;8.631971,61.491023;Memurubu;trip record",
+        "d;10732;8.629508999999999,61.490652999999995;Memurubu Turisthytte;staffed;",
+        "g;1112193221;8.487869,61.451192;2-dagers skitur fra Gjendebu via Memurubu og Hinnotetjønne;ski touring;very tough",
+        "g;1110473;8.48674,61.45109;Bukkelægret fra Gjendebu til Memurubu;hiking;tough",
+        "e;145472754;8.463818999999999,61.558094;Memurutindan;mountain peak",
+        "g;1112162399;8.813708,61.495414999999994;6-dagers rundtur blant 2000-meters topper i Jotunheimen;hiking;tough",
+        "i;50696;,;SignaTUR Høgruta i Jotunheimen",
+        "e;145280410;8.688234,61.563418;Blåtjønnåe - helårsbro;bridge",
+        "e;143783;8.523330999999999,61.465346999999994;Bukkelægret;trip record",
+        "e;145283502;8.645638,61.530302999999996;Gloppåe - sommerbro;bridge"
+      ]
+    }
+  }
+}

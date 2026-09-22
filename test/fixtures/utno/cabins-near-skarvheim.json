@@ -1,0 +1,46 @@
+{
+  "data": {
+    "cabinsNear": [
+      {
+        "distance": 0,
+        "cabin": {
+          "id": 101265,
+          "name": "Skarvheim",
+          "serviceLevel": "SELF_SERVICE"
+        }
+      },
+      {
+        "distance": 387,
+        "cabin": {
+          "id": 101115,
+          "name": "Breistølen Fjellstue",
+          "serviceLevel": "STAFFED"
+        }
+      },
+      {
+        "distance": 10886,
+        "cabin": {
+          "id": 10812,
+          "name": "Bjordalsbu",
+          "serviceLevel": "SELF_SERVICE"
+        }
+      },
+      {
+        "distance": 12850,
+        "cabin": {
+          "id": 10727,
+          "name": "Bjøberg Høgfjellsgard",
+          "serviceLevel": "STAFFED"
+        }
+      },
+      {
+        "distance": 14910,
+        "cabin": {
+          "id": 10928,
+          "name": "Kljåen",
+          "serviceLevel": "SELF_SERVICE"
+        }
+      }
+    ]
+  }
+}

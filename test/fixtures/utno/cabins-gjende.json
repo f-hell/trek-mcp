@@ -1,0 +1,85 @@
+{
+  "data": {
+    "cabins": {
+      "totalCount": 4,
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "YXJyYXljb25uZWN0aW9uOjM="
+      },
+      "edges": [
+        {
+          "node": {
+            "id": 10604,
+            "name": "Gjendesheim",
+            "serviceLevel": "STAFFED",
+            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10604",
+            "bookingEnabled": true,
+            "idVisbook": 4212,
+            "geojson": {
+              "type": "Point",
+              "coordinates": [
+                8.81276999450361,
+                61.4940507143726,
+                990
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": 10908403,
+            "name": "Gjendebu Selvbetjent",
+            "serviceLevel": "SELF_SERVICE",
+            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
+            "bookingEnabled": true,
+            "idVisbook": null,
+            "geojson": {
+              "type": "Point",
+              "coordinates": [
+                8.487358,
+                61.450814,
+                984
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": 101210097,
+            "name": "Gjendeosbue - utleige kun til innanbygds i Vågå / Rental only for inhabitants in Vågå",
+            "serviceLevel": "RENTAL",
+            "bookingUrl": "https://www.inatur.no/tilbud/6088019edbe3070003c3f31f",
+            "bookingEnabled": true,
+            "idVisbook": null,
+            "geojson": {
+              "type": "Point",
+              "coordinates": [
+                8.809488,
+                61.496416,
+                997
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": 10581,
+            "name": "Gjendebu",
+            "serviceLevel": "STAFFED",
+            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
+            "bookingEnabled": true,
+            "idVisbook": 5546,
+            "geojson": {
+              "type": "Point",
+              "coordinates": [
+                8.488531,
+                61.45144,
+                986
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
