@@ -2,73 +2,14 @@
   "data": {
     "cabins": {
       "totalCount": 4,
-      "pageInfo": {
-        "hasNextPage": false,
-        "endCursor": "YXJyYXljb25uZWN0aW9uOjM="
-      },
       "edges": [
-        {
-          "node": {
-            "id": 10604,
-            "name": "Gjendesheim",
-            "serviceLevel": "STAFFED",
-            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10604",
-            "bookingEnabled": true,
-            "idVisbook": 4212,
-            "geojson": {
-              "type": "Point",
-              "coordinates": [
-                8.81276999450361,
-                61.4940507143726,
-                990
-              ]
-            }
-          }
-        },
-        {
-          "node": {
-            "id": 10908403,
-            "name": "Gjendebu Selvbetjent",
-            "serviceLevel": "SELF_SERVICE",
-            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
-            "bookingEnabled": true,
-            "idVisbook": null,
-            "geojson": {
-              "type": "Point",
-              "coordinates": [
-                8.487358,
-                61.450814,
-                984
-              ]
-            }
-          }
-        },
-        {
-          "node": {
-            "id": 101210097,
-            "name": "Gjendeosbue - utleige kun til innanbygds i Vågå / Rental only for inhabitants in Vågå",
-            "serviceLevel": "RENTAL",
-            "bookingUrl": "https://www.inatur.no/tilbud/6088019edbe3070003c3f31f",
-            "bookingEnabled": true,
-            "idVisbook": null,
-            "geojson": {
-              "type": "Point",
-              "coordinates": [
-                8.809488,
-                61.496416,
-                997
-              ]
-            }
-          }
-        },
         {
           "node": {
             "id": 10581,
             "name": "Gjendebu",
+            "description": "<p>Gjendebu ligg flott til i den innerste enden av Gjende, midt i hjertet av Jotunheimen. Den er DNT si eldste turisthytte, bygd i 1871 og feira såleis 150 års jubileum i 2021. Hytta har vore utvida og ombygd mange gonger, og den har i dag moderne fasiliteter.</p><p>Her på 990 moh. ligg vi i skjæringspunktet mellom høgfjell og skog, med det irrgrøne Gjendevatnet like ved husa, med ein rik flora som inneheld over 700 ulike arter, og med tindar og brear i overdådig utvalg i alle retningar.</p><h2>Turar og aktivitetar.</h2><p>Området rundt Gjendebu inneheld eit vell av fiskevatn, brear og tindar. Fiskekort gjev rett til stongfiske m.a. i Gjende, på Grisletjønnane, i Langvatnet og Storåi, og i dei mange småvatna på Memurutunga. Dagsturar til 2000-metarar er det mange av, men den enklaste er Svartdalspiggen. Knutsholstind og Semmeltind er også greie dagsturar som ikkje krev klatring, men likevel kan gje luftige opplevingar.</p><p><a href=\"http://www.turistforeningen.no/aktiviteter/?organizers=cabin:26\" target=\"_blank\"><strong>Les mer om turer og aktiviteter på Gjendebu og i området rundt.</strong></a></p><h3>Populære dagsturar frå Gjendebu:</h3><p>Gjendetunga, 2-4 timer Bukkelægret, 2-4 timer Svartdalspiggen, 5 timer</p><h2>Åpningstider.</h2><p>Gjendebu er betjent ved påsketider og i sommersesongen. Se listen på denne siden, eller se <a href=\"https://gjendebu.dnt.no/apningstider/\" target=\"_blank\">åpningstidene på hjemmesiden til Gjendebu</a></p><h2>Reservere plass.</h2><p>Du kan reservere plass gjennom <a href=\"https://hyttebestilling.dnt.no/hytte/10581\" target=\"_blank\">hyttebestilling.dnt.no</a>. Hvis det gjeld gruppe eller arrangement, eller du av en eller annan grunn ikkje kan reservere på nett: send en forespørsel til <a href=\"mailto:gjendebu@turistforeningen.no\" target=\"_self\">gjendebu@dnt.no</a>.</p><h2>Medlemskort.</h2><p>Husk å ta med gyldig medlemskort.</p><h2>Kontaktinformasjon</h2><p><strong>- </strong><a href=\"mailto:gjendebu@dnt.no\" target=\"_self\">gjendebu@dnt.no</a></p><p>- +47 91 13 22 22</p><h2>Fasiliteter. </h2><p>DNT-standard på rom, dusj og toaletter i sovehus.</p><h2>Selvbetjeningskvarteret på Gjendebu</h2><p>Sengeplasser på hytta: 34<br />Det selvbetjente kvarteret er åpent fra 15. februar - 15. oktober, unntatt i de periodene Gjendebu er betjent.<br /><a href=\"https://hyttebestilling.dnt.no/hytte/10581\" target=\"_blank\">Bestilles via hyttebestilling.dnt.no</a></p><p>Denne hytta har fått støtte av overskuddet fra spillemidlene til <strong>Norsk Tipping</strong>.</p>",
             "serviceLevel": "STAFFED",
-            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
-            "bookingEnabled": true,
-            "idVisbook": 5546,
+            "dntCabin": true,
             "geojson": {
               "type": "Point",
               "coordinates": [
@@ -76,7 +17,450 @@
                 61.45144,
                 986
               ]
-            }
+            },
+            "elevationCustom": null,
+            "bedsStaffed": 119,
+            "bedsSelfService": 34,
+            "bedsNoService": 0,
+            "bedsWinter": 99,
+            "bookingEnabled": true,
+            "bookingOnly": false,
+            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
+            "serviceStatus": [
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2026-02-15T00:00:00.000Z",
+                "to": "2026-03-18T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2026-03-19T00:00:00.000Z",
+                "to": "2026-04-06T00:00:00.000Z",
+                "beds": 119,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2026-04-06T00:00:00.000Z",
+                "to": "2026-06-18T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2026-06-19T00:00:00.000Z",
+                "to": "2026-09-13T00:00:00.000Z",
+                "beds": 119,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2026-09-13T00:00:00.000Z",
+                "to": "2026-09-17T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2026-09-17T00:00:00.000Z",
+                "to": "2026-10-15T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2026-10-15T00:00:00.000Z",
+                "to": "2027-02-15T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2027-02-15T00:00:00.000Z",
+                "to": "2027-03-10T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2027-03-10T00:00:00.000Z",
+                "to": "2027-03-29T00:00:00.000Z",
+                "beds": 119,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2027-03-29T00:00:00.000Z",
+                "to": "2027-06-10T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2027-06-10T00:00:00.000Z",
+                "to": "2027-06-18T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2027-06-18T00:00:00.000Z",
+                "to": "2027-09-10T00:00:00.000Z",
+                "beds": 119,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2027-09-10T00:00:00.000Z",
+                "to": "2027-09-23T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2027-09-23T00:00:00.000Z",
+                "to": "2027-10-15T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2027-10-15T00:00:00.000Z",
+                "to": "2027-12-31T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              }
+            ],
+            "serviceStatusToday": {
+              "serviceLevel": "SELF_SERVICE",
+              "beds": 34,
+              "key": "dnt-key"
+            },
+            "areas": [
+              {
+                "id": 1231,
+                "name": "Jotunheimen",
+                "areaType": "DNT_AREA"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": 10908403,
+            "name": "Gjendebu Selvbetjent",
+            "description": "<p>Dette er Gjendebu sitt selvbetjente kvarter. Selvbetjeningskvarteret er kun tilgjengelig for bruk når den betjente hovedhytta er stengt. Det er mulig å forhåndsbestille noen senger.</p><p>Dersom du er ute etter den betjente Gjendebu eller mer informasjon om stedet, <a href=\"https://ut.no/hytte/10581/gjendebu\" target=\"_self\">klikk her</a>.</p><p><strong>Beliggenhet</strong></p><p>Selvbetjeningskvarteret på Gjendebu ligger like ved hovedhytta og er merket med en stor T. Hytta er låst med DNT's standardnøkkel.</p><h3>Om hytta</h3><p>Antall soveplasser totalt: 34</p><p>Antall senger tilgjengelig for bestilling: 17</p><p><strong>Utstyr</strong></p><p>Hytta har det du trenger av utstyr for matlaging og et hyggelig opphold, som fullt kjøkkenutstyr, dekketøy og sengeklær. I tillegg vil du finne et godt utvalg av mat på proviantrommet. Det er ikke strøm på hytta, men gass, vedfyring og stearinlys som lyskilde. Veden på hytta skal kun benyttes til fyring i vedovnene, ikke til bål ute<em>.</em> Gjestene ordner selv med matlaging, vannhenting, oppvask, vask av gulv, og ellers rydding av hytta inne og ute. Lakenpose eller eget sengetøy skal alltid brukes ved overnatting. Oppslag med hytteregler og priser finner du på hytta.</p><p><strong>Vannkilde</strong></p><p>På vinterstid smelter du snø og på sommerstid er det vannkilde i nærheten av hytta.</p><h2>Betaling</h2><p><strong>Priser på overnatting og proviant</strong><br />Vi gjør oppmerksom på at prisene på hytta følger prislisten til DNT Oslo og Omegn. Andre medlemsforeninger i DNT kan ha andre priser.<br /><a href=\"https://www.dnt.no/dnt-der-du-er/dnt-oslo-og-omegn/hytter/priser/priser-selvbetjente-hytter/\" target=\"_blank\">Gå til prisliste</a></p><p><strong>Forhåndsbestilling via hyttebestilling.dnt</strong><br />Det har aldri vært enklere å bestille hyttetur på DNT-hyttene. Via <a href=\"http://hyttebestilling.dnt.no/\" target=\"_blank\">hyttebestilling.dnt.no</a> kan du enkelt se når hytta er ledig, utforske hytter i kart og bestille plass. DNT Oslo og Omegn legger ut et begrenset antall senger for bestilling. Resten av sengene vil være åpne for drop-in. Møt opp på hytta før kl. 19.00 for å sikre sengen du har reservert; etter kl. 19.00 kan sengen tildeles andre, men bookingen din er fortsatt gyldig.</p><p><strong>Betal for mat og overnatting i DNT-appen</strong><br />På selv- og ubetjente DNT‑hytter registrerer og betaler du enkelt for overnatting og proviant i DNT‑appen. Har du forhåndsbestilt? Da er selve overnattingen allerede betalt – registrer kun proviant i appen. Husk å laste ned appen før du drar på tur! Appen fungerer også uten dekning. For best offline‑funksjon bør du åpne appen før turen. Les mer på dnt.no: <a href=\"https://www.dnt.no/hyttebetaling\"><u>https://www.dnt.no/hyttebetaling</u></a></p><p>Fungerer med bank- og kredittkort fra andre land.</p><p><strong>Betalingsblankett</strong><br />Du kan også betale ved å fylle ut en betalingsblankett som du vil finne på hytta. Ved avreise legger du den ferdig utfylt betalingsblanketten i safen og tar med deg kopien. Da sender vi deg faktura, men vær oppmerksom på at det påløper et gebyr på kr. 50,- ved bruk av betalingsblankett. Husk å fylle inn riktig pris for overnatting ut fra alder og medlem/ikke-medlem og alt du har tatt av mat. Til orientering er det ikke lenger mulig å betale med kontanter på selvbetjeningshyttene.</p><h2>Hund</h2><p>Det er ikke tillatt å ha hund i oppholdsrom, spiserom og soverom. Det er et hundebur i uthus. Ta med underlag til hunden om nødvendig, ikke bruk hyttas sengetøy eller tepper.</p><p>Denne hytta har fått støtte av overskuddet fra spillemidlene til <strong>Norsk Tipping</strong>.</p>",
+            "serviceLevel": "SELF_SERVICE",
+            "dntCabin": true,
+            "geojson": {
+              "type": "Point",
+              "coordinates": [
+                8.487358,
+                61.450814,
+                984
+              ]
+            },
+            "elevationCustom": null,
+            "bedsStaffed": 0,
+            "bedsSelfService": 34,
+            "bedsNoService": 0,
+            "bedsWinter": 0,
+            "bookingEnabled": true,
+            "bookingOnly": false,
+            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
+            "serviceStatus": [
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2025-09-14T00:00:00.000Z",
+                "to": "2025-10-15T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2025-10-15T00:00:00.000Z",
+                "to": "2026-02-15T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2026-02-15T00:00:00.000Z",
+                "to": "2026-03-20T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2026-03-20T00:00:00.000Z",
+                "to": "2026-04-06T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2026-04-06T00:00:00.000Z",
+                "to": "2026-06-19T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2026-06-19T00:00:00.000Z",
+                "to": "2026-09-13T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2026-09-13T00:00:00.000Z",
+                "to": "2026-09-17T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2026-09-17T00:00:00.000Z",
+                "to": "2026-10-15T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2026-10-15T00:00:00.000Z",
+                "to": "2027-02-15T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2027-02-15T00:00:00.000Z",
+                "to": "2027-03-11T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2027-03-11T00:00:00.000Z",
+                "to": "2027-03-29T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2027-03-29T00:00:00.000Z",
+                "to": "2027-06-18T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2027-06-18T00:00:00.000Z",
+                "to": "2027-09-09T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2027-09-09T00:00:00.000Z",
+                "to": "2027-09-18T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "SELF_SERVICE",
+                "from": "2027-09-18T00:00:00.000Z",
+                "to": "2027-10-15T00:00:00.000Z",
+                "beds": 34,
+                "openAllYear": false,
+                "key": "dnt-key"
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2027-10-15T00:00:00.000Z",
+                "to": "2028-02-15T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              }
+            ],
+            "serviceStatusToday": {
+              "serviceLevel": "SELF_SERVICE",
+              "beds": 34,
+              "key": "dnt-key"
+            },
+            "areas": [
+              {
+                "id": 1231,
+                "name": "Jotunheimen",
+                "areaType": "DNT_AREA"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": 101210097,
+            "name": "Gjendeosbue - utleige kun til innanbygds i Vågå / Rental only for inhabitants in Vågå",
+            "description": "<p>Triveleg bu til utleige for innanbygds (fast busette) i Vågå kommune. Sjå \"Om hytta\" for meir informasjon. Rental only for inhabitants in Vågå.</p>",
+            "serviceLevel": "RENTAL",
+            "dntCabin": false,
+            "geojson": {
+              "type": "Point",
+              "coordinates": [
+                8.809488,
+                61.496416,
+                997
+              ]
+            },
+            "elevationCustom": null,
+            "bedsStaffed": 0,
+            "bedsSelfService": 0,
+            "bedsNoService": 4,
+            "bedsWinter": 0,
+            "bookingEnabled": true,
+            "bookingOnly": true,
+            "bookingUrl": "https://www.inatur.no/tilbud/6088019edbe3070003c3f31f",
+            "serviceStatus": [
+              {
+                "serviceLevel": "RENTAL",
+                "from": null,
+                "to": null,
+                "beds": null,
+                "openAllYear": true,
+                "key": "special key"
+              }
+            ],
+            "serviceStatusToday": {
+              "serviceLevel": "RENTAL",
+              "beds": null,
+              "key": "special key"
+            },
+            "areas": [
+              {
+                "id": 1231,
+                "name": "Jotunheimen",
+                "areaType": "DNT_AREA"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": 10604,
+            "name": "Gjendesheim",
+            "description": "<p>Gjendesheim er selve flaggskipet blant DNTs hytter, vakkert plassert ved en av de viktigste innfallsportene til den østlige delen av Jotunheimen. Spesielt blant småbarnsfamilier anses Gjendesheim for et utmerket sted å tilbringe både påske- og sommerferie.</p><h3><strong>Turer og aktiviteter.</strong></h3><p>Vi tilbyr masse aktiviteter året rundt, fra randonnékurs, skredkurs, guidede toppturer, rafting, yoga, hundekjøring og mye mer – både i sommer- og vintersesongen. <a href=\"https://gjendesheim.dnt.no/artikler/nyheter/12664-velkommen-til-sommer-pa-gjendesheim/\" target=\"_blank\">Se vårt store aktivitetstilbud</a> og finn din drømmetur!</p><h3><strong>Overnatting</strong></h3><p>Vi har 185 senger, fordelt på 1-, 2- og 4- sengsrom, samt sovesal.</p><p><a href=\"https://hyttebestilling.dnt.no/hytte/10604\" target=\"_blank\">Bestill rom eller seng rett på nett.</a></p><h3><strong>Åpningstider</strong></h3><p>Vintersesong: Vanligvis fra midten av februar til 1. mai. Sommersesong: Vanligvis fra første helgen i juni til og med uke 40. <a href=\"https://gjendesheim.dnt.no/apningstider/\" target=\"_blank\">Se årets datoer her</a></p><h3><strong>Lokalmat</strong></h3><p>Vi er stolte av maten vi serverer på Gjendesheim. Måltidene våre skal være en opplevelse på lik linje med naturen og turene gjester besøker oss for. Derfor bruker vi lokale råvarer så ofte vi kan og kjøper kun inn fra norske leverandører. Les mer om <a href=\"https://gjendesheim.dnt.no/matopplevelser/\" target=\"_blank\">vårt matkonsept</a> og gled deg til herlig mat og drikke fra fjellheimen.</p><h3><strong>Utstyrsutleie</strong></h3><p>Vi har et bredt sortiment av topp moderne utleieutstyr for spretne aktiviteter - vinter som sommer, fra randonneeutstyr, truger til fjellsko. I tillegg leier vi også ut skalljakker og ryggsekker av høy kvalitet. <a href=\"https://gjendesheim.dnt.no/leie/\" target=\"_blank\">Sjekk ut hele tilbudet vårt.</a></p><h3><strong>Et turmekka!</strong></h3><p>De fleste kommer til Gjendesheim for å gå <a href=\"https://gjendesheim.dnt.no/besseggen/\" target=\"_blank\">Besseggen.</a> Denne klassikeren er en spesiell turopplevelse med spennende, mektig og storslått natur. Den er lett tilgjengelig, kjent og populær, og svært mange går den i høysesongen. Men det er nok dager i året til at du også kan vandre her i ensom majestet. Ikke minst kan du gå den på ski på vinteren! Det er også utrolig mange andre turer du kan gå fra Gjendesheim. Nærområdet byr på alt fra enkle, barnevennlige turer til krevende toppturer – sommer som vinter. Se våre <a href=\"https://gjendesheim.dnt.no/turtips/\" target=\"_blank\">varmeste anbefalinger</a> for flotte turer.</p><h3><strong>Et miljøfyrtårn</strong></h3><p>Gjendesheim er selve miljøfyrtårnet til DNT – vårt motto er \"Ren turglede\". I en verden der forbruk og klimautslipp er altfor høye, vil vi gjerne gjøre fjellturen lettere å bære – både for deg, miljøet og kloden. Foruten satsning på lokalmat og utstyrsutleie, er det enkelt å reise kollektivt til oss – og vi har elbil-ladere. Vi bruker solceller, har kuttet ned bruk av plast, selger ikke flaskevann (kun gjenbruksflasker), driver ikke PR utenlands med mer. Les mer om <a href=\"https://gjendesheim.dnt.no/ren-turglede/\" target=\"_blank\">vårt miljø- og klimaprosjekt</a> og velg oss med god samvittighet for din neste tur.</p><h3><strong>Åpningstider</strong></h3><p>Vintersesong: Normalt fra midten av februar til 1. mai. Sommersesong: Normalt fra starten av juni til og med første uka i oktober. <a href=\"https://gjendesheim.dnt.no/apningstider/\" target=\"_blank\">Se årets datoer her</a></p><h3><strong>Vertskap og kontaktinfo</strong></h3><p>Vertskap på Gjendesheim er Marius Haugaløkken. Kontakt: 612 38 910/ <a href=\"mailto:gjendesheim@dnt.no\" target=\"_self\">info.gjendesheim@dnt.no</a></p><h3><strong>Tilrettelegging for funksjonshemmede</strong></h3><p>Gjendesheim skal kunne brukes av alle. Det er god adkomst til 1. etasje i hovedbygningen med rullestol.</p><h3><strong>Skoleklasser og grupper</strong></h3><p>Gjendesheim tar mer enn gjerne imot skoleklasser. Dere må booke plass ved å kontakte hyttas vertskap. Før turstart er det viktig at det gjøres et godt forarbeid med turplanlegging i samarbeid med elevene. Hyttas bestyrer er godt kjent rundt hytta og kan gi god informasjon om turmuligheter, aktuelle aktivitetssteder og annen praktisk informasjon.</p><h3><strong>Medlemsbevis</strong></h3><p>Husk å ta med gyldig medlemsbevis.</p><p>Denne hytta har fått støtte av overskuddet fra spillemidlene til <strong>Norsk Tipping</strong>.</p>",
+            "serviceLevel": "STAFFED",
+            "dntCabin": true,
+            "geojson": {
+              "type": "Point",
+              "coordinates": [
+                8.81276999450361,
+                61.4940507143726,
+                990
+              ]
+            },
+            "elevationCustom": null,
+            "bedsStaffed": 185,
+            "bedsSelfService": 0,
+            "bedsNoService": 0,
+            "bedsWinter": 0,
+            "bookingEnabled": true,
+            "bookingOnly": false,
+            "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10604",
+            "serviceStatus": [
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2025-06-06T00:00:00.000Z",
+                "to": "2025-10-05T00:00:00.000Z",
+                "beds": 185,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2025-10-05T00:00:00.000Z",
+                "to": "2026-02-14T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2026-02-14T00:00:00.000Z",
+                "to": "2026-05-03T00:00:00.000Z",
+                "beds": 185,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2026-05-03T00:00:00.000Z",
+                "to": "2026-06-05T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "STAFFED",
+                "from": "2026-06-05T00:00:00.000Z",
+                "to": "2026-10-04T00:00:00.000Z",
+                "beds": 185,
+                "openAllYear": false,
+                "key": null
+              },
+              {
+                "serviceLevel": "CLOSED",
+                "from": "2026-10-04T00:00:00.000Z",
+                "to": "2026-12-31T00:00:00.000Z",
+                "beds": 0,
+                "openAllYear": false,
+                "key": null
+              }
+            ],
+            "serviceStatusToday": {
+              "serviceLevel": "STAFFED",
+              "beds": 185,
+              "key": null
+            },
+            "areas": [
+              {
+                "id": 1231,
+                "name": "Jotunheimen",
+                "areaType": "DNT_AREA"
+              }
+            ]
           }
         }
       ]

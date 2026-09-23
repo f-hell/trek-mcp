@@ -25,17 +25,20 @@ src/index.ts ── src/tools.ts          tool schemas (zod) + JSON results
 ```
 
 Each adapter's normaliser (`src/sources/*/normalize.ts`) is the only code that knows a site's field
-names. It accepts several plausible spellings for now; after recon we narrow it to the real ones
-and add recorded responses as test fixtures.
+names. Both are written against the real responses recorded in `test/fixtures/`
+(`npm run fixtures:record` refreshes them).
 
 ## Linking the two sources
 
-A cabin's ut.no id and its hyttebestilling id are different (hyttebestilling URLs look like
-`/hytte/101265`). Resolution order:
+A cabin's hyttebestilling id is usually its ut.no id, but not always (ut.no 10908403 "Gjendebu Selvbetjent"
+books as `/hytte/10581`). Resolution order:
 
-1. A `bookingId`/`bookingUrl` field in the ut.no cabin data (to confirm during recon).
+1. The id in the ut.no cabin's `bookingUrl` (`https://hyttebestilling.dnt.no/hytte/<id>`). Confirmed; covers the DNT cabins.
 2. `data/cabin-map.json` overrides.
-3. Later, if needed: match by name plus distance against a hyttebestilling cabin list.
+3. If still needed: match by name plus distance against a hyttebestilling cabin list.
+
+Cabins booked elsewhere keep their `bookingUrl` (e.g. memurubu.no), and nights in a period ut.no lists as closed
+(`serviceStatus`) are marked closed, since the booking calendar only reports them as 0 beds.
 
 ## Caching and politeness
 
@@ -63,9 +66,9 @@ or routes whose endpoints are the two cabins (roadmap).
 
 ## Roadmap
 
-1. **Recon** ([RECON.md](RECON.md)): capture real ut.no queries and the hyttebestilling availability endpoint.
-2. Fix `queries.ts` and both normalisers, then add the recorded responses as fixtures and tests.
-3. Resolve booking ids automatically (step 1 or 3 above).
+1. ~~Recon~~ ([RECON.md](RECON.md)), ~~real queries and normalisers with recorded fixtures~~, ~~booking ids from `bookingUrl`~~ (done 2026-09-30).
+2. Use ut.no `search` for fuzzier cabin/trip lookup (it matches "Memurubu" in trip names too).
+3. Use `routes`/`routesNear` (marked paths) for real leg distances instead of straight lines.
 4. `find_route_between_cabins`: ut.no routes/trips connecting two cabins, with real distance, time and ascent.
 5. `suggest_hut_to_hut`: given an area, number of nights and grading, propose cabin chains from the trip graph, then check availability.
 6. Season awareness: opening periods, "hytteslipp" (the date bookings open for next season), and summer vs. winter beds.
@@ -73,7 +76,7 @@ or routes whose endpoints are the two cabins (roadmap).
 
 ## Open questions
 
-- Does ut.no's API allow introspection? If so, `npm run introspect:utno` gives us the whole schema.
-- Does hyttebestilling's availability endpoint need a session cookie or token, or is it public?
-- Does hyttebestilling report free beds per night, or only available/full?
-- Are self-service/no-service cabins with pre-bookable beds listed on hyttebestilling separately from their drop-in beds?
+- Self-service cabins have more beds than they sell online (Skarvheim: 9 beds, 6 bookable; `dropin_beds` attribute).
+  Should the planner count the drop-in beds too?
+- How does the calendar show a season that hasn't opened for booking yet? (Summer 2027 was already open, so this wasn't seen.)
+- `/api/booking/cabin-availability` returns prices by age and membership; could feed a cost estimate.

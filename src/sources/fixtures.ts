@@ -8,8 +8,7 @@ import type { BookingSource, CabinQuery, TrailSource, TripQuery } from "./types.
 
 // Offline sources backed by data/fixtures. The data is ILLUSTRATIVE ONLY
 // (approximate coordinates, made-up ids and availability) and exists so the
-// MCP server can be wired into a client and exercised before the real
-// adapters are verified. Enable with TREK_MCP_FIXTURES=1.
+// MCP server can be exercised offline. Enable with TREK_MCP_FIXTURES=1.
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const load = <T>(name: string): T => JSON.parse(readFileSync(join(root, "data", "fixtures", name), "utf8")) as T;

@@ -13,7 +13,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.scripts.json",
     "test": "vitest run",
     "recon": "tsx scripts/recon.ts",
-    "introspect:utno": "tsx scripts/introspect.ts"
+    "introspect:utno": "tsx scripts/introspect.ts",
+    "fixtures:record": "tsx scripts/record-fixtures.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.31.0",

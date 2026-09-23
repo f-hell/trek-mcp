@@ -3,6 +3,7 @@
     "trip": {
       "id": 116978,
       "name": "Fottur til Høgeloft 1920 moh",
+      "description": "<p>Krevende tur med 800 m stigning. Turen er på ca 20 km og estimert gangtid uten pauser er ca 7,5 time. Turen er ikke merket, så man må bruke kart og kompass. Kartsporet er unøyaktig tegnet inn, så du kan ikke navigere etter dette.</p><p>Turen starter med ca 5 km på grusvei (kan med fordel sykles). Fra parkeringen følg grusveien innover ca 2 km, her kommer man til et kryss og må holde til venstre for å ikke ende på feil side av fjellet. Etter ytterligere 3 km, tar man av grusveien til høyre. Se på kartet hvor du skal ta av. Fra skaret oppe til høyre og til toppen er det steinete og det er ikke noen tydelig merket sti. Følg vardene og bruk kart og kompass.</p><p>Høgeloft er Hemsedals høyeste fjell med en fantastisk panoramautsikt over Hemsedalsfjella og Jotunheimen. Denne toppen og Ranastøngji har den fineste utsikten av alle toppene i Topp 20 programmet. Denne turen er også veldig fin på vinteren.</p>",
       "grading": "VERY_TOUGH",
       "distance": 24348,
       "durationDays": null,
@@ -26,14 +27,20 @@
           1126
         ]
       },
+      "encodedPolyline": "ytjsJ{mnp@BWsCaCwAk@ICkFi@a@Ea@GWCi@DgApA??gBrBaA~Bo@tCGTk@xB}@j@IEkAc@w@B{@X??s@TqAe@k@y@kDsL}FwQuAgE}@wCoBmGgAmD_CiFkHgNq@oA[g@??U_@g@y@Um@m@cB_@wA[mAe@i@QQUCa@XuAtBoAlA??gCbCiDbD??QP]RiAKy@NC@y@j@}Dh@eD{BgAu@w@mBe@cCy@aBSAqEQkBiB_A_AaAuAc@mAs@wLaAqPk@kE_@uAkAgEu@sB{@_@}AHaDNaBi@}@@uA{@y@_ACEaAa@kAiB_AiFu@{F_@{AWWWW??e@e@ACeEuAAAUIu@WqN}B}Ii@sCWgEa@]AU?g@AqAl@yChCQR}CnDgAp@yBXqAAA@yAZIB_A@kJ{BmNcCoBC}@}@gAOgAHw@T{Ad@_GHcAO{@u@_@I_BnAiNoDqFw@MCkJsBsA]oFyA?Apc@g`F??zi@{dB??rBqrC",
       "cabinIds": [],
-      "areaIds": [
-        1232,
-        124410,
-        124427,
-        124764
-      ],
-      "encodedPolyline": "ytjsJ{mnp@BWsCaCwAk@ICkFi@a@Ea@GWCi@DgApA??gBrBaA~Bo@tCGTk@xB}@j@IEkAc@w@B{@X??s@TqAe@k@y@kDsL}FwQuAgE}@wCoBmGgAmD_CiFkHgNq@oA[g@??U_@g@y@Um@m@cB_@wA[mAe@i@QQUCa@XuAtBoAlA??gCbCiDbD??QP]RiAKy@NC@y@j@}Dh@eD{BgAu@w@mBe@cCy@aBSAqEQkBiB_A_AaAuAc@mAs@wLaAqPk@kE_@uAkAgEu@sB{@_@}AHaDNaBi@}@@uA{@y@_ACEaAa@kAiB_AiFu@{F_@{AWWWW??e@e@ACeEuAAAUIu@WqN}B}Ii@sCWgEa@]AU?g@AqAl@yChCQR}CnDgAp@yBXqAAA@yAZIB_A@kJ{BmNcCoBC}@}@gAOgAHw@T{Ad@_GHcAO{@u@_@I_BnAiNoDqFw@MCkJsBsA]oFyA?Apc@g`F??zi@{dB??rBqrC"
+      "areas": [
+        {
+          "id": 124764,
+          "name": "Nordfjella villreinområde",
+          "areaType": "REINDEER_AREA"
+        },
+        {
+          "id": 1232,
+          "name": "Skarvheimen",
+          "areaType": "DNT_AREA"
+        }
+      ]
     }
   }
 }

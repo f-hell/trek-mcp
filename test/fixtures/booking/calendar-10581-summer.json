@@ -1,0 +1,1378 @@
+{
+  "data": {
+    "availabilityList": [
+      {
+        "date": "2027-07-10T00:00:00.000Z",
+        "products": [
+          {
+            "available": 22,
+            "product": {
+              "company_id": 2073,
+              "product_id": 2,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 32,
+            "product": {
+              "company_id": 2073,
+              "product_id": 3,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 24,
+            "product": {
+              "company_id": 2073,
+              "product_id": 14,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 12,
+            "product": {
+              "company_id": 2073,
+              "product_id": 15,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 22,
+            "product": {
+              "company_id": 2073,
+              "product_id": 7,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 81,
+            "product": {
+              "company_id": 2073,
+              "product_id": 13,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 4,
+            "product": {
+              "company_id": 2073,
+              "product_id": 19,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 6,
+            "product": {
+              "company_id": 2073,
+              "product_id": 20,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 12,
+            "product": {
+              "company_id": 2073,
+              "product_id": 16,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 85,
+            "product": {
+              "company_id": 2073,
+              "product_id": 4,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 741
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 750
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 753
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 755
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 757
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 759
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 761
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 763
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 765
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 742
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 743
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 744
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 745
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 746
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 747
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 748
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 749
+            }
+          }
+        ]
+      },
+      {
+        "date": "2027-07-11T00:00:00.000Z",
+        "products": [
+          {
+            "available": 22,
+            "product": {
+              "company_id": 2073,
+              "product_id": 2,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 48,
+            "product": {
+              "company_id": 2073,
+              "product_id": 3,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 24,
+            "product": {
+              "company_id": 2073,
+              "product_id": 14,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 12,
+            "product": {
+              "company_id": 2073,
+              "product_id": 15,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 22,
+            "product": {
+              "company_id": 2073,
+              "product_id": 7,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 81,
+            "product": {
+              "company_id": 2073,
+              "product_id": 13,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 4,
+            "product": {
+              "company_id": 2073,
+              "product_id": 19,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 6,
+            "product": {
+              "company_id": 2073,
+              "product_id": 20,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 12,
+            "product": {
+              "company_id": 2073,
+              "product_id": 16,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 85,
+            "product": {
+              "company_id": 2073,
+              "product_id": 4,
+              "unit_id": 0
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 741
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 750
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 753
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 755
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 757
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 759
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 761
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 763
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 765
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 742
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 743
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 744
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 745
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 746
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 747
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 748
+            }
+          },
+          {
+            "available": 0,
+            "product": {
+              "company_id": 2189,
+              "product_id": 127,
+              "unit_id": 749
+            }
+          }
+        ]
+      }
+    ],
+    "products": [
+      {
+        "product_id": 2,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i 2-sengsrom",
+        "attributes": [
+          {
+            "id": 304536,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 2,
+            "unit_id": 0
+          },
+          {
+            "id": 505839,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 2,
+            "unit_id": 0
+          }
+        ],
+        "available": 22
+      },
+      {
+        "product_id": 3,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i 4-sengsrom",
+        "attributes": [
+          {
+            "id": 304538,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 3,
+            "unit_id": 0
+          },
+          {
+            "id": 505840,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 3,
+            "unit_id": 0
+          }
+        ],
+        "available": 48
+      },
+      {
+        "product_id": 14,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i lavvo",
+        "attributes": [
+          {
+            "id": 311627,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 14,
+            "unit_id": 0
+          },
+          {
+            "id": 505841,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 14,
+            "unit_id": 0
+          }
+        ],
+        "available": 24
+      },
+      {
+        "product_id": 15,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i sommerfjøset",
+        "attributes": [
+          {
+            "id": 311631,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 15,
+            "unit_id": 0
+          },
+          {
+            "id": 505843,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 15,
+            "unit_id": 0
+          }
+        ],
+        "available": 12
+      },
+      {
+        "product_id": 7,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i sovesal",
+        "attributes": [
+          {
+            "id": 304540,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 7,
+            "unit_id": 0
+          },
+          {
+            "id": 505844,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 7,
+            "unit_id": 0
+          }
+        ],
+        "available": 22
+      },
+      {
+        "product_id": 13,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Teltplass",
+        "attributes": [
+          {
+            "id": 311633,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 13,
+            "unit_id": 0
+          },
+          {
+            "id": 506879,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 13,
+            "unit_id": 0
+          }
+        ],
+        "available": 81
+      },
+      {
+        "product_id": 19,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i 2 sengsrom i anneks hvor hund er tillatt",
+        "attributes": [
+          {
+            "id": 580360,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 19,
+            "unit_id": 0
+          },
+          {
+            "id": 579144,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 19,
+            "unit_id": 0
+          }
+        ],
+        "available": 4
+      },
+      {
+        "product_id": 20,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i 3 sengsrom m/familiekøye i anneks hvor hund er tillatt",
+        "attributes": [
+          {
+            "id": 580361,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 20,
+            "unit_id": 0
+          },
+          {
+            "id": 579146,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 20,
+            "unit_id": 0
+          }
+        ],
+        "available": 6
+      },
+      {
+        "product_id": 16,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Seng i 3 sengsrom m/familiekøye",
+        "attributes": [
+          {
+            "id": 580362,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 16,
+            "unit_id": 0
+          },
+          {
+            "id": 579148,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 16,
+            "unit_id": 0
+          }
+        ],
+        "available": 12
+      },
+      {
+        "product_id": 4,
+        "unit_id": 0,
+        "company_id": 2073,
+        "product_name": "Ekstramadrass.",
+        "attributes": [
+          {
+            "id": 311629,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 4,
+            "unit_id": 0
+          },
+          {
+            "id": 505842,
+            "group": {
+              "group_id": 15679,
+              "company_id": 2073,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2073,
+            "product_id": 4,
+            "unit_id": 0
+          }
+        ],
+        "available": 85
+      },
+      {
+        "product_id": 127,
+        "unit_id": 741,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 1",
+        "attributes": [
+          {
+            "id": 375110,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 741
+          },
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 750,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 10",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 753,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 11",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 755,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 12",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 757,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 13",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 759,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 14",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 761,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 15",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 763,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 16",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 765,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 17",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 742,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 2",
+        "attributes": [
+          {
+            "id": 375112,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 742
+          },
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 743,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 3",
+        "attributes": [
+          {
+            "id": 375114,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 743
+          },
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 744,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 4",
+        "attributes": [
+          {
+            "id": 375116,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 744
+          },
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 745,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 5",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 746,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 6",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 747,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 7",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 748,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 8",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      },
+      {
+        "product_id": 127,
+        "unit_id": 749,
+        "company_id": 2189,
+        "unit_name": "Gjendebu selvbetjent, seng 9",
+        "attributes": [
+          {
+            "id": 485004,
+            "group": {
+              "group_id": 14827,
+              "company_id": 2189,
+              "name": "is_bed",
+              "type": "BOOLEAN"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          },
+          {
+            "id": 341305,
+            "group": {
+              "group_id": 1772,
+              "company_id": 0,
+              "name": "persons_max",
+              "type": "NUMERIC"
+            },
+            "value": "1",
+            "company_id": 2189,
+            "product_id": 127,
+            "unit_id": 0
+          }
+        ]
+      }
+    ]
+  }
+}

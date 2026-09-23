@@ -36,7 +36,7 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     "get_cabin",
     {
       title: "Get cabin",
-      description: "Full details for one cabin: beds, service level, key requirement, location, and booking id if bookable.",
+      description: "Full details for one cabin: beds, service level, DNT key requirement, location, open/closed periods by service level (openings), and hyttebestilling booking id if bookable.",
       inputSchema: { id: z.string() },
     },
     async ({ id }) => json(await svc.getCabin(id)),
@@ -46,7 +46,7 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     "search_trips",
     {
       title: "Search trips",
-      description: "Find suggested hikes on ut.no by text, area, grading, max duration or proximity.",
+      description: "Find suggested trips on ut.no by name, area, grading, max duration or proximity. Multi-day trips report durationDays instead of durationHours and are excluded by maxDurationHours. seasonMonths lists the recommended months.",
       inputSchema: {
         text: z.string().optional(),
         areaId: z.string().optional(),
@@ -88,13 +88,21 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     {
       title: "Check cabin availability",
       description:
-        "Nightly availability for a cabin on hyttebestilling.dnt.no between two dates (to is exclusive). Read-only; returns the booking link, never books.",
+        "Nightly free beds for a cabin on hyttebestilling.dnt.no between two dates (to is exclusive), with a breakdown per room type, tent pitch etc. (options). " +
+        "Nights in a period ut.no lists as closed are marked closed. Read-only; returns the booking link, never books.",
       inputSchema: { cabinId: z.string().describe("ut.no cabin id"), from: isoDate, to: isoDate },
     },
     async ({ cabinId, from, to }) => {
       const cabin = await svc.getCabin(cabinId);
       if (!cabin.bookingId) {
-        return json({ cabin: cabin.name, bookable: false, note: "Not bookable on hyttebestilling (often first come, first served)." });
+        return json({
+          cabin: cabin.name,
+          bookable: false,
+          bookingUrl: cabin.bookingUrl,
+          note: cabin.bookingUrl
+            ? "Not on hyttebestilling; availability has to be checked at bookingUrl."
+            : "Not bookable online (often first come, first served).",
+        });
       }
       return json({
         cabin: cabin.name,

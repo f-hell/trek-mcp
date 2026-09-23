@@ -16,8 +16,8 @@ beds free every night"*.
 | --- | --- |
 | MCP server, tools, planning logic, caching and rate limiting | Working, tested |
 | Fixture mode (offline sample data) | Working, so you can try it in Claude now |
-| ut.no adapter | **Unverified**: GraphQL queries are placeholders until recon ([docs/RECON.md](docs/RECON.md)) |
-| hyttebestilling adapter | **Needs the endpoint**: set it once you've captured it with recon |
+| ut.no adapter | Working against the live GraphQL API (`https://ut.no/api/graphql`), tested on recorded responses |
+| hyttebestilling adapter | Working against the live availability calendar, tested on recorded responses |
 
 ## Setup
 
@@ -65,8 +65,8 @@ claude mcp add trek-demo -e TREK_MCP_FIXTURES=1 -- node /absolute/path/to/trek-m
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `TREK_MCP_FIXTURES` | unset | `1` = use bundled sample data, no network |
-| `UTNO_GRAPHQL_URL` | `https://api.ut.no/` | ut.no GraphQL endpoint (unverified) |
-| `BOOKING_AVAILABILITY_PATH` | unset | Template such as `/api/...?id={id}&from={from}&to={to}` |
+| `UTNO_GRAPHQL_URL` | `https://ut.no/api/graphql` | ut.no GraphQL endpoint |
+| `BOOKING_AVAILABILITY_PATH` | `/api/booking/availability-calendar?cabinId={id}&fromDate={from}&toDate={to}` | Availability path template |
 | `TREK_MCP_MIN_INTERVAL_MS` | `1000` | Minimum delay between requests to one host |
 | `TREK_MCP_CACHE_DIR` | `~/.cache/trek-mcp` | Response cache |
 | `TREK_MCP_CONTACT` | unset | Added to the User-Agent so site operators can reach you |

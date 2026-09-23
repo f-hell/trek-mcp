@@ -1,31 +1,40 @@
-import type { Area, Cabin, Grading, ServiceLevel, Trip } from "../../domain.js";
+import type { Area, Cabin, CabinOpening, Grading, LatLon, ServiceLevel, Trip } from "../../domain.js";
 import { bool, isObj, latLon, num, pick, type Raw, str } from "../normalize.js";
+
+// Field names verified against ut.no's GraphQL schema (see docs/RECON.md and
+// test/fixtures/utno/).
 
 const WEB = "https://ut.no";
 
+/** Maps CabinServiceLevelEnum (STAFFED, SELF_SERVICE, ...) and Norwegian names. */
 export function serviceLevel(v: string | undefined): ServiceLevel {
   const s = (v ?? "").toLowerCase().replace(/[\s_-]/g, "");
   if (["staffed", "betjent", "fullservice"].includes(s)) return "staffed";
   if (["selfservice", "selvbetjent"].includes(s)) return "self-service";
-  if (["noservice", "ubetjent", "noserviceextended"].includes(s)) return "no-service";
+  if (["noservice", "noservicenobeds", "ubetjent"].includes(s)) return "no-service";
   if (["emergency", "emergencyshelter", "nødbu", "nodbu"].includes(s)) return "emergency";
   if (["closed", "stengt"].includes(s)) return "closed";
+  // FOOD_SERVICE, RENTAL, UNKNOWN
   return "unknown";
 }
 
+/** Maps GradingEnum (HIGHLY_ACCESSIBLE, EASY, MODERATE, TOUGH, VERY_TOUGH) and Norwegian names. */
 export function grading(v: string | undefined): Grading {
-  const s = (v ?? "").toLowerCase();
-  if (["easy", "enkel", "green", "grønn"].includes(s)) return "easy";
+  const s = (v ?? "").toLowerCase().replace(/[\s_-]/g, "");
+  if (["highlyaccessible", "easy", "enkel", "green", "grønn"].includes(s)) return "easy";
   if (["moderate", "middels", "blue", "blå"].includes(s)) return "moderate";
   if (["tough", "krevende", "red", "rød"].includes(s)) return "tough";
-  if (["verytough", "very_tough", "expert", "ekspert", "black", "svart"].includes(s)) return "expert";
+  if (["verytough", "expert", "ekspert", "black", "svart"].includes(s)) return "expert";
   return "unknown";
 }
 
-function firstArea(raw: Raw): { id: string; name: string } | undefined {
-  const areas = pick(raw, "areas", "area");
-  const a = Array.isArray(areas) ? areas[0] : areas;
-  if (!isObj(a)) return undefined;
+/** Prefers the DNT area ("Jotunheimen") over protected or reindeer areas. */
+function mainArea(raw: Raw): { id: string; name: string } | undefined {
+  const areas = pick(raw, "areas");
+  if (!Array.isArray(areas)) return undefined;
+  const objs = areas.filter(isObj);
+  const a = objs.find((x) => str(x, "areaType") === "DNT_AREA") ?? objs[0];
+  if (!a) return undefined;
   const id = str(a, "id");
   const name = str(a, "name");
   return id && name ? { id, name } : undefined;
@@ -36,62 +45,122 @@ export function bookingIdFromUrl(url: string | undefined): string | undefined {
   return url?.match(/hyttebestilling\.dnt\.no\/hytte\/(\d+)/)?.[1];
 }
 
+const isoDate = (v: string | undefined) => v?.slice(0, 10);
+
+function opening(raw: Raw): CabinOpening {
+  return {
+    serviceLevel: serviceLevel(str(raw, "serviceLevel")),
+    from: isoDate(str(raw, "from")),
+    to: isoDate(str(raw, "to")),
+    openAllYear: bool(raw, "openAllYear") ?? false,
+    beds: num(raw, "beds"),
+    requiresDntKey: str(raw, "key") ? str(raw, "key") === "dnt-key" : undefined,
+  };
+}
+
 export function normalizeCabin(raw: Raw): Cabin {
   const id = str(raw, "id") ?? "";
-  const loc = latLon(pick(raw, "geometry", "location", "position"));
+  const geo = pick(raw, "geojson");
+  const loc = latLon(geo);
+  const coords = isObj(geo) && Array.isArray(geo.coordinates) ? geo.coordinates : [];
+  const elevationM = num(raw, "elevationCustom") ?? (typeof coords[2] === "number" ? coords[2] : undefined);
+  const today = pick(raw, "serviceStatusToday");
+  const statuses = pick(raw, "serviceStatus");
+  const openings = Array.isArray(statuses) ? statuses.filter(isObj).map(opening) : undefined;
+  const todayKey = isObj(today) ? str(today, "key") : undefined;
   return {
     id,
     name: str(raw, "name") ?? `Cabin ${id}`,
-    serviceLevel: serviceLevel(str(raw, "serviceLevel", "serviceLevelToday", "type")),
-    dntCabin: bool(raw, "dntCabin", "isDntCabin") ?? false,
-    requiresDntKey: bool(raw, "dntKey", "requiresKey"),
+    serviceLevel: serviceLevel(str(raw, "serviceLevel")),
+    dntCabin: bool(raw, "dntCabin") ?? false,
+    requiresDntKey: todayKey ? todayKey === "dnt-key" : openings?.some((o) => o.requiresDntKey) || undefined,
     beds: {
-      total: num(raw, "bedsToday", "beds", "bedsTotal"),
+      total: isObj(today) ? num(today, "beds") : undefined,
       staffed: num(raw, "bedsStaffed"),
       selfService: num(raw, "bedsSelfService"),
       noService: num(raw, "bedsNoService"),
       winter: num(raw, "bedsWinter"),
     },
-    location: loc ? { ...loc, elevationM: num(raw, "elevation", "altitude") } : undefined,
-    area: firstArea(raw),
-    description: str(raw, "description", "descriptionPlain"),
-    url: str(raw, "url") ?? `${WEB}/hytte/${id}`,
-    bookingId: str(raw, "bookingId") ?? bookingIdFromUrl(str(raw, "bookingUrl")),
+    location: loc ? { ...loc, elevationM } : undefined,
+    area: mainArea(raw),
+    openings: openings?.length ? openings : undefined,
+    description: str(raw, "description"),
+    url: `${WEB}/hytte/${id}`,
+    bookingId: bookingIdFromUrl(str(raw, "bookingUrl")),
+    bookingUrl: bool(raw, "bookingEnabled") === false ? undefined : str(raw, "bookingUrl"),
+    bookingOnly: bool(raw, "bookingOnly"),
   };
 }
 
+/** Decodes a Google encoded polyline (precision 5) into points. */
+export function decodePolyline(s: string): LatLon[] {
+  const out: LatLon[] = [];
+  let i = 0;
+  let lat = 0;
+  let lon = 0;
+  const next = () => {
+    let result = 0;
+    let shift = 0;
+    let b: number;
+    do {
+      b = s.charCodeAt(i++) - 63;
+      result |= (b & 0x1f) << shift;
+      shift += 5;
+    } while (b >= 0x20 && i < s.length);
+    return result & 1 ? ~(result >> 1) : result >> 1;
+  };
+  while (i < s.length) {
+    lat += next();
+    lon += next();
+    out.push({ lat: lat / 1e5, lon: lon / 1e5 });
+  }
+  return out;
+}
+
+const round1 = (n: number) => Math.round(n * 10) / 10;
+
 export function normalizeTrip(raw: Raw): Trip {
   const id = str(raw, "id") ?? "";
-  const distanceM = num(raw, "distance", "distanceMeters");
+  const distanceM = num(raw, "distance");
+  const days = num(raw, "durationDays");
+  const hours = num(raw, "durationHours");
   const minutes = num(raw, "durationMinutes");
-  const cabins = pick(raw, "cabins");
+  const multiDay = days !== undefined && days > 0;
+  const polyline = str(raw, "encodedPolyline");
+  const path = polyline ? decodePolyline(polyline) : [];
+  const season = pick(raw, "season");
+  const cabinIds = pick(raw, "cabinIds");
   return {
     id,
     name: str(raw, "name") ?? `Trip ${id}`,
-    grading: grading(str(raw, "grading", "difficulty")),
-    distanceKm: distanceM !== undefined ? Math.round(distanceM / 100) / 10 : undefined,
-    durationHours: minutes !== undefined ? Math.round((minutes / 60) * 10) / 10 : num(raw, "durationHours"),
-    ascentM: num(raw, "elevationGain", "ascent"),
-    descentM: num(raw, "elevationLoss", "descent"),
-    start: latLon(pick(raw, "startPoint", "start")),
-    end: latLon(pick(raw, "endPoint", "end")),
-    area: firstArea(raw),
-    cabinIds: Array.isArray(cabins) ? cabins.filter(isObj).map((c) => str(c, "id")).filter((x): x is string => !!x) : undefined,
-    description: str(raw, "description", "descriptionPlain"),
-    url: str(raw, "url") ?? `${WEB}/tur/${id}`,
+    grading: grading(str(raw, "grading")),
+    distanceKm: distanceM !== undefined ? round1(distanceM / 1000) : undefined,
+    durationDays: multiDay ? days : undefined,
+    durationHours: !multiDay && (hours !== undefined || minutes !== undefined) ? round1((hours ?? 0) + (minutes ?? 0) / 60) : undefined,
+    ascentM: num(raw, "elevationGain"),
+    descentM: num(raw, "elevationLoss"),
+    start: latLon(pick(raw, "startPointGeojson")) ?? path[0],
+    // For round trips (ABA) the polyline only covers the way out.
+    end: str(raw, "direction") === "ABA" ? (latLon(pick(raw, "startPointGeojson")) ?? path[0]) : path.at(-1),
+    seasonMonths: Array.isArray(season) ? season.filter((m): m is number => typeof m === "number") : undefined,
+    activity: str(raw, "primaryActivityType")?.toLowerCase(),
+    area: mainArea(raw),
+    cabinIds: Array.isArray(cabinIds) ? cabinIds.map(String) : undefined,
+    description: str(raw, "description"),
+    url: `${WEB}/tur/${id}`,
   };
 }
 
 export function normalizeArea(raw: Raw): Area {
   const id = str(raw, "id") ?? "";
-  return { id, name: str(raw, "name") ?? `Area ${id}`, description: str(raw, "description"), url: str(raw, "url") ?? `${WEB}/omrade/${id}` };
+  return { id, name: str(raw, "name") ?? `Area ${id}`, description: str(raw, "description"), url: `${WEB}/omrade/${id}` };
 }
 
-/** Unwraps relay-style `{ totalCount, edges: [{ node }] }` or plain arrays. */
+/** Unwraps a connection `{ totalCount, edges: [{ node }] }` or a plain array. */
 export function unwrapList(v: unknown): { nodes: Raw[]; total?: number } {
   if (Array.isArray(v)) return { nodes: v.filter(isObj) };
   if (!isObj(v)) return { nodes: [] };
-  const edges = pick(v, "edges", "items", "nodes", "results");
+  const edges = pick(v, "edges");
   const nodes = Array.isArray(edges) ? edges.map((e) => (isObj(e) && isObj(e.node) ? e.node : e)).filter(isObj) : [];
-  return { nodes, total: num(v, "totalCount", "total") };
+  return { nodes, total: num(v, "totalCount") };
 }

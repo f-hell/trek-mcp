@@ -22,7 +22,7 @@ spaced about 1 s apart, using the trek-mcp User-Agent. Trimmed real responses ar
   | trips | `trip(id)`, `trips(...)`, `tripsNear(...)` | same pattern |
   | routes (marked paths) | `route(id)`, `routes(...)`, `routesNear(...)` | same pattern |
   | areas | `area(id)`, `areas(...)` | filter by `name`, `areaType` (`DNT_AREA`, `PROTECTED_AREA`, …) |
-  | free-text search | `search(input:{searchString})` | → `{prioritizedResult, result}` as **strings** `"<type>;<id>;<lon>,<lat>;<name>;<extra…>"` (`d`=cabin, `g`=trip, `e`=place/POI, `i`=list) |
+  | free-text search (not used yet) | `search(input:{searchString})` | → `{prioritizedResult, result}` as **strings** `"<type>;<id>;<lon>,<lat>;<name>;<extra…>"` (`d`=cabin, `g`=trip, `e`=place/POI, `i`=list) |
 
 - **Cabin** fields worth using: `id name serviceLevel dntCabin geojson{coordinates[lon,lat,elev]} elevationCustom
   bedsStaffed bedsSelfService bedsNoService bedsWinter bedsExtra bookingEnabled bookingOnly bookingUrl idVisbook
@@ -39,10 +39,15 @@ spaced about 1 s apart, using the trek-mcp User-Agent. Trimmed real responses ar
 
 Next.js app on Supabase/Visbook. Three GET routes found in its JS, all anonymous:
 
-- **`/api/booking/availability-calendar?cabinId=<id>&fromDate=YYYY-MM-DD&toDate=YYYY-MM-DD`**: per-night availability.
+- **`/api/booking/availability-calendar?cabinId=<id>&fromDate=YYYY-MM-DD&toDate=YYYY-MM-DD`**: per-night availability (used by the adapter).
   `data.availabilityList[] = {date, products:[{available, product:{company_id, product_id, unit_id}}]}` and
-  `data.products[]` (unit names plus attributes such as `dropin_beds`, `is_bed`, `persons_max`). For self-service cabins each unit is
-  a bed, so **free beds per night = sum of `available`**. The response covers about 3 months regardless of `toDate`.
+  `data.products[]` (`product_name`/`unit_name` plus attributes such as `dropin_beds`, `is_bed`, `persons_max`).
+  - Only nights in **[fromDate, toDate)** carry real values; the rest of the list is zero-filled. The list covers a
+    site-chosen window (from today or the start of the month to 31 Dec or 30 Jun), so long ranges need several requests.
+  - Self-service cabins list one unit per bed ("Skarvheim, rom 2, seng 1"). Staffed cabins list categories with counts
+    ("Seng i 2-sengsrom": 22, "Seng i sovesal", "Seng i lavvo", "Teltplass": 81, "Ekstramadrass": 85).
+    Free beds = sum of `available` × `persons_max`, **excluding tent pitches and extra mattresses**.
+  - Summer 2027 was already bookable when probed on 2026-09-30.
 - `/api/booking/cabin-availability?cabinId=&fromDate=&toDate=`: used on the booking step. Returns `availability` (array of numbers,
   one per product?) plus `priceGroups` (prices by age/membership). Large (~85 kB); the shape still needs interpreting.
 - `/api/booking/available-price?cabinId=&fromDate=&toDate=&numberOfGuests=`: price quote. Not tried.
@@ -50,6 +55,8 @@ Next.js app on Supabase/Visbook. Three GET routes found in its JS, all anonymous
 
 ### Linking ut.no to hyttebestilling
 
+- Cabins that aren't on hyttebestilling can still have a `bookingUrl` to their own site (Memurubu → memurubu.no,
+  with `bookingOnly: true`). The adapter exposes it so the tools don't claim "first come, first served".
 - The hyttebestilling `cabinId` is the number in the ut.no cabin's **`bookingUrl`** (`https://hyttebestilling.dnt.no/hytte/<id>`).
   It's usually the same as the ut.no id, but not always: ut.no 10908403 "Gjendebu Selvbetjent" books via `/hytte/10581`.
   Parse `bookingUrl` and don't assume the ids match. `bookingUrl` may also point elsewhere (e.g. inatur.no for rentals).

@@ -1,0 +1,89 @@
+{
+  "data": {
+    "cabin": {
+      "id": 101265,
+      "name": "Skarvheim",
+      "description": "<p>Skarvheim ligger lett tilgjengelig og er et flott utgangspunkt for å utforske terrenget i området. Hytta ligger høyt og gir gode muligheter for fine vårskiturer, da snøen vanligvis ligger lenge i dette området.</p><h2>Om hytta</h2><ul><li>Antall soveplasser totalt: 9</li><li>Antall senger tilgjengelig for bestilling: 6</li><li>Antall senger for drop-in: 3</li></ul><p><strong>Stengt i noen perioder av året:</strong><br />Fra midten av oktober til 15.februar, <a href=\"https://www.dnt.no/dnt-der-du-er/dnt-oslo-og-omegn/sesong/Selvbetjeningshytter-aapningstider/\" target=\"_blank\"><u>les mer om begrunnelse for stenging av hyttene</u></a></p><h2>Utstyr</h2><p>Hytta har det du trenger av utstyr for matlaging og et hyggelig opphold, som fullt kjøkkenutstyr, dekketøy og sengeklær. I tillegg vil du finne et godt utvalg av mat på proviantrommet. Det er strøm og innlagt vann på hytta. Gjestene ordner selv med matlaging, oppvask, vask av gulv, og ellers rydding av hytta inne og ute. Lakenpose eller sovepose skal alltid brukes ved overnatting. Oppslag med hytteregler og priser finner du på hytta.</p><p><strong>Les vår guide</strong>: <a href=\"https://www.dnt.no/hytter/om-dnt-hyttene/hyttebesoket/\" target=\"_blank\">slik bruker du en selv- eller ubetjent DNT-hytte</a></p><p><strong>Oppskriftshefte basert på proviantlageret</strong><br />I et nytt prosjekt har vi i DNT jobbet med å utvikle et oppskriftshefte basert på proviantlagrene på selvbetjeningshytter. Her finner du en rekke fristende og overraskende matretter du kan lage når du besøker våre selvbetjente hytter.<br /><a href=\"https://viewer.webproof.com/pageflip/356/242121/html5.html\" target=\"_self\">Ta en titt i vårt oppskriftshefte</a></p><h2>Betaling</h2><p><strong>Priser på overnatting og proviant</strong><br />Vi gjør oppmerksom på at prisene på hytta følger prislisten til DNT Oslo og Omegn. Andre medlemsforeninger i DNT kan ha andre priser.<br /><a href=\"https://www.dnt.no/dnt-der-du-er/dnt-oslo-og-omegn/hytter/priser/priser-selvbetjente-hytter/\" target=\"_blank\">Gå til prisliste</a></p><p><strong>Forhåndsbestilling via hyttebestilling.dnt</strong><br />Det har aldri vært enklere å bestille hyttetur på DNT-hyttene. Via <a href=\"http://hyttebestilling.dnt.no/\" target=\"_blank\">hyttebestilling.dnt.no</a> kan du enkelt se når hytta er ledig, utforske hytter i kart og bestille plass. DNT Oslo og Omegn legger ut et begrenset antall senger for bestilling. Resten av sengene vil være åpne for drop-in. Møt opp på hytta før kl. 19.00 for å sikre sengen du har reservert; etter kl. 19.00 kan sengen tildeles andre, men bookingen din er fortsatt gyldig.</p><p><strong>Betal for mat og overnatting i DNT-appen</strong><br />På selv- og ubetjente DNT‑hytter registrerer og betaler du enkelt for overnatting og proviant i DNT‑appen. Har du forhåndsbestilt? Da er selve overnattingen allerede betalt – registrer kun proviant i appen. Husk å laste ned appen før du drar på tur! Appen fungerer også uten dekning. For best offline‑funksjon bør du åpne appen før turen. Les mer på dnt.no: <a href=\"https://www.dnt.no/hyttebetaling\"><u>https://www.dnt.no/hyttebetaling</u></a></p><p>Fungerer med bank- og kredittkort fra andre land.</p><p><strong>Betalingsblankett</strong><br />Du kan også betale ved å fylle ut en betalingsblankett som du vil finne på hytta. Ved avreise legger du den ferdig utfylt betalingsblanketten i safen og tar med deg kopien. Da sender vi deg faktura, men vær oppmerksom på at det påløper et gebyr på kr. 50,- ved bruk av betalingsblankett. Husk å fylle inn riktig pris for overnatting ut fra alder og medlem/ikke-medlem og alt du har tatt av mat. Til orientering er det ikke lenger mulig å betale med kontanter på selvbetjeningshyttene.</p><h2>Hund</h2><p>Det er ikke anledning til å ha med hund på Skarvheim.</p><p><strong>Flere hytter i Skarvheimen</strong></p><p>Se oversikt over alle <a href=\"https://www.dntoslo.no/dnt-hytter-i-skarvheimen/\" target=\"_blank\">DNT-hyttene i Skarvheimen</a></p><p><strong>Aktuelle kart</strong></p><p><a href=\"http://www.nettbutikken.dntoslo.no/main.aspx?page=articlelist&amp;gid=500001&amp;gidlevel=1\" target=\"_blank\">Norges-serien</a> fra Nordeca: \"10048 Hemsedal\"</p><p><a href=\"http://www.dntbutikken.no/main.aspx?page=articlelist&amp;gid=100000&amp;gidlevel=1\" target=\"_blank\">Turkart</a>: Hemsedal Nord (2008) og Lærdal (2009) 1:50 000 fra Nordeca, Skarvheimen (2009) 1:100 000 fra Cappelen Damm</p><p>Denne hytta har fått støtte av overskuddet fra spillemidlene til Norsk Tipping.</p>",
+      "serviceLevel": "SELF_SERVICE",
+      "dntCabin": true,
+      "geojson": {
+        "type": "Point",
+        "coordinates": [
+          8.04158,
+          61.02224,
+          1029
+        ]
+      },
+      "elevationCustom": null,
+      "bedsStaffed": 0,
+      "bedsSelfService": 9,
+      "bedsNoService": 0,
+      "bedsWinter": 0,
+      "bookingEnabled": true,
+      "bookingOnly": false,
+      "bookingUrl": "https://hyttebestilling.dnt.no/hytte/101265",
+      "serviceStatus": [
+        {
+          "serviceLevel": "SELF_SERVICE",
+          "from": "2025-02-15T00:00:00.000Z",
+          "to": "2025-10-15T00:00:00.000Z",
+          "beds": 9,
+          "openAllYear": false,
+          "key": "dnt-key"
+        },
+        {
+          "serviceLevel": "CLOSED",
+          "from": "2025-10-15T00:00:00.000Z",
+          "to": "2026-02-15T00:00:00.000Z",
+          "beds": 0,
+          "openAllYear": false,
+          "key": null
+        },
+        {
+          "serviceLevel": "SELF_SERVICE",
+          "from": "2026-02-15T00:00:00.000Z",
+          "to": "2026-10-15T00:00:00.000Z",
+          "beds": 9,
+          "openAllYear": false,
+          "key": "dnt-key"
+        },
+        {
+          "serviceLevel": "CLOSED",
+          "from": "2026-10-15T00:00:00.000Z",
+          "to": "2027-02-15T00:00:00.000Z",
+          "beds": 0,
+          "openAllYear": false,
+          "key": null
+        },
+        {
+          "serviceLevel": "SELF_SERVICE",
+          "from": "2027-02-15T00:00:00.000Z",
+          "to": "2027-10-15T00:00:00.000Z",
+          "beds": 9,
+          "openAllYear": false,
+          "key": "dnt-key"
+        },
+        {
+          "serviceLevel": "CLOSED",
+          "from": "2027-10-15T00:00:00.000Z",
+          "to": "2028-02-15T00:00:00.000Z",
+          "beds": 0,
+          "openAllYear": false,
+          "key": null
+        }
+      ],
+      "serviceStatusToday": {
+        "serviceLevel": "SELF_SERVICE",
+        "beds": 9,
+        "key": "dnt-key"
+      },
+      "areas": [
+        {
+          "id": 1232,
+          "name": "Skarvheimen",
+          "areaType": "DNT_AREA"
+        }
+      ]
+    }
+  }
+}

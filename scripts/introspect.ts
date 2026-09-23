@@ -2,11 +2,12 @@
 // schema to recon/utno-schema.json. Many production APIs disable
 // introspection; if so, fall back to `npm run recon`.
 //
-//   npm run introspect:utno            # uses UTNO_GRAPHQL_URL or the default
+//   npm run introspect:utno            # uses UTNO_INTROSPECT_URL or the default
 import { mkdir, writeFile } from "node:fs/promises";
 import { getIntrospectionQuery } from "./introspection-query.js";
 
-const url = process.env.UTNO_GRAPHQL_URL ?? "https://api.ut.no/";
+// Introspection is allowed on the backend; data queries go through ut.no/api/graphql.
+const url = process.env.UTNO_INTROSPECT_URL ?? "https://api.ut.no/v1/graphql";
 const res = await fetch(url, {
   method: "POST",
   headers: { "content-type": "application/json", accept: "application/json", "user-agent": "trek-mcp/0.1 (personal use)" },

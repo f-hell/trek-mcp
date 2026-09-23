@@ -1,6 +1,4 @@
-// Defensive helpers for mapping loosely-known JSON into domain types.
-// Until recon confirms the exact field names, normalisers accept several
-// plausible spellings.
+// Shared helpers for mapping JSON from the sites into domain types.
 
 export type Raw = Record<string, unknown>;
 

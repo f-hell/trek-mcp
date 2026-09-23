@@ -15,15 +15,16 @@ export const config = {
   /** Serve bundled fixtures instead of calling the real sites. */
   fixtures: env.TREK_MCP_FIXTURES === "1",
   utno: {
-    // UNVERIFIED: confirm with `npm run recon` / `npm run introspect:utno`.
-    graphqlUrl: env.UTNO_GRAPHQL_URL ?? "https://api.ut.no/",
+    // The site's own GraphQL proxy; api.ut.no/v1/graphql refuses anonymous
+    // data queries but allows introspection. See docs/RECON.md.
+    graphqlUrl: env.UTNO_GRAPHQL_URL ?? "https://ut.no/api/graphql",
     webBaseUrl: "https://ut.no",
     ttlMs: 7 * 24 * 3600_000,
   },
   booking: {
-    // UNVERIFIED: the availability endpoint is unknown until recon is done.
     baseUrl: env.BOOKING_BASE_URL ?? "https://hyttebestilling.dnt.no",
-    availabilityPath: env.BOOKING_AVAILABILITY_PATH,
+    availabilityPath:
+      env.BOOKING_AVAILABILITY_PATH ?? "/api/booking/availability-calendar?cabinId={id}&fromDate={from}&toDate={to}",
     ttlMs: 10 * 60_000,
   },
 };

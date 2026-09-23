@@ -16,6 +16,12 @@ function loadCabinMap(): Record<string, string> {
   }
 }
 
+/** True when the cabin's opening periods put `date` in a closed period. */
+export function isClosed(cabin: Cabin, date: string): boolean {
+  const period = cabin.openings?.find((o) => !o.openAllYear && o.from && o.to && o.from <= date && date < o.to);
+  return period?.serviceLevel === "closed";
+}
+
 /** Combines trail data and booking data; the MCP tools call into this. */
 export class TrekService {
   constructor(
@@ -35,8 +41,14 @@ export class TrekService {
     return this.withBookingId(cabin);
   }
 
+  /**
+   * Booking availability, with nights that ut.no lists as outside the cabin's
+   * open periods marked closed (the booking calendar reports those as 0 beds).
+   */
   async availability(cabin: Cabin, from: string, to: string): Promise<NightAvailability[]> {
-    return cabin.bookingId ? this.booking.getAvailability(cabin.bookingId, from, to) : [];
+    if (!cabin.bookingId) return [];
+    const nights = await this.booking.getAvailability(cabin.bookingId, from, to);
+    return nights.map((n) => (isClosed(cabin, n.date) ? { date: n.date, status: "closed" } : n));
   }
 
   async planHutToHut(opts: {
@@ -60,7 +72,10 @@ export class TrekService {
     const itinerary = buildItinerary(stops, opts.startDate, opts.guests, idx);
     const alternatives = opts.flexDays > 0 ? findStartDates(stops, opts.startDate, windowEnd, opts.guests, idx) : [];
     const bookingLinks = Object.fromEntries(
-      stops.filter((s) => s.cabin.bookingId).map((s) => [s.cabin.name, this.booking.bookingUrl(s.cabin.bookingId!)]),
+      stops.flatMap(({ cabin }) => {
+        const url = cabin.bookingId ? this.booking.bookingUrl(cabin.bookingId) : cabin.bookingUrl;
+        return url ? [[cabin.name, url]] : [];
+      }),
     );
     return { itinerary, alternatives, bookingLinks };
   }
