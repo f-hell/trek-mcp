@@ -22,13 +22,15 @@ export type NightVerdict =
   | "unknown";
 
 /**
- * How DNT beds work, for the model to explain to the user. Returned with
- * availability and plans.
+ * General DNT bed rules, for the model to explain to the user. Returned with
+ * availability and plans. Deliberately not per cabin: individual cabins
+ * (staffed ones especially) can differ and announce it themselves.
  */
 export const DNT_BED_RULES = [
   "Almost all DNT cabins take drop-in guests. Some beds can't be pre-booked and go first come, first served.",
-  "A pre-booked bed must be claimed by 19:00 (21:00 at a few cabins). After that, unclaimed beds go to drop-in guests.",
+  "As a general rule a pre-booked bed must be claimed by 19:00. After that, unclaimed beds go to drop-in guests.",
   "A late arrival keeps a paid stay but loses the right to that bed, and takes whatever beds are free on arrival.",
+  "Individual cabins, staffed ones especially, can have other times or rules. Check the cabin's own notices on ut.no or the booking page.",
 ];
 
 export interface PlannedNight {

@@ -40,8 +40,11 @@ books as `/hytte/10581`). Resolution order:
 ## Drop-in beds
 
 Almost all DNT cabins take drop-in guests. Some beds can't be pre-booked and go first come, first served, and a
-pre-booked bed must be claimed by 19:00 (21:00 at a few cabins), after which it goes to drop-in guests. A late
-arrival keeps a paid stay but loses the right to that particular bed. (`DNT_BED_RULES` in `src/planning/itinerary.ts`.)
+pre-booked bed must generally be claimed by 19:00, after which it goes to drop-in guests. A late arrival keeps a
+paid stay but loses the right to that particular bed. (`DNT_BED_RULES` in `src/planning/itinerary.ts`.)
+
+These are kept as general guidance, not hardcoded per cabin: some cabins (staffed ones especially) work differently,
+and those post their own notices. Don't add per-cabin deadlines to the code.
 
 - `bookableBeds`: beds sold online, known when the calendar lists single beds (self-service; Skarvheim 6).
 - `dropInBeds` = the season's beds from ut.no `serviceStatus` minus `bookableBeds` (Skarvheim 9 − 6 = 3).
