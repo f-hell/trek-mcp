@@ -11,13 +11,25 @@ export interface Stop {
 export type AvailabilityIndex = Map<string, Map<string, NightAvailability>>;
 
 export type NightVerdict =
-  | "ok" // source confirms enough beds
+  | "ok" // source confirms enough bookable beds
   | "likely" // marked available but bed count unknown
+  | "drop-in" // too few bookable beds, but enough first-come beds that can't be pre-booked
   | "insufficient" // available, but fewer beds than guests
   | "full"
   | "closed"
-  | "not-bookable" // cabin not on hyttebestilling (ubetjent, first come first served, etc.)
+  | "book-elsewhere" // booked through the cabin's own site; check there
+  | "first-come" // no online booking at all
   | "unknown";
+
+/**
+ * How DNT beds work, for the model to explain to the user. Returned with
+ * availability and plans.
+ */
+export const DNT_BED_RULES = [
+  "Almost all DNT cabins take drop-in guests. Some beds can't be pre-booked and go first come, first served.",
+  "A pre-booked bed must be claimed by 19:00 (21:00 at a few cabins). After that, unclaimed beds go to drop-in guests.",
+  "A late arrival keeps a paid stay but loses the right to that bed, and takes whatever beds are free on arrival.",
+];
 
 export interface PlannedNight {
   date: string;
@@ -25,6 +37,7 @@ export interface PlannedNight {
   cabinName: string;
   verdict: NightVerdict;
   bedsAvailable?: number;
+  dropInBeds?: number;
 }
 
 export interface Leg {
@@ -42,7 +55,10 @@ export interface Itinerary {
   nights: PlannedNight[];
   legs: Leg[];
   feasible: boolean;
+  /** Nights that block the plan */
   problems: string[];
+  /** Nights that work but aren't guaranteed by a booking */
+  warnings: string[];
 }
 
 export function indexAvailability(byCabin: Record<string, NightAvailability[]>): AvailabilityIndex {
@@ -54,35 +70,45 @@ export function indexAvailability(byCabin: Record<string, NightAvailability[]>):
 }
 
 export function judgeNight(cabin: Cabin, night: NightAvailability | undefined, guests: number): NightVerdict {
-  if (!cabin.bookingId) return "not-bookable";
+  if (!cabin.bookingId) return cabin.bookingUrl ? "book-elsewhere" : "first-come";
   if (!night) return "unknown";
-  switch (night.status) {
-    case "full":
-      return "full";
-    case "closed":
-      return "closed";
-    case "unknown":
-      return "unknown";
-    case "available":
-      if (night.bedsAvailable === undefined) return "likely";
-      return night.bedsAvailable >= guests ? "ok" : "insufficient";
-  }
+  if (night.status === "closed" || night.status === "unknown") return night.status;
+  if (night.status === "available" && night.bedsAvailable === undefined) return "likely";
+  const bookable = night.bedsAvailable ?? 0;
+  if (bookable >= guests) return "ok";
+  if (night.dropInBeds !== undefined && bookable + night.dropInBeds >= guests) return "drop-in";
+  return night.status === "full" ? "full" : "insufficient";
 }
 
 const BLOCKING: NightVerdict[] = ["insufficient", "full", "closed"];
+const WARN: Partial<Record<NightVerdict, string>> = {
+  "drop-in": "not enough bookable beds; relies on first-come beds, so arrive early",
+  "book-elsewhere": "booked on the cabin's own site; check availability there",
+  "first-come": "no online booking; first come, first served",
+};
 
 export function buildItinerary(stops: Stop[], startDate: string, guests: number, availability: AvailabilityIndex): Itinerary {
   const nights: PlannedNight[] = [];
   const legs: Leg[] = [];
   const problems: string[] = [];
+  const warnings: string[] = [];
   let date = startDate;
 
   stops.forEach((stop, i) => {
     for (const d of dateRange(date, addDays(date, stop.nights))) {
       const night = availability.get(stop.cabin.id)?.get(d);
       const verdict = judgeNight(stop.cabin, night, guests);
-      nights.push({ date: d, cabinId: stop.cabin.id, cabinName: stop.cabin.name, verdict, bedsAvailable: night?.bedsAvailable });
+      nights.push({
+        date: d,
+        cabinId: stop.cabin.id,
+        cabinName: stop.cabin.name,
+        verdict,
+        bedsAvailable: night?.bedsAvailable,
+        dropInBeds: night?.dropInBeds,
+      });
       if (BLOCKING.includes(verdict)) problems.push(`${d} ${stop.cabin.name}: ${verdict}`);
+      const warning = WARN[verdict];
+      if (warning) warnings.push(`${d} ${stop.cabin.name}: ${warning}`);
     }
     date = addDays(date, stop.nights);
     const next = stops[i + 1];
@@ -98,7 +124,7 @@ export function buildItinerary(stops: Stop[], startDate: string, guests: number,
     }
   });
 
-  return { startDate, endDate: date, guests, nights, legs, feasible: problems.length === 0, problems };
+  return { startDate, endDate: date, guests, nights, legs, feasible: problems.length === 0, problems, warnings };
 }
 
 /**

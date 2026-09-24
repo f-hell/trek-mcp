@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { DNT_BED_RULES } from "./planning/itinerary.js";
 import type { TrekService } from "./service.js";
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD");
@@ -88,7 +89,8 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     {
       title: "Check cabin availability",
       description:
-        "Nightly free beds for a cabin on hyttebestilling.dnt.no between two dates (to is exclusive), with a breakdown per room type, tent pitch etc. (options). " +
+        "Nightly free bookable beds for a cabin on hyttebestilling.dnt.no between two dates (to is exclusive), with a breakdown per room type, tent pitch etc. (options). " +
+        "dropInBeds are beds that can't be pre-booked (first come, first served); bedRules explains the 19:00 claim deadline. " +
         "Nights in a period ut.no lists as closed are marked closed. Read-only; returns the booking link, never books.",
       inputSchema: { cabinId: z.string().describe("ut.no cabin id"), from: isoDate, to: isoDate },
     },
@@ -102,6 +104,7 @@ export function registerTools(server: McpServer, svc: TrekService): void {
           note: cabin.bookingUrl
             ? "Not on hyttebestilling; availability has to be checked at bookingUrl."
             : "Not bookable online (often first come, first served).",
+          bedRules: DNT_BED_RULES,
         });
       }
       return json({
@@ -109,6 +112,7 @@ export function registerTools(server: McpServer, svc: TrekService): void {
         bookable: true,
         bookingUrl: svc.booking.bookingUrl(cabin.bookingId),
         nights: await svc.availability(cabin, from, to),
+        bedRules: DNT_BED_RULES,
       });
     },
   );
@@ -118,7 +122,8 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     {
       title: "Plan hut-to-hut trip",
       description:
-        "Check a chain of cabins night by night for a group, report blocked nights and straight-line leg distances, and optionally find alternative start dates within a flexible window.",
+        "Check a chain of cabins night by night for a group, report blocked nights (problems), nights that rely on drop-in beds or other booking channels (warnings) " +
+        "and straight-line leg distances, and optionally find alternative start dates within a flexible window.",
       inputSchema: {
         stops: z
           .array(z.object({ cabinId: z.string(), nights: z.number().int().min(1).max(7).default(1) }))

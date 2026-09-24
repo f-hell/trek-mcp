@@ -108,6 +108,8 @@ describe("booking normaliser", () => {
     for (const n of nights) {
       expect(n.status).toBe(n.bedsAvailable! > 0 ? "available" : "full");
       expect(n.bedsAvailable).toBeLessThanOrEqual(6);
+      // Skarvheim sells 6 of its 9 beds online.
+      expect(n.bookableBeds).toBe(6);
       // Units are single beds, grouped as "Seng".
       expect(n.options?.map((o) => o.name) ?? []).toEqual(n.bedsAvailable ? ["Seng"] : []);
     }
@@ -119,6 +121,8 @@ describe("booking normaliser", () => {
     expect(byName["Teltplass"]).toBeGreaterThan(0);
     const beds = night!.options!.filter((o) => !/teltplass|madrass/i.test(o.name)).reduce((s, o) => s + o.available, 0);
     expect(night).toMatchObject({ date: "2027-07-10", status: "available", bedsAvailable: beds });
+    // Categories don't say how many beds they hold in total.
+    expect(night!.bookableBeds).toBeUndefined();
   });
 
   it("weights units by persons_max", () => {

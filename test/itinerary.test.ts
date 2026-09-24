@@ -26,7 +26,24 @@ describe("judgeNight", () => {
     expect(judgeNight(a, { date: "x", status: "available" }, 4)).toBe("likely");
     expect(judgeNight(a, { date: "x", status: "closed" }, 1)).toBe("closed");
     expect(judgeNight(a, undefined, 1)).toBe("unknown");
-    expect(judgeNight(cabin("c", 0, 0, null), undefined, 1)).toBe("not-bookable");
+    expect(judgeNight(cabin("c", 0, 0, null), undefined, 1)).toBe("first-come");
+    expect(judgeNight({ ...cabin("c", 0, 0, null), bookingUrl: "https://www.memurubu.no/" }, undefined, 1)).toBe("book-elsewhere");
+  });
+
+  it("falls back to drop-in beds when bookable beds run short", () => {
+    // Skarvheim-like: 2 bookable beds left, 3 beds that can't be pre-booked.
+    const night = { date: "x", status: "available" as const, bedsAvailable: 2, dropInBeds: 3 };
+    expect(judgeNight(a, night, 2)).toBe("ok");
+    expect(judgeNight(a, night, 5)).toBe("drop-in");
+    expect(judgeNight(a, night, 6)).toBe("insufficient");
+    expect(judgeNight(a, { date: "x", status: "full", bedsAvailable: 0, dropInBeds: 3 }, 2)).toBe("drop-in");
+    expect(judgeNight(a, { date: "x", status: "full", bedsAvailable: 0 }, 2)).toBe("full");
+  });
+
+  it("lists drop-in nights as warnings, not problems", () => {
+    const idx = indexAvailability({ a: [{ date: "2026-07-01", status: "full", bedsAvailable: 0, dropInBeds: 3 }] });
+    const it = buildItinerary([{ cabin: a, nights: 1 }], "2026-07-01", 2, idx);
+    expect(it).toMatchObject({ feasible: true, problems: [], warnings: [expect.stringContaining("first-come beds")] });
   });
 });
 

@@ -96,6 +96,13 @@ export interface NightAvailability {
   bedsAvailable?: number;
   /** What is left per bookable category, e.g. "Seng i 2-sengsrom": 4 */
   options?: { name: string; available: number }[];
+  /** Beds the cabin sells online in total, when the source lists them bed by bed */
+  bookableBeds?: number;
+  /**
+   * Beds that can't be pre-booked (first come, first served): the cabin's beds
+   * for the season minus bookableBeds. No-shows after the claim deadline add to these.
+   */
+  dropInBeds?: number;
 }
 
 export interface Paged<T> {

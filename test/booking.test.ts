@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Cabin } from "../src/domain.js";
 import type { PoliteHttp } from "../src/http.js";
-import { isClosed, TrekService } from "../src/service.js";
+import { dropInBeds, isClosed, TrekService } from "../src/service.js";
 import { HyttebestillingClient } from "../src/sources/booking/client.js";
 import { FixtureTrailSource } from "../src/sources/fixtures.js";
 
@@ -66,6 +66,12 @@ describe("closed periods", () => {
     expect(isClosed(cabin, "2026-10-14")).toBe(false);
     expect(isClosed(cabin, "2026-10-15")).toBe(true);
     expect(isClosed(cabin, "2027-03-01")).toBe(false);
+  });
+
+  it("derives drop-in beds from season beds minus beds sold online", () => {
+    const skarvheim = { ...cabin, openings: [{ ...cabin.openings![0]!, beds: 9 }, cabin.openings![1]!] } as Cabin;
+    expect(dropInBeds(skarvheim, { date: "2026-07-01", status: "full", bedsAvailable: 0, bookableBeds: 6 })).toBe(3);
+    expect(dropInBeds(skarvheim, { date: "2026-07-01", status: "full", bedsAvailable: 0 })).toBeUndefined();
   });
 
   it("marks closed nights in availability", async () => {

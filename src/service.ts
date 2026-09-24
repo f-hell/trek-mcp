@@ -3,7 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { addDays } from "./dates.js";
 import type { Cabin, NightAvailability } from "./domain.js";
-import { buildItinerary, findStartDates, indexAvailability, type Stop, totalNights } from "./planning/itinerary.js";
+import { buildItinerary, DNT_BED_RULES, findStartDates, indexAvailability, type Stop, totalNights } from "./planning/itinerary.js";
 import type { BookingSource, TrailSource } from "./sources/types.js";
 
 function loadCabinMap(): Record<string, string> {
@@ -16,10 +16,20 @@ function loadCabinMap(): Record<string, string> {
   }
 }
 
+const periodOn = (cabin: Cabin, date: string) =>
+  cabin.openings?.find((o) => !o.openAllYear && o.from && o.to && o.from <= date && date < o.to) ??
+  cabin.openings?.find((o) => o.openAllYear);
+
 /** True when the cabin's opening periods put `date` in a closed period. */
 export function isClosed(cabin: Cabin, date: string): boolean {
-  const period = cabin.openings?.find((o) => !o.openAllYear && o.from && o.to && o.from <= date && date < o.to);
-  return period?.serviceLevel === "closed";
+  return periodOn(cabin, date)?.serviceLevel === "closed";
+}
+
+/** Beds the cabin has on `date` that can't be booked online (first come, first served). */
+export function dropInBeds(cabin: Cabin, night: NightAvailability): number | undefined {
+  const seasonBeds = periodOn(cabin, night.date)?.beds;
+  if (seasonBeds === undefined || night.bookableBeds === undefined) return undefined;
+  return Math.max(0, seasonBeds - night.bookableBeds);
 }
 
 /** Combines trail data and booking data; the MCP tools call into this. */
@@ -48,7 +58,11 @@ export class TrekService {
   async availability(cabin: Cabin, from: string, to: string): Promise<NightAvailability[]> {
     if (!cabin.bookingId) return [];
     const nights = await this.booking.getAvailability(cabin.bookingId, from, to);
-    return nights.map((n) => (isClosed(cabin, n.date) ? { date: n.date, status: "closed" } : n));
+    return nights.map((n): NightAvailability => {
+      if (isClosed(cabin, n.date)) return { date: n.date, status: "closed" };
+      const dropIn = dropInBeds(cabin, n);
+      return dropIn === undefined ? n : { ...n, dropInBeds: dropIn };
+    });
   }
 
   async planHutToHut(opts: {
@@ -77,6 +91,6 @@ export class TrekService {
         return url ? [[cabin.name, url]] : [];
       }),
     );
-    return { itinerary, alternatives, bookingLinks };
+    return { itinerary, alternatives, bookingLinks, bedRules: DNT_BED_RULES };
   }
 }

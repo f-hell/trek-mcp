@@ -37,6 +37,18 @@ books as `/hytte/10581`). Resolution order:
 2. `data/cabin-map.json` overrides.
 3. If still needed: match by name plus distance against a hyttebestilling cabin list.
 
+## Drop-in beds
+
+Almost all DNT cabins take drop-in guests. Some beds can't be pre-booked and go first come, first served, and a
+pre-booked bed must be claimed by 19:00 (21:00 at a few cabins), after which it goes to drop-in guests. A late
+arrival keeps a paid stay but loses the right to that particular bed. (`DNT_BED_RULES` in `src/planning/itinerary.ts`.)
+
+- `bookableBeds`: beds sold online, known when the calendar lists single beds (self-service; Skarvheim 6).
+- `dropInBeds` = the season's beds from ut.no `serviceStatus` minus `bookableBeds` (Skarvheim 9 − 6 = 3).
+  Unknown for staffed cabins, which sell bed categories without a total.
+- Planner verdict `drop-in`: too few bookable beds but enough first-come beds. It's a warning, not a problem.
+  `book-elsewhere` (own booking site) and `first-come` (no online booking) are warnings too.
+
 Cabins booked elsewhere keep their `bookingUrl` (e.g. memurubu.no), and nights in a period ut.no lists as closed
 (`serviceStatus`) are marked closed, since the booking calendar only reports them as 0 beds.
 
@@ -76,7 +88,5 @@ or routes whose endpoints are the two cabins (roadmap).
 
 ## Open questions
 
-- Self-service cabins have more beds than they sell online (Skarvheim: 9 beds, 6 bookable; `dropin_beds` attribute).
-  Should the planner count the drop-in beds too?
 - How does the calendar show a season that hasn't opened for booking yet? (Summer 2027 was already open, so this wasn't seen.)
 - `/api/booking/cabin-availability` returns prices by age and membership; could feed a cost estimate.
