@@ -44,7 +44,10 @@ pre-booked bed must generally be claimed by 19:00, after which it goes to drop-i
 paid stay but loses the right to that particular bed. (`DNT_BED_RULES` in `src/planning/itinerary.ts`.)
 
 These are kept as general guidance, not hardcoded per cabin: some cabins (staffed ones especially) work differently,
-and those post their own notices. Don't add per-cabin deadlines to the code.
+and those post their own notices. Don't add per-cabin deadlines to the code. Instead the cabin's own ut.no text is passed
+through: `description` as plain text (e.g. Skarvheim's says "senger tilgjengelig for bestilling: 6, for drop-in: 3" and
+"Møt opp før kl. 19.00"), `bookingNotes` (the description's lines about booking, drop-in, arrival and beds, returned with
+availability and plans), and `access` (summer/winter travel: boats, buses, parking, marked trails).
 
 - `bookableBeds`: beds sold online, known when the calendar lists single beds (self-service; Skarvheim 6).
 - `dropInBeds` = the season's beds from ut.no `serviceStatus` minus `bookableBeds` (Skarvheim 9 − 6 = 3).

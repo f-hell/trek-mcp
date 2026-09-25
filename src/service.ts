@@ -91,6 +91,7 @@ export class TrekService {
         return url ? [[cabin.name, url]] : [];
       }),
     );
-    return { itinerary, alternatives, bookingLinks, bedRules: DNT_BED_RULES };
+    const cabinNotes = Object.fromEntries(stops.flatMap(({ cabin }) => (cabin.bookingNotes ? [[cabin.name, cabin.bookingNotes]] : [])));
+    return { itinerary, alternatives, bookingLinks, cabinNotes, bedRules: DNT_BED_RULES };
   }
 }

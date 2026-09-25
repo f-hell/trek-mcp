@@ -45,7 +45,12 @@ export interface Cabin {
   location?: LatLon & { elevationM?: number };
   area?: { id: string; name: string };
   openings?: CabinOpening[];
+  /** Plain text from ut.no, including the cabin's own house and booking rules */
   description?: string;
+  /** How to get there in summer / winter (transport, parking, marked trails) */
+  access?: { summer?: string; winter?: string };
+  /** Lines from the description about booking, drop-in, arrival times and beds */
+  bookingNotes?: string[];
   url: string;
   /** hyttebestilling.dnt.no id, when the cabin can be booked there */
   bookingId?: string;

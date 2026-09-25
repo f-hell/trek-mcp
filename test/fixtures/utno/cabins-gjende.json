@@ -26,6 +26,8 @@
             "bookingEnabled": true,
             "bookingOnly": false,
             "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
+            "summertimeText": "<p>Fra Gjendesheim går det daglig båtrute til Gjendebu og til Gjendesheim går det daglig buss fra Oslo og Otta. Tog går fra Trondheim/Oslo til Otta, og daglig bussrute herfra.</p><p><a href=\"http://www.gjende.no/\" target=\"_self\">Les mer om båten over Gjende og finn rutetidene</a> (åpnes i nytt vindu)</p><p>I sesongen bør du alltid forhåndsbestille plass på båten.</p>",
+            "wintertimeText": "<p>Vinterstid er reisemåte samme som til Gjendesheim og derfra videre over Gjende. Scootertransport 2 ganger i uka. Se hjemmeside for mer info og booking av transport til Gjendebu. Alternativt med beltebil til Fondsbu og derfra 15 km på ski til Gjendebu.</p>",
             "serviceStatus": [
               {
                 "serviceLevel": "SELF_SERVICE",
@@ -185,6 +187,8 @@
             "bookingEnabled": true,
             "bookingOnly": false,
             "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10581",
+            "summertimeText": "<p>Fra Gjendesheim går det daglig båtrute til Gjendebu, og til Gjendesheim går det daglig buss fra Oslo og Otta på sommerstid. Tog går fra Trondheim/Oslo til Otta, og daglig bussrute herfra.</p><p><a href=\"http://www.gjende.no/\">Les mer om båten over Gjende og finn rutetidene</a> (åpnes i nytt vindu) I sesongen bør du alltid forhåndsbestille plass på båten.</p><p>Se ruter til/fra Gjendebu under \"DNT-ruter\"-fanen.</p><p>NB! Sjekk<a href=\"https://www.dnt.no/turtips/turomrader/sommerbroer/\" target=\"_blank\"> status sommerbruer.</a></p>",
+            "wintertimeText": "<p>Vinterstid er reisemåte samme som til <a href=\"https://www.dnt.no/hytter/betjente/gjendesheim/om-hytta/adkomst/\" target=\"_blank\">Gjendesheim</a> og derfra videre over Gjende. Alternativt med beltebil til Fondsbu og derfra 15 km på ski til Gjendebu.</p><p>Se vinterruter og kvistedatoer under \"DNT-ruter\"-fanen.</p>",
             "serviceStatus": [
               {
                 "serviceLevel": "SELF_SERVICE",
@@ -352,6 +356,8 @@
             "bookingEnabled": true,
             "bookingOnly": true,
             "bookingUrl": "https://www.inatur.no/tilbud/6088019edbe3070003c3f31f",
+            "summertimeText": null,
+            "wintertimeText": null,
             "serviceStatus": [
               {
                 "serviceLevel": "RENTAL",
@@ -399,6 +405,8 @@
             "bookingEnabled": true,
             "bookingOnly": false,
             "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10604",
+            "summertimeText": "<p>Privatbil: Det går bilvei helt frem og det er parkering ved hytta. Fra Gudbrandsdalen (E6) kjører du via Otta eller Sjoa til Randsverk og videre til Gjendesheim. Kommer du fra Valdres kjører du via Fagernes til Beitostølen og over Valdresflya til Gjendesheim. OBS: Valdresflya er vinterstengt frem til ca 1.april. Se www.175.no for oppdatert informasjon.</p><p>Kollektivt: Det går ekspressbusser og lokalbusser til Gjendesheim i sommersesongen. Rutetidene varierer noe, finn din avgang ved å søke i den glimrende kollektivplanleggeren <a href=\"https://en-tur.no/\" target=\"_self\">Entur</a>. Tar du bussen til Gjendesheim får du Grønt kort ved ankomst. Dette er et gavekort på 100 kroner som du kan bruke på kioskvarer, alkoholfri drikke eller aktiviteter på hytta.</p>",
+            "wintertimeText": "<p>Privatbil: Bilvei helt frem til Gjendesheim via Randsverk (kjør Gudbrandsdalen – se sommerbeskrivelsen). NB! På vinterstid er bilveien over Valdresflye fra Beitostølen stengt (åpner ca. 1. april) Sjekk <a href=\"https://www.vegvesen.no\" target=\"_self\">www.vegvesen.no</a></p><p>Kollektivt: Det går ikke kollektivtransport helt fram til Gjendesheim hele vinteren. Nærmeste stoppested er Otta (tog/ekspressbuss) eller Vågåmo (buss). Men fra påske og ut sesongen går det enkelte busser over Valdresflya – følg med på <a href=\"https://gjendesheim.dnt.no/adkomst/\" target=\"_self\">gjendesheim.no</a> for oppdatering på årets vintertilbud.</p><p>Gjendesheim kan også være behjelpelige med å formidle transport fra Vågåmo; ta kontakt med oss på <a href=\"mailto:gjendesheim@dnt.no\" target=\"_self\">info.gjendesheim@dnt.no</a>.</p><p>Denne hytta er en del av Grønt kort-ordningen, som betyr at du får et gavekort på 100 kroner hvis du benytter buss på vei til hytta.</p><p>Du får gavekortet når du viser frem bussbillett ved innsjekk på det aktuelle hytta. Grønt Kort-rabatten gjelder bare for overnattende gjester.</p><p>Planlegg turen og bestill billett via Entur.no eller appen Entur - Reise og billett. <a href=\"https://www.dnt.no/om-dnt/dnts-arbeid/barekraft-i-dnt/gront-kort/\" target=\"_blank\">Les mer om Grønt kort-ordningen her.</a></p>",
             "serviceStatus": [
               {
                 "serviceLevel": "STAFFED",

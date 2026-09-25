@@ -29,6 +29,28 @@ export function bool(raw: Raw, ...keys: string[]): boolean | undefined {
   return typeof v === "boolean" ? v : undefined;
 }
 
+const ENTITIES: Record<string, string> = {
+  amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ",
+  aelig: "æ", AElig: "Æ", oslash: "ø", Oslash: "Ø", aring: "å", Aring: "Å",
+};
+
+/** Readable plain text from the sites' HTML snippets: paragraphs and list items become lines. */
+export function htmlToText(html: string | undefined): string | undefined {
+  if (!html) return undefined;
+  const text = html
+    .replace(/<li[^>]*>/gi, "- ")
+    .replace(/<(br|\/p|\/li|\/h\d|\/div)[^>]*>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&(#x?[0-9a-f]+|\w+);/gi, (m, e: string) =>
+      e[0] === "#" ? String.fromCodePoint(e[1]?.toLowerCase() === "x" ? parseInt(e.slice(2), 16) : Number(e.slice(1))) : (ENTITIES[e] ?? ENTITIES[e.toLowerCase()] ?? m),
+    )
+    .split("\n")
+    .map((l) => l.replace(/\s+/g, " ").trim())
+    .filter(Boolean)
+    .join("\n");
+  return text || undefined;
+}
+
 /** GeoJSON Point ([lon, lat]) or {lat, lon}/{latitude, longitude}. */
 export function latLon(v: unknown): { lat: number; lon: number } | undefined {
   if (!isObj(v)) return undefined;

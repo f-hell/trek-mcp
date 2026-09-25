@@ -1,5 +1,5 @@
 import type { Area, Cabin, CabinOpening, Grading, LatLon, ServiceLevel, Trip } from "../../domain.js";
-import { bool, isObj, latLon, num, pick, type Raw, str } from "../normalize.js";
+import { bool, htmlToText, isObj, latLon, num, pick, type Raw, str } from "../normalize.js";
 
 // Field names verified against ut.no's GraphQL schema (see docs/RECON.md and
 // test/fixtures/utno/).
@@ -58,6 +58,14 @@ function opening(raw: Raw): CabinOpening {
   };
 }
 
+const BOOKING_LINE = /kl\.?\s*\d|drop-?in|forhåndsbestil|bestilling|reserv|ankomst|senger/i;
+
+/** Lines of a cabin description that say something about booking, arrival or beds. */
+export function bookingNotes(description: string | undefined): string[] | undefined {
+  const lines = description?.split("\n").filter((l) => BOOKING_LINE.test(l));
+  return lines?.length ? lines : undefined;
+}
+
 export function normalizeCabin(raw: Raw): Cabin {
   const id = str(raw, "id") ?? "";
   const geo = pick(raw, "geojson");
@@ -68,6 +76,9 @@ export function normalizeCabin(raw: Raw): Cabin {
   const statuses = pick(raw, "serviceStatus");
   const openings = Array.isArray(statuses) ? statuses.filter(isObj).map(opening) : undefined;
   const todayKey = isObj(today) ? str(today, "key") : undefined;
+  const description = htmlToText(str(raw, "description"));
+  const summer = htmlToText(str(raw, "summertimeText"));
+  const winter = htmlToText(str(raw, "wintertimeText"));
   return {
     id,
     name: str(raw, "name") ?? `Cabin ${id}`,
@@ -84,7 +95,9 @@ export function normalizeCabin(raw: Raw): Cabin {
     location: loc ? { ...loc, elevationM } : undefined,
     area: mainArea(raw),
     openings: openings?.length ? openings : undefined,
-    description: str(raw, "description"),
+    description,
+    access: summer || winter ? { summer, winter } : undefined,
+    bookingNotes: bookingNotes(description),
     url: `${WEB}/hytte/${id}`,
     bookingId: bookingIdFromUrl(str(raw, "bookingUrl")),
     bookingUrl: bool(raw, "bookingEnabled") === false ? undefined : str(raw, "bookingUrl"),
@@ -146,14 +159,14 @@ export function normalizeTrip(raw: Raw): Trip {
     activity: str(raw, "primaryActivityType")?.toLowerCase(),
     area: mainArea(raw),
     cabinIds: Array.isArray(cabinIds) ? cabinIds.map(String) : undefined,
-    description: str(raw, "description"),
+    description: htmlToText(str(raw, "description")),
     url: `${WEB}/tur/${id}`,
   };
 }
 
 export function normalizeArea(raw: Raw): Area {
   const id = str(raw, "id") ?? "";
-  return { id, name: str(raw, "name") ?? `Area ${id}`, description: str(raw, "description"), url: `${WEB}/omrade/${id}` };
+  return { id, name: str(raw, "name") ?? `Area ${id}`, description: htmlToText(str(raw, "description")), url: `${WEB}/omrade/${id}` };
 }
 
 /** Unwraps a connection `{ totalCount, edges: [{ node }] }` or a plain array. */

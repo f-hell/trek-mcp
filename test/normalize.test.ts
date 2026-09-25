@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { normalizeAvailability } from "../src/sources/booking/normalize.js";
+import { htmlToText } from "../src/sources/normalize.js";
 import {
   bookingIdFromUrl,
   decodePolyline,
@@ -33,6 +34,17 @@ describe("ut.no normalisers", () => {
       bookingId: "101265",
     });
     expect(c.openings).toContainEqual(expect.objectContaining({ serviceLevel: "closed", from: "2026-10-15", to: "2027-02-15" }));
+  });
+
+  it("keeps the cabin's own texts as plain text, with booking notes pulled out", () => {
+    const c = normalizeCabin(fixture("utno/cabin-101265.json").data.cabin);
+    expect(c.description).not.toMatch(/<\w+/);
+    expect(c.description).toContain("- Antall soveplasser totalt: 9");
+    expect(c.bookingNotes).toEqual(
+      expect.arrayContaining(["- Antall senger for drop-in: 3", expect.stringMatching(/før kl\. 19\.00/)]),
+    );
+    expect(c.access?.summer).toContain("Breistølen");
+    expect(c.access?.winter).toBeDefined();
   });
 
   it("takes the booking id from bookingUrl, not the ut.no id", () => {
@@ -98,6 +110,15 @@ describe("ut.no normalisers", () => {
   it("parses booking ids only from hyttebestilling urls", () => {
     expect(bookingIdFromUrl("https://www.inatur.no/tilbud/6088019edbe3070003c3f31f")).toBeUndefined();
     expect(bookingIdFromUrl("https://hyttebestilling.dnt.no/hytte/10581")).toBe("10581");
+  });
+});
+
+describe("htmlToText", () => {
+  it("turns paragraphs and list items into lines and decodes entities", () => {
+    expect(htmlToText("<p>Hei &amp; h&aring;, &Oslash;</p><ul><li>Senger: 9</li><li>Hund&#8203;</li></ul><p>&nbsp;</p>")).toBe(
+      "Hei & hå, Ø\n- Senger: 9\n- Hund\u200b",
+    );
+    expect(htmlToText("<p></p>")).toBeUndefined();
   });
 });
 

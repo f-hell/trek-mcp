@@ -22,6 +22,8 @@
       "bookingEnabled": true,
       "bookingOnly": false,
       "bookingUrl": "https://hyttebestilling.dnt.no/hytte/101265",
+      "summertimeText": "<p>NB! Sommerstien starter/slutter ved Breistølen fjellstue. Skarvheim-hytta ligger ca.400 meter sørøst av Breistølen.</p><p>Hytta ligger rett ved riksvei 52 på Hemsedalsfjellet og er lett tilgjengelig med ekspressbuss. Eget stoppested for buss på Breistølen. Se entur.no. Busstoppet heter Breistøl bom (Lærdal).</p><p>NB! Ingen parkeringsmulighet ved hytta.</p><p>Parkering mulig ved Draugshellaren, 2 km i retning Hemsedal. Både vinter- og sommerparkering.</p><p>Sjekk <a href=\"https://www.dnt.no/turtips/turomrader/sommerbroer/\" target=\"_blank\">status sommerbruer</a>.</p><p>Se ruter til/fra Skarvheim under \"DNT-ruter\"-fanen.</p>",
+      "wintertimeText": "<p>NB! Vinterkvistingen starter/slutter ved Breistølen fjellstue. Ikke kvistet mellom Breistølen og Skarvheim (ca.400 meter).</p><p>Hytta ligger rett ved riksvei 52 på Hemsedalsfjellet og er lett tilgjengelig med ekspressbuss. Eget stoppested for buss på Breistølen.</p><p>NB! Ingen parkeringsmulighet ved hytta.</p><p>Parkering mulig ved Draugshellaren, 2 km i retning Hemsedal. Både vinter- og sommerparkering.</p><p>Se vinterruter og kvistedatoer under \"DNT-ruter\"-fanen.</p>",
       "serviceStatus": [
         {
           "serviceLevel": "SELF_SERVICE",

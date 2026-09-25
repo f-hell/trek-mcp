@@ -30,7 +30,7 @@ export const DNT_BED_RULES = [
   "Almost all DNT cabins take drop-in guests. Some beds can't be pre-booked and go first come, first served.",
   "As a general rule a pre-booked bed must be claimed by 19:00. After that, unclaimed beds go to drop-in guests.",
   "A late arrival keeps a paid stay but loses the right to that bed, and takes whatever beds are free on arrival.",
-  "Individual cabins, staffed ones especially, can have other times or rules. Check the cabin's own notices on ut.no or the booking page.",
+  "Individual cabins, staffed ones especially, can have other times or rules. The cabin's own notes (bookingNotes, and description via get_cabin) take precedence.",
 ];
 
 export interface PlannedNight {

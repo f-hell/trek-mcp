@@ -21,6 +21,8 @@ export const CABIN_FIELDS = /* GraphQL */ `
   bookingEnabled
   bookingOnly
   bookingUrl
+  summertimeText
+  wintertimeText
   serviceStatus { serviceLevel from to beds openAllYear key }
   serviceStatusToday { serviceLevel beds key }
   areas { id name areaType }

@@ -25,6 +25,8 @@
           "bookingEnabled": true,
           "bookingOnly": false,
           "bookingUrl": "https://hyttebestilling.dnt.no/hytte/101265",
+          "summertimeText": "<p>NB! Sommerstien starter/slutter ved Breistølen fjellstue. Skarvheim-hytta ligger ca.400 meter sørøst av Breistølen.</p><p>Hytta ligger rett ved riksvei 52 på Hemsedalsfjellet og er lett tilgjengelig med ekspressbuss. Eget stoppested for buss på Breistølen. Se entur.no. Busstoppet heter Breistøl bom (Lærdal).</p><p>NB! Ingen parkeringsmulighet ved hytta.</p><p>Parkering mulig ved Draugshellaren, 2 km i retning Hemsedal. Både vinter- og sommerparkering.</p><p>Sjekk <a href=\"https://www.dnt.no/turtips/turomrader/sommerbroer/\" target=\"_blank\">status sommerbruer</a>.</p><p>Se ruter til/fra Skarvheim under \"DNT-ruter\"-fanen.</p>",
+          "wintertimeText": "<p>NB! Vinterkvistingen starter/slutter ved Breistølen fjellstue. Ikke kvistet mellom Breistølen og Skarvheim (ca.400 meter).</p><p>Hytta ligger rett ved riksvei 52 på Hemsedalsfjellet og er lett tilgjengelig med ekspressbuss. Eget stoppested for buss på Breistølen.</p><p>NB! Ingen parkeringsmulighet ved hytta.</p><p>Parkering mulig ved Draugshellaren, 2 km i retning Hemsedal. Både vinter- og sommerparkering.</p><p>Se vinterruter og kvistedatoer under \"DNT-ruter\"-fanen.</p>",
           "serviceStatus": [
             {
               "serviceLevel": "SELF_SERVICE",
@@ -113,6 +115,8 @@
           "bookingEnabled": true,
           "bookingOnly": true,
           "bookingUrl": "https://www.breistolen.no/kontaktinfo",
+          "summertimeText": "<p>Helårsvei med bussrute. Fjellstuen ligger ved rv. 52</p>",
+          "wintertimeText": "<p>Helårsvei med bussrute. Fjellstuen ligger ved rv. 52</p><p>(Breistølen Fjellstue holder stengt vinterstid)</p>",
           "serviceStatus": [
             {
               "serviceLevel": "STAFFED",
@@ -157,6 +161,8 @@
           "bookingEnabled": true,
           "bookingOnly": false,
           "bookingUrl": "https://hyttebestilling.dnt.no/hytte/10812",
+          "summertimeText": "<p><a href=\"https://www.vybuss.no/destinasjoner/sogndal/?gad_source=1&amp;gclid=EAIaIQobChMI0rr3nP_ligMVyBmiAx1nJBKREAAYASAAEgICvfD_BwE#!/\" target=\"_blank\">Buss</a> til Bjøberg eller Breistølen. Bussen stopper begge steder - meld fra til sjåføren hvor du skal av. Fra Breistølen (Skarvheim) fire timers gange til Bjordalsbu på <a href=\"https://ut.no/rutebeskrivelse/137075/fra-bjordalsbu-til-breistlen/kart\" target=\"_blank\">merket fotrute</a>.</p><p>Sjekk <a href=\"https://www.dnt.no/turtips/turomrader/sommerbroer/\" target=\"_blank\">status sommerbruer</a>.</p><p>For øvrige ruter se \"DNT-ruter\"-fanen.</p>",
+          "wintertimeText": "<p><a href=\"https://www.vybuss.no/destinasjoner/sogndal/?gad_source=1&amp;gclid=EAIaIQobChMI0rr3nP_ligMVyBmiAx1nJBKREAAYASAAEgICvfD_BwE#!/\" target=\"_blank\">Buss</a> til Breistølen. Bussen stopper på Breistølen - meld fra til sjåføren. 11 kilometer på ski fra Breistølen (Skarvheim) til Bjordalsbu. Se <a href=\"https://ut.no/rutebeskrivelse/135908/fra-bjordalsbu-til-breistlen-skarvheim/kart\" target=\"_blank\">rutebeskrivelse og kvistedato</a>.</p><p>For øvrige ruter se \"DNT-ruter\"-fanen.</p>",
           "serviceStatus": [
             {
               "serviceLevel": "SELF_SERVICE",
