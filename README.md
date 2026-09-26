@@ -67,6 +67,7 @@ claude mcp add trek-demo -e TREK_MCP_FIXTURES=1 -- node /absolute/path/to/trek-m
 | `TREK_MCP_FIXTURES` | unset | `1` = use bundled sample data, no network |
 | `UTNO_GRAPHQL_URL` | `https://ut.no/api/graphql` | ut.no GraphQL endpoint |
 | `BOOKING_AVAILABILITY_PATH` | `/api/booking/availability-calendar?cabinId={id}&fromDate={from}&toDate={to}` | Availability path template |
+| `TREK_MCP_PARSE_BOOKING_PAGES` | unset | `1` also reads notices and booking limits from hyttebestilling's HTML cabin pages (off: JSON APIs only) |
 | `TREK_MCP_MIN_INTERVAL_MS` | `1000` | Minimum delay between requests to one host |
 | `TREK_MCP_CACHE_DIR` | `~/.cache/trek-mcp` | Response cache |
 | `TREK_MCP_CONTACT` | unset | Added to the User-Agent so site operators can reach you |

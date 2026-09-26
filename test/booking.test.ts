@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { Cabin } from "../src/domain.js";
 import type { PoliteHttp } from "../src/http.js";
 import { dropInBeds, isClosed, TrekService } from "../src/service.js";
@@ -49,6 +49,21 @@ describe("HyttebestillingClient", () => {
     expect(nights.map((n) => n.date)).toEqual(["2026-12-30", "2026-12-31", "2027-01-01"]);
     expect(urls).toHaveLength(2);
     expect(urls[1]).toContain("fromDate=2027-01-01");
+  });
+});
+
+describe("booking info", () => {
+  it("stays on the JSON API unless page parsing is switched on", async () => {
+    const { http, urls } = fakeHttp();
+    const text = vi.fn();
+    Object.assign(http, { text });
+    await new HyttebestillingClient(http, PATH, false).getBookingInfo("101265");
+    expect(text).not.toHaveBeenCalled();
+    expect(urls).toHaveLength(1);
+    expect(urls[0]).toContain("/api/booking/availability-calendar");
+
+    await new HyttebestillingClient(http, PATH, true).getBookingInfo("101265");
+    expect(text).toHaveBeenCalledWith("https://hyttebestilling.dnt.no/hytte/101265", expect.any(Function), expect.anything());
   });
 });
 

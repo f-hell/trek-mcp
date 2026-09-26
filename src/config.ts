@@ -28,5 +28,11 @@ export const config = {
     ttlMs: 10 * 60_000,
     /** Booking-page notices and limits */
     infoTtlMs: 6 * 3600_000,
+    /**
+     * Also read the cabin's booking page (HTML with embedded Next.js data) for
+     * status messages, site notices and booking limits. Off by default: the
+     * server sticks to the JSON APIs for now. See src/sources/booking/page.ts.
+     */
+    parsePages: env.TREK_MCP_PARSE_BOOKING_PAGES === "1",
   },
 };

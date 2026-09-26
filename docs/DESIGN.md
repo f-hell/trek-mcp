@@ -53,9 +53,11 @@ availability and plans), and `access` (summer/winter travel: boats, buses, parki
 
 - Closed periods: ut.no `serviceStatus` marks a night closed, unless hyttebestilling still sells beds that night. Then
   the booking data is kept and the night gets a `note` about the disagreement (a plan warning).
-- hyttebestilling's cabin page adds `statusMessage` (a plan warning), `siteNotices`, a `bookingClosed` period (a warning),
-  `min/maxNights` (a stop outside them is a plan problem), `cancellationDaysBefore` and `dogsAllowed`.
 - The calendar's product descriptions add `bookingConditions` (membership and DNT key, meals, room sharing).
+- **Off by default:** hyttebestilling's cabin page (HTML, parsed by `booking/page.ts`) adds `statusMessage` (a plan warning),
+  `siteNotices`, a `bookingClosed` period (a warning), `min/maxNights` (a stop outside them is a plan problem),
+  `cancellationDaysBefore` and `dogsAllowed`. The server stays on the JSON APIs for now; `TREK_MCP_PARSE_BOOKING_PAGES=1`
+  switches this on. The code and its tests are kept.
 - Plans return `cabinNotes` per cabin with both sources side by side (`utno`, `hyttebestilling`) and `siteNotices`.
 
 - `bookableBeds`: beds sold online, known when the calendar lists single beds (self-service; Skarvheim 6).

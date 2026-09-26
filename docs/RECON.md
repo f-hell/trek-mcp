@@ -55,7 +55,8 @@ Next.js app on Supabase/Visbook. Three GET routes found in its JS, all anonymous
   embeds the cabin as JSON: `{ut_id, title, status_message, suitable_for_dogs, service_status_all, content (same description
   as ut.no), web_bookings: {closed_from, closed_to, min_length_of_stay, max_length_of_stay, days_before_cancellation, agreements}}`.
   Other `status_message` values in the stream are site-wide banners (e.g. "Status hytteslipp for overnatting 2026: …").
-  Parsed by `src/sources/booking/page.ts`; only the parsed fields are cached (6 h).
+  Parsed by `src/sources/booking/page.ts`; only the parsed fields are cached (6 h). **Disabled by default**
+  (`TREK_MCP_PARSE_BOOKING_PAGES=1`); the server uses the JSON APIs only.
 - The calendar's `products[].attributes` with `group.name = "description_short"` hold booking conditions and inclusions
   ("Minst en i turfølge må være medlem … DNT-nøkkelen", meal times, room sharing when full).
 - Bookings go through Next server actions (`visbookAction`, `addReservationToSupabase`). **Never call those.**

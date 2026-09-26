@@ -22,6 +22,7 @@ export class HyttebestillingClient implements BookingSource {
   constructor(
     private readonly http = new PoliteHttp(),
     private readonly pathTemplate = config.booking.availabilityPath,
+    private readonly parsePages = config.booking.parsePages,
   ) {}
 
   bookingUrl(bookingId: string): string {
@@ -29,13 +30,16 @@ export class HyttebestillingClient implements BookingSource {
   }
 
   /**
-   * Notices and limits from the cabin's booking page, plus the conditions in
-   * the availability calendar's product descriptions. Only parsed fields are cached.
+   * Booking conditions from the availability calendar's product descriptions.
+   * With `parsePages` (off by default) it also reads notices and limits from
+   * the cabin's booking page; only parsed fields are cached.
    */
   async getBookingInfo(bookingId: string): Promise<BookingInfo | undefined> {
-    const info = await this.http.text(this.bookingUrl(encodeURIComponent(bookingId)), normalizeCabinPage, {
-      ttlMs: config.booking.infoTtlMs,
-    });
+    const info = this.parsePages
+      ? await this.http.text(this.bookingUrl(encodeURIComponent(bookingId)), normalizeCabinPage, {
+          ttlMs: config.booking.infoTtlMs,
+        })
+      : undefined;
     const today = toIsoDate(new Date());
     const calendar = await this.http.json<unknown>(this.calendarUrl(bookingId, today, addDays(today, 1)), {
       ttlMs: config.booking.infoTtlMs,

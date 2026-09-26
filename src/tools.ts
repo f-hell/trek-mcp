@@ -92,7 +92,7 @@ export function registerTools(server: McpServer, svc: TrekService): void {
       description:
         "Nightly free bookable beds for a cabin on hyttebestilling.dnt.no between two dates (to is exclusive), with a breakdown per room type, tent pitch etc. (options). " +
         "dropInBeds are beds that can't be pre-booked (first come, first served). bedRules gives the general rules (claim by 19:00); bookingNotes (ut.no) " +
-        "and hyttebestilling (status message, booking conditions, min/max nights, cancellation, booking-closed period, site notices) are the cabin's own and take precedence. " +
+        "and hyttebestilling (booking conditions such as membership or DNT key, meals, room sharing) are the cabin's own and take precedence. " +
         "Nights in a period ut.no lists as closed are marked closed. Read-only; returns the booking link, never books.",
       inputSchema: { cabinId: z.string().describe("ut.no cabin id"), from: isoDate, to: isoDate },
     },
