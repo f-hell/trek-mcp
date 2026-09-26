@@ -49,6 +49,15 @@ through: `description` as plain text (e.g. Skarvheim's says "senger tilgjengelig
 "Møt opp før kl. 19.00"), `bookingNotes` (the description's lines about booking, drop-in, arrival and beds, returned with
 availability and plans), and `access` (summer/winter travel: boats, buses, parking, marked trails).
 
+## Cross-checking ut.no and hyttebestilling
+
+- Closed periods: ut.no `serviceStatus` marks a night closed, unless hyttebestilling still sells beds that night. Then
+  the booking data is kept and the night gets a `note` about the disagreement (a plan warning).
+- hyttebestilling's cabin page adds `statusMessage` (a plan warning), `siteNotices`, a `bookingClosed` period (a warning),
+  `min/maxNights` (a stop outside them is a plan problem), `cancellationDaysBefore` and `dogsAllowed`.
+- The calendar's product descriptions add `bookingConditions` (membership and DNT key, meals, room sharing).
+- Plans return `cabinNotes` per cabin with both sources side by side (`utno`, `hyttebestilling`) and `siteNotices`.
+
 - `bookableBeds`: beds sold online, known when the calendar lists single beds (self-service; Skarvheim 6).
 - `dropInBeds` = the season's beds from ut.no `serviceStatus` minus `bookableBeds` (Skarvheim 9 − 6 = 3).
   Unknown for staffed cabins, which sell bed categories without a total.

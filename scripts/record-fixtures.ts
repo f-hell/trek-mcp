@@ -58,3 +58,17 @@ const calendar = async (id: string, from: string, to: string) => {
 };
 await save("booking/calendar-101265-autumn.json", await calendar("101265", "2026-10-12", "2026-10-15"));
 await save("booking/calendar-10581-summer.json", await calendar("10581", "2027-07-10", "2027-07-12"));
+
+// The booking page is ~400 kB of markup; keep only the script chunks with cabin data.
+const page = await http.text(`${config.booking.baseUrl}/hytte/101265`, (html) =>
+  [...html.matchAll(/<script>self\.__next_f\.push\(\[1,"(?:[^"\\]|\\.)*"\]\)<\/script>/g)]
+    .map((m) => m[0])
+    .filter((c) => c.includes("ut_id") || c.includes("status_message"))
+    .join("\n"),
+);
+await mkdir(join(dir, "booking"), { recursive: true });
+await writeFile(
+  join(dir, "booking", "page-101265.html"),
+  `<!-- Script chunks from ${config.booking.baseUrl}/hytte/101265 that carry cabin data -->\n${page}\n`,
+);
+console.log("wrote booking/page-101265.html");

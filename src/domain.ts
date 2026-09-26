@@ -101,6 +101,8 @@ export interface NightAvailability {
   bedsAvailable?: number;
   /** What is left per bookable category, e.g. "Seng i 2-sengsrom": 4 */
   options?: { name: string; available: number }[];
+  /** Set when the sources disagree about this night */
+  note?: string;
   /** Beds the cabin sells online in total, when the source lists them bed by bed */
   bookableBeds?: number;
   /**
@@ -108,6 +110,23 @@ export interface NightAvailability {
    * for the season minus bookableBeds. No-shows after the claim deadline add to these.
    */
   dropInBeds?: number;
+}
+
+/** What hyttebestilling.dnt.no says about a cabin, beyond nightly availability. */
+export interface BookingInfo {
+  /** Notice shown on the cabin's booking page */
+  statusMessage?: string;
+  /** Site-wide banners, e.g. about the yearly booking release ("hytteslipp") */
+  siteNotices?: string[];
+  /** Online booking is closed in this period (ISO dates) */
+  bookingClosed?: { from?: string; to?: string };
+  minNights?: number;
+  maxNights?: number;
+  /** Free cancellation up to this many days before arrival */
+  cancellationDaysBefore?: number;
+  dogsAllowed?: boolean;
+  /** Conditions and inclusions from the bookable products, e.g. membership or DNT key required */
+  bookingConditions?: string[];
 }
 
 export interface Paged<T> {

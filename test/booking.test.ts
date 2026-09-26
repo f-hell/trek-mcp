@@ -3,13 +3,13 @@ import type { Cabin } from "../src/domain.js";
 import type { PoliteHttp } from "../src/http.js";
 import { dropInBeds, isClosed, TrekService } from "../src/service.js";
 import { HyttebestillingClient } from "../src/sources/booking/client.js";
-import { FixtureTrailSource } from "../src/sources/fixtures.js";
+import { FixtureBookingSource, FixtureTrailSource } from "../src/sources/fixtures.js";
 
 /**
  * Fake calendar like the site's: a window from the start of `fromDate`'s month
  * to the end of that half-year, with `beds` free on requested nights and 0 elsewhere.
  */
-function fakeHttp(beds = 3) {
+function fakeHttp(beds = 3, soldOutFrom = "9999-12-31") {
   const urls: string[] = [];
   const http = {
     async json(url: string) {
@@ -21,7 +21,7 @@ function fakeHttp(beds = 3) {
       const list = [];
       for (let d = new Date(`${from.slice(0, 8)}01T00:00:00Z`); d.toISOString().slice(0, 10) <= windowEnd; d.setUTCDate(d.getUTCDate() + 1)) {
         const date = d.toISOString().slice(0, 10);
-        const inRange = date >= from && date < to;
+        const inRange = date >= from && date < to && date < soldOutFrom;
         list.push({ date: `${date}T00:00:00.000Z`, products: [{ available: inRange ? beds : 0, product: { product_id: 1, unit_id: 1 } }] });
       }
       return { data: { availabilityList: list, products: [] } };
@@ -75,11 +75,33 @@ describe("closed periods", () => {
   });
 
   it("marks closed nights in availability", async () => {
-    const { http } = fakeHttp();
+    const { http } = fakeHttp(3, "2026-10-15");
     const svc = new TrekService(new FixtureTrailSource(), new HyttebestillingClient(http, PATH), {});
     expect(await svc.availability(cabin, "2026-10-14", "2026-10-16")).toMatchObject([
       { date: "2026-10-14", status: "available", bedsAvailable: 3 },
       { date: "2026-10-15", status: "closed" },
     ]);
+  });
+
+  it("keeps booking data and notes it when the sources disagree", async () => {
+    const { http } = fakeHttp();
+    const svc = new TrekService(new FixtureTrailSource(), new HyttebestillingClient(http, PATH), {});
+    const [, night] = await svc.availability(cabin, "2026-10-14", "2026-10-16");
+    expect(night).toMatchObject({ date: "2026-10-15", status: "available", bedsAvailable: 3, note: expect.stringContaining("ut.no lists a closed period") });
+  });
+});
+
+describe("plan cross-check", () => {
+  it("flags stays longer than hyttebestilling allows and returns both sources' notes", async () => {
+    const svc = new TrekService(new FixtureTrailSource(), new FixtureBookingSource(), {});
+    const plan = await svc.planHutToHut({
+      stops: [{ cabinId: "fx-gjendesheim", nights: 5 }, { cabinId: "fx-memurubu", nights: 1 }],
+      startDate: "2026-07-01",
+      guests: 1,
+      flexDays: 0,
+    });
+    expect(plan.itinerary.problems).toContain("Gjendesheim: 5 nights, but hyttebestilling allows at most 4 per booking");
+    expect(plan.itinerary.feasible).toBe(false);
+    expect(plan.cabinNotes["Gjendesheim"]).toMatchObject({ hyttebestilling: { maxNights: 4 } });
   });
 });

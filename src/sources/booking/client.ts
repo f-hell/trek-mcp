@@ -1,9 +1,10 @@
 import { config } from "../../config.js";
-import { addDays, dateRange } from "../../dates.js";
-import type { NightAvailability } from "../../domain.js";
+import { addDays, dateRange, toIsoDate } from "../../dates.js";
+import type { BookingInfo, NightAvailability } from "../../domain.js";
 import { PoliteHttp } from "../../http.js";
 import type { BookingSource } from "../types.js";
-import { normalizeAvailability } from "./normalize.js";
+import { normalizeAvailability, productNotes } from "./normalize.js";
+import { normalizeCabinPage } from "./page.js";
 
 /** Guards against a response that never advances. */
 const MAX_WINDOWS = 4;
@@ -27,15 +28,33 @@ export class HyttebestillingClient implements BookingSource {
     return `${config.booking.baseUrl}/hytte/${bookingId}`;
   }
 
-  /** Nights in [from, to) that the response actually covers. */
-  private async window(bookingId: string, from: string, to: string): Promise<NightAvailability[]> {
+  /**
+   * Notices and limits from the cabin's booking page, plus the conditions in
+   * the availability calendar's product descriptions. Only parsed fields are cached.
+   */
+  async getBookingInfo(bookingId: string): Promise<BookingInfo | undefined> {
+    const info = await this.http.text(this.bookingUrl(encodeURIComponent(bookingId)), normalizeCabinPage, {
+      ttlMs: config.booking.infoTtlMs,
+    });
+    const today = toIsoDate(new Date());
+    const calendar = await this.http.json<unknown>(this.calendarUrl(bookingId, today, addDays(today, 1)), {
+      ttlMs: config.booking.infoTtlMs,
+    });
+    const conditions = productNotes(calendar);
+    return info || conditions.length ? { ...info, bookingConditions: conditions.length ? conditions : undefined } : undefined;
+  }
+
+  private calendarUrl(bookingId: string, from: string, to: string): string {
     const path = this.pathTemplate
       .replaceAll("{id}", encodeURIComponent(bookingId))
       .replaceAll("{from}", from)
       .replaceAll("{to}", to);
-    const payload = await this.http.json<unknown>(new URL(path, config.booking.baseUrl).toString(), {
-      ttlMs: config.booking.ttlMs,
-    });
+    return new URL(path, config.booking.baseUrl).toString();
+  }
+
+  /** Nights in [from, to) that the response actually covers. */
+  private async window(bookingId: string, from: string, to: string): Promise<NightAvailability[]> {
+    const payload = await this.http.json<unknown>(this.calendarUrl(bookingId, from, to), { ttlMs: config.booking.ttlMs });
     return normalizeAvailability(payload).filter((n) => n.date >= from && n.date < to);
   }
 

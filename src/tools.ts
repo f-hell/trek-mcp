@@ -91,7 +91,8 @@ export function registerTools(server: McpServer, svc: TrekService): void {
       title: "Check cabin availability",
       description:
         "Nightly free bookable beds for a cabin on hyttebestilling.dnt.no between two dates (to is exclusive), with a breakdown per room type, tent pitch etc. (options). " +
-        "dropInBeds are beds that can't be pre-booked (first come, first served). bedRules gives the general rules (claim by 19:00); bookingNotes are the cabin's own and take precedence. " +
+        "dropInBeds are beds that can't be pre-booked (first come, first served). bedRules gives the general rules (claim by 19:00); bookingNotes (ut.no) " +
+        "and hyttebestilling (status message, booking conditions, min/max nights, cancellation, booking-closed period, site notices) are the cabin's own and take precedence. " +
         "Nights in a period ut.no lists as closed are marked closed. Read-only; returns the booking link, never books.",
       inputSchema: { cabinId: z.string().describe("ut.no cabin id"), from: isoDate, to: isoDate },
     },
@@ -115,6 +116,7 @@ export function registerTools(server: McpServer, svc: TrekService): void {
         bookingUrl: svc.booking.bookingUrl(cabin.bookingId),
         nights: await svc.availability(cabin, from, to),
         bookingNotes: cabin.bookingNotes,
+        hyttebestilling: await svc.bookingInfo(cabin),
         bedRules: DNT_BED_RULES,
       });
     },
@@ -125,7 +127,8 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     {
       title: "Plan hut-to-hut trip",
       description:
-        "Check a chain of cabins night by night for a group, report blocked nights (problems), nights that rely on drop-in beds or other booking channels (warnings) " +
+        "Check a chain of cabins night by night for a group, cross-checked between ut.no and hyttebestilling. Reports blocked nights and stays over a cabin's max length (problems), " +
+        "nights that rely on drop-in beds, other booking channels, cabin notices or source disagreements (warnings), each cabin's own notes (cabinNotes), site-wide notices, " +
         "and straight-line leg distances, and optionally find alternative start dates within a flexible window.",
       inputSchema: {
         stops: z

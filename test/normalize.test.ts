@@ -1,7 +1,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { normalizeAvailability } from "../src/sources/booking/normalize.js";
+import { normalizeAvailability, productNotes } from "../src/sources/booking/normalize.js";
+import { jsonObjectAt, normalizeCabinPage } from "../src/sources/booking/page.js";
 import { htmlToText } from "../src/sources/normalize.js";
 import {
   bookingIdFromUrl,
@@ -165,5 +166,46 @@ describe("booking normaliser", () => {
 
   it("returns nothing for an unexpected payload", () => {
     expect(normalizeAvailability({ error: "nope" })).toEqual([]);
+  });
+});
+
+describe("hyttebestilling cabin page", () => {
+  it("reads notices and booking limits from the embedded cabin data", () => {
+    const html = readFileSync(join(__dirname, "fixtures", "booking", "page-101265.html"), "utf8");
+    expect(normalizeCabinPage(html)).toMatchObject({ maxNights: 4, cancellationDaysBefore: 4, dogsAllowed: false });
+  });
+
+  it("separates the cabin's own status message from site-wide banners", () => {
+    const stream = 'x{"ut_id":1,"status_message":"<p>Stengt for vedlikehold</p>","web_bookings":{"closed_from":"2027-06-01T00:00:00Z","closed_to":null}}y{"status_message":"Hytteslipp 1. mars"}';
+    const html = `<script>self.__next_f.push([1,${JSON.stringify(stream)}])</script>`;
+    expect(normalizeCabinPage(html)).toMatchObject({
+      statusMessage: "Stengt for vedlikehold",
+      siteNotices: ["Hytteslipp 1. mars"],
+      bookingClosed: { from: "2027-06-01", to: undefined },
+    });
+  });
+
+  it("returns undefined for a page without cabin data", () => {
+    expect(normalizeCabinPage("<html><body>404</body></html>")).toBeUndefined();
+  });
+
+  it("parses nested objects with braces inside strings", () => {
+    const s = 'x{"ut_id":1,"t":"a } b","web_bookings":{"max_length_of_stay":2}}y';
+    expect(jsonObjectAt(s, 1)).toEqual({ ut_id: 1, t: "a } b", web_bookings: { max_length_of_stay: 2 } });
+  });
+});
+
+describe("booking conditions", () => {
+  it("collects distinct product descriptions, labelling categories", () => {
+    const payload = {
+      data: {
+        products: [
+          { product_id: 70, unit_id: 1961, unit_name: "Skarvheim, rom 2, seng 1", attributes: [{ group: { name: "description_short" }, value: "<p>Minst en i turfølge må være medlem.</p>" }] },
+          { product_id: 70, unit_id: 1962, unit_name: "Skarvheim, rom 2, seng 2", attributes: [{ group: { name: "description_short" }, value: "<p>Minst en i turfølge må være medlem.</p>" }] },
+          { product_id: 2, unit_id: 0, product_name: "Seng i 2-sengsrom", attributes: [{ group: { name: "description_short" }, value: "3-retters middag, frokost" }] },
+        ],
+      },
+    };
+    expect(productNotes(payload)).toEqual(["Minst en i turfølge må være medlem.", "Seng i 2-sengsrom: 3-retters middag, frokost"]);
   });
 });

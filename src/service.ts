@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { addDays } from "./dates.js";
-import type { Cabin, NightAvailability } from "./domain.js";
+import type { BookingInfo, Cabin, NightAvailability } from "./domain.js";
 import { buildItinerary, DNT_BED_RULES, findStartDates, indexAvailability, type Stop, totalNights } from "./planning/itinerary.js";
 import type { BookingSource, TrailSource } from "./sources/types.js";
 
@@ -52,17 +52,27 @@ export class TrekService {
   }
 
   /**
-   * Booking availability, with nights that ut.no lists as outside the cabin's
-   * open periods marked closed (the booking calendar reports those as 0 beds).
+   * Booking availability cross-checked with ut.no's open periods. A night in a
+   * closed period is marked closed (the booking calendar reports those as 0
+   * beds), unless hyttebestilling still sells beds that night; then the
+   * booking data is kept and the disagreement is noted.
    */
   async availability(cabin: Cabin, from: string, to: string): Promise<NightAvailability[]> {
     if (!cabin.bookingId) return [];
     const nights = await this.booking.getAvailability(cabin.bookingId, from, to);
     return nights.map((n): NightAvailability => {
-      if (isClosed(cabin, n.date)) return { date: n.date, status: "closed" };
+      if (isClosed(cabin, n.date)) {
+        if (!n.bedsAvailable) return { date: n.date, status: "closed" };
+        return { ...n, note: "ut.no lists a closed period, but hyttebestilling sells beds this night; check with the cabin" };
+      }
       const dropIn = dropInBeds(cabin, n);
       return dropIn === undefined ? n : { ...n, dropInBeds: dropIn };
     });
+  }
+
+  /** hyttebestilling's notices and booking limits for the cabin, if it's booked there. */
+  async bookingInfo(cabin: Cabin): Promise<BookingInfo | undefined> {
+    return cabin.bookingId ? this.booking.getBookingInfo(cabin.bookingId) : undefined;
   }
 
   async planHutToHut(opts: {
@@ -84,6 +94,32 @@ export class TrekService {
     const idx = indexAvailability(byCabin);
 
     const itinerary = buildItinerary(stops, opts.startDate, opts.guests, idx);
+
+    // Cross-check with each cabin's booking page and its ut.no text.
+    const info: Record<string, BookingInfo | undefined> = {};
+    for (const { cabin } of stops) if (!(cabin.id in info)) info[cabin.id] = await this.bookingInfo(cabin);
+    let date = opts.startDate;
+    for (const { cabin, nights } of stops) {
+      const i = info[cabin.id];
+      const last = addDays(date, nights - 1);
+      if (i?.maxNights && nights > i.maxNights) {
+        itinerary.problems.push(`${cabin.name}: ${nights} nights, but hyttebestilling allows at most ${i.maxNights} per booking`);
+      }
+      if (i?.minNights && nights < i.minNights) {
+        itinerary.problems.push(`${cabin.name}: ${nights} nights, but hyttebestilling requires at least ${i.minNights}`);
+      }
+      const closed = i?.bookingClosed;
+      if (closed && (!closed.to || date < closed.to) && (!closed.from || last >= closed.from)) {
+        itinerary.warnings.push(`${cabin.name}: online booking is closed ${closed.from ?? "…"} to ${closed.to ?? "…"}`);
+      }
+      if (i?.statusMessage) itinerary.warnings.push(`${cabin.name}: ${i.statusMessage}`);
+      date = addDays(date, nights);
+    }
+    for (const n of itinerary.nights) {
+      const note = idx.get(n.cabinId)?.get(n.date)?.note;
+      if (note) itinerary.warnings.push(`${n.date} ${n.cabinName}: ${note}`);
+    }
+    itinerary.feasible = itinerary.problems.length === 0;
     const alternatives = opts.flexDays > 0 ? findStartDates(stops, opts.startDate, windowEnd, opts.guests, idx) : [];
     const bookingLinks = Object.fromEntries(
       stops.flatMap(({ cabin }) => {
@@ -91,7 +127,20 @@ export class TrekService {
         return url ? [[cabin.name, url]] : [];
       }),
     );
-    const cabinNotes = Object.fromEntries(stops.flatMap(({ cabin }) => (cabin.bookingNotes ? [[cabin.name, cabin.bookingNotes]] : [])));
-    return { itinerary, alternatives, bookingLinks, cabinNotes, bedRules: DNT_BED_RULES };
+    const cabinNotes = Object.fromEntries(
+      stops.map(({ cabin }) => {
+        const { siteNotices: _, ...booking } = info[cabin.id] ?? {};
+        return [cabin.name, { utno: cabin.bookingNotes, hyttebestilling: Object.keys(booking).length ? booking : undefined }];
+      }),
+    );
+    const siteNotices = [...new Set(Object.values(info).flatMap((i) => i?.siteNotices ?? []))];
+    return {
+      itinerary,
+      alternatives,
+      bookingLinks,
+      cabinNotes,
+      siteNotices: siteNotices.length ? siteNotices : undefined,
+      bedRules: DNT_BED_RULES,
+    };
   }
 }

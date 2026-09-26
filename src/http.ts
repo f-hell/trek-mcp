@@ -43,9 +43,27 @@ export class PoliteHttp {
   }
 
   async json<T>(url: string, opts: RequestOptions = {}): Promise<T> {
+    return this.request(url, opts, "application/json", async (res) => (await res.json()) as T);
+  }
+
+  /**
+   * Fetches a text resource (e.g. an HTML page) and caches `parse(text)`
+   * rather than the raw text, so large pages aren't stored.
+   */
+  async text<T>(url: string, parse: (text: string) => T, opts: Omit<RequestOptions, "body"> = {}): Promise<T> {
+    return this.request(url, opts, "text/html", async (res) => parse(await res.text()), "text");
+  }
+
+  private async request<T>(
+    url: string,
+    opts: RequestOptions,
+    accept: string,
+    read: (res: Response) => Promise<T>,
+    kind = "json",
+  ): Promise<T> {
     const method = opts.method ?? "GET";
     const body = opts.body === undefined ? undefined : JSON.stringify(opts.body);
-    const cacheKey = `${method} ${url} ${body ?? ""}`;
+    const cacheKey = `${kind === "json" ? "" : `${kind} `}${method} ${url} ${body ?? ""}`;
     const ttl = opts.ttlMs ?? 0;
 
     if (ttl > 0) {
@@ -62,7 +80,7 @@ export class PoliteHttp {
           method,
           body,
           headers: {
-            accept: "application/json",
+            accept,
             "user-agent": config.userAgent,
             ...(body ? { "content-type": "application/json" } : {}),
             ...opts.headers,
@@ -74,7 +92,7 @@ export class PoliteHttp {
           continue;
         }
         if (!res.ok) throw new HttpError(res.status, url, await res.text());
-        const data = (await res.json()) as T;
+        const data = await read(res);
         if (ttl > 0) await this.cache.set(cacheKey, data, ttl);
         return data;
       } catch (err) {

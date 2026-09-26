@@ -1,5 +1,5 @@
 import type { NightAvailability } from "../../domain.js";
-import { isObj, num, pick, type Raw, str } from "../normalize.js";
+import { htmlToText, isObj, num, pick, type Raw, str } from "../normalize.js";
 
 // Normalises hyttebestilling's GET /api/booking/availability-calendar response
 // (see docs/RECON.md and test/fixtures/booking/):
@@ -47,6 +47,28 @@ function productInfo(products: unknown): Map<string, ProductInfo> {
 
 /** Self-service units are single beds named "<cabin>, rom 2, seng 1"; group them as "Seng". */
 const optionName = (info: ProductInfo | undefined) => (!info ? "Ukjent" : /, seng \d+/i.test(info.name) ? "Seng" : info.name);
+
+/**
+ * Distinct short descriptions of the bookable products, which carry booking
+ * conditions ("Minst en i turfølge må være medlem ... DNT-nøkkelen") or what's
+ * included ("3-retters middag, frokost, nistepakke").
+ */
+export function productNotes(payload: unknown): string[] {
+  const data = isObj(payload) ? pick(payload, "data") : undefined;
+  const products = isObj(data) ? pick(data, "products") : undefined;
+  if (!Array.isArray(products)) return [];
+  const notes = new Set<string>();
+  for (const p of products.filter(isObj)) {
+    const name = str(p, "unit_name") ?? str(p, "product_name");
+    for (const a of Array.isArray(p.attributes) ? p.attributes.filter(isObj) : []) {
+      if (str(a, "group.name") !== "description_short") continue;
+      const text = htmlToText(str(a, "value"));
+      // Per-unit descriptions repeat across beds; category ones are labelled.
+      if (text) notes.add(str(p, "unit_id") === "0" && name ? `${name}: ${text}` : text);
+    }
+  }
+  return [...notes];
+}
 
 /**
  * Total beds sold online, known only when every bed product is an individual

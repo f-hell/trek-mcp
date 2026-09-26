@@ -26,5 +26,7 @@ export const config = {
     availabilityPath:
       env.BOOKING_AVAILABILITY_PATH ?? "/api/booking/availability-calendar?cabinId={id}&fromDate={from}&toDate={to}",
     ttlMs: 10 * 60_000,
+    /** Booking-page notices and limits */
+    infoTtlMs: 6 * 3600_000,
   },
 };

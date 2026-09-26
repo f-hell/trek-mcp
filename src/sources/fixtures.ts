@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { dateRange } from "../dates.js";
-import type { Area, Cabin, NightAvailability, Paged, Trip } from "../domain.js";
+import type { Area, BookingInfo, Cabin, NightAvailability, Paged, Trip } from "../domain.js";
 import { haversineKm } from "../geo.js";
 import type { BookingSource, CabinQuery, TrailSource, TripQuery } from "./types.js";
 
@@ -62,6 +62,10 @@ export class FixtureTrailSource implements TrailSource {
 export class FixtureBookingSource implements BookingSource {
   bookingUrl(bookingId: string) {
     return `https://hyttebestilling.dnt.no/hytte/${bookingId}`;
+  }
+
+  async getBookingInfo(): Promise<BookingInfo | undefined> {
+    return { maxNights: 4, cancellationDaysBefore: 4 };
   }
 
   async getAvailability(bookingId: string, from: string, to: string): Promise<NightAvailability[]> {
