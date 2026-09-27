@@ -85,6 +85,11 @@
           "name": "Skarvheimen",
           "areaType": "DNT_AREA"
         }
+      ],
+      "routeIds": [
+        135908,
+        137075,
+        136823
       ]
     }
   }

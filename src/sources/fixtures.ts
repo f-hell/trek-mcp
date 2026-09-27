@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { dateRange } from "../dates.js";
-import type { Area, BookingInfo, Cabin, NightAvailability, Paged, Trip } from "../domain.js";
+import type { Area, BookingInfo, Cabin, LatLon, Route, NightAvailability, Paged, Trip } from "../domain.js";
 import { haversineKm } from "../geo.js";
 import type { BookingSource, CabinQuery, TrailSource, TripQuery } from "./types.js";
 
@@ -20,6 +20,8 @@ export class FixtureTrailSource implements TrailSource {
   private cabins = load<Cabin[]>("cabins.json");
   private trips = load<Trip[]>("trips.json");
   private areas = load<Area[]>("areas.json");
+  private routes = load<Route[]>("routes.json");
+  private signature = load<Trip[]>("signature-routes.json");
 
   async searchCabins(q: CabinQuery): Promise<Paged<Cabin>> {
     const items = this.cabins.filter(
@@ -55,6 +57,31 @@ export class FixtureTrailSource implements TrailSource {
   async searchAreas(text: string, limit = 20): Promise<Paged<Area>> {
     const items = this.areas.filter((a) => matches(text, a.name, a.description));
     return { items: items.slice(0, limit), total: items.length };
+  }
+
+  async getRoutes(ids: string[]): Promise<Route[]> {
+    return this.routes.filter((r) => ids.includes(r.id));
+  }
+
+  async routesNearPoints(points: LatLon[], radiusKm: number): Promise<Route[][]> {
+    // Distance to the line's endpoints stands in for distance to the line.
+    return points.map((p) =>
+      this.routes.filter((r) => [r.start, r.end].some((e) => e && haversineKm(p, e) <= radiusKm)),
+    );
+  }
+
+  async cabinsNearPoints(points: LatLon[], radiusKm: number) {
+    return points.map((p) =>
+      this.cabins
+        .filter((c) => c.location)
+        .map((cabin) => ({ cabin, distanceM: Math.round(haversineKm(p, cabin.location!) * 1000) }))
+        .filter((x) => x.distanceM <= radiusKm * 1000)
+        .sort((a, b) => a.distanceM - b.distanceM),
+    );
+  }
+
+  async signatureRoutes(): Promise<Trip[]> {
+    return this.signature;
   }
 }
 

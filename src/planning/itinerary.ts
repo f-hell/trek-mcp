@@ -1,6 +1,7 @@
 import { addDays, dateRange } from "../dates.js";
 import type { Cabin, NightAvailability } from "../domain.js";
 import { haversineKm } from "../geo.js";
+import type { OrientedRoute } from "./routes.js";
 
 export interface Stop {
   cabin: Cabin;
@@ -48,6 +49,8 @@ export interface Leg {
   /** Departure date (morning after the last night at `from`). */
   date: string;
   straightLineKm?: number;
+  /** Direct marked routes for this leg, filled in by the service */
+  routes?: OrientedRoute[];
 }
 
 export interface Itinerary {

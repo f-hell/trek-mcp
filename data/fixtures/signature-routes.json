@@ -1,0 +1,29 @@
+[
+  {
+    "id": "fx-sig1",
+    "name": "SignaTUR example: Jotunheimen traverse (ILLUSTRATIVE FIXTURE)",
+    "grading": "tough",
+    "distanceKm": 48,
+    "durationDays": 3,
+    "area": {
+      "id": "fx-jotunheimen",
+      "name": "Jotunheimen"
+    },
+    "cabinIds": [
+      "fx-gjendesheim",
+      "fx-memurubu",
+      "fx-gjendebu",
+      "fx-leirvassbu"
+    ],
+    "start": {
+      "lat": 61.4945,
+      "lon": 8.8117
+    },
+    "end": {
+      "lat": 61.551,
+      "lon": 8.247
+    },
+    "description": "ILLUSTRATIVE FIXTURE, not real data.",
+    "url": "https://ut.no"
+  }
+]

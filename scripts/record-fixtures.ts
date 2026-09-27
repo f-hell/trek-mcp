@@ -35,6 +35,12 @@ await save(
   (v) => (v.data.cabinsNear = v.data.cabinsNear.slice(0, 3)),
 );
 await save("utno/trip-116978.json", await gql(Q.GET_TRIP, { id: 116978 }));
+// 135600 Besseggen; 136778 has its line drawn B → A, opposite to placeA → placeB.
+await save(
+  "utno/routes-gjendesheim.json",
+  await gql(Q.GET_ROUTES, { paging: { first: 2 }, filter: { id: { in: [135600, 136778] } }, sorting: [{ field: "id", direction: "ASC" }] }),
+);
+await save("utno/signature-list.json", await gql(Q.SIGNATURE_ROUTES, { filter: { name: { eq: "SignaTUR - Norges ypperste langturer" } } }));
 await save(
   "utno/areas-jotunheimen.json",
   await gql(Q.FIND_AREAS, { paging: { first: 3 }, filter: { name: { iLike: "%jotunheimen%" } }, sorting: sort }),

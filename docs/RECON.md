@@ -35,6 +35,22 @@ spaced about 1 s apart, using the trek-mcp User-Agent. Trimmed real responses ar
   (no geometry). That's a fallback only; GraphQL is better.
 - robots.txt disallows `/_next/`, `/*/kart/`, `/*/gpx/`. Don't fetch those at runtime.
 
+### ut.no routes (probed 2026-09-30)
+
+- `route(id)`, `routes(paging, filter:{id:{in:[…]}}, sorting)`, `routesNear(input:{coordinates, maxDistance})` (≤ 50 results).
+  `Route` = DNT marked route between two named places: `placeA/placeB/placeVia`, `code` ("jot2"), `type` ("foot" | "ski"),
+  `distance` (m), per direction `gradingAb/Ba`, `durationDays/Hours/MinutesAb/Ba` (ski routes often 0/0 = unknown),
+  `elevationGainA/LossA` (ascent/descent starting from A) and `…B`, `descriptionAb/Ba` (HTML), `waymarkWinter`
+  (marking dates), `encodedPolyline`. Page: `https://ut.no/rutebeskrivelse/<id>`.
+- **Gotchas:** `placeAGeojson/placeBGeojson` are null; the polyline is *usually* A → B but not always (136778 is drawn
+  B → A), so direction comes from the place names and geometry is only for endpoints. A cabin's `routeIds` is incomplete
+  (Gjendesheim lacks Besseggen, jot2), so routes at a cabin are found with `routesNear` + endpoint within 750 m.
+- Many `routesNear`/`cabinsNear` calls go in one request as GraphQL aliases (`p0: routesNear(…) p1: …`).
+- **Well-known routes:** the list "SignaTUR - Norges ypperste langturer" (id 50380598, found by name) holds DNT's 14
+  signature long-distance trips (Høgruta, SAGA, MASSIV, Trollheimen …). Its entries leave `cabinIds` empty, so the trips
+  are fetched again by id. Each trip's description has day-by-day stages. There are also per-route SignaTUR lists of cabins.
+- `poiTypes` includes fishing, fording place, bridge, lookout point, mountain peak, bathing spot (for later features).
+
 ### hyttebestilling.dnt.no: plain JSON routes, no auth
 
 Next.js app on Supabase/Visbook. Three GET routes found in its JS, all anonymous:

@@ -1,4 +1,4 @@
-import type { Area, BookingInfo, Cabin, Grading, LatLon, NightAvailability, Paged, ServiceLevel, Trip } from "../domain.js";
+import type { Area, BookingInfo, Cabin, Grading, LatLon, NightAvailability, Paged, Route, ServiceLevel, Trip } from "../domain.js";
 
 export interface NearQuery {
   near?: LatLon & { radiusKm: number };
@@ -26,6 +26,14 @@ export interface TrailSource {
   searchTrips(q: TripQuery): Promise<Paged<Trip>>;
   getTrip(id: string): Promise<Trip | undefined>;
   searchAreas(text: string, limit?: number): Promise<Paged<Area>>;
+  /** Marked routes by id (missing ids are skipped). */
+  getRoutes(ids: string[]): Promise<Route[]>;
+  /** For each point, marked routes passing within `radiusKm` (summary fields, no descriptions). */
+  routesNearPoints(points: LatLon[], radiusKm: number): Promise<Route[][]>;
+  /** For each point, cabins within `radiusKm`, nearest first (with distance in metres). */
+  cabinsNearPoints(points: LatLon[], radiusKm: number): Promise<{ cabin: Cabin; distanceM: number }[][]>;
+  /** DNT's signature long-distance routes (SignaTUR), as trips. */
+  signatureRoutes(): Promise<Trip[]>;
 }
 
 /** Cabin availability (hyttebestilling.dnt.no). */

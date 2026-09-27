@@ -1,9 +1,9 @@
 import { config } from "../../config.js";
-import type { Area, Cabin, Grading, Paged, ServiceLevel, Trip } from "../../domain.js";
+import type { Area, Cabin, Grading, LatLon, Paged, Route, ServiceLevel, Trip } from "../../domain.js";
 import { PoliteHttp } from "../../http.js";
 import { isObj, pick, type Raw, str } from "../normalize.js";
 import type { CabinQuery, TrailSource, TripQuery } from "../types.js";
-import { normalizeArea, normalizeCabin, normalizeTrip, unwrapList } from "./normalize.js";
+import { normalizeArea, normalizeCabin, normalizeRoute, normalizeTrip, unwrapList } from "./normalize.js";
 import * as Q from "./queries.js";
 
 interface GqlResponse {
@@ -35,6 +35,12 @@ const areaIds = (raw: Raw): string[] => {
   const areas = pick(raw, "areas");
   return Array.isArray(areas) ? areas.filter(isObj).map((a) => str(a, "id") ?? "") : [];
 };
+
+/** Points per aliased cabinsNear request. */
+const POINTS_PER_REQUEST = 10;
+
+/** Name of DNT's list of its signature routes. */
+const SIGNATURE_LIST = "SignaTUR - Norges ypperste langturer";
 
 /** Upper bound for client-side filtering after a *Near query or a duration limit. */
 const OVERFETCH = 50;
@@ -158,5 +164,64 @@ export class UtnoClient implements TrailSource {
     });
     const { nodes, total } = unwrapList(data.areas);
     return { items: nodes.map(normalizeArea), total };
+  }
+
+  async getRoutes(ids: string[]): Promise<Route[]> {
+    const numeric = [...new Set(ids)].filter((id) => /^\d+$/.test(id)).map(Number);
+    if (!numeric.length) return [];
+    const data = await this.gql(Q.GET_ROUTES, {
+      paging: { first: numeric.length },
+      filter: { id: { in: numeric } },
+      sorting: [{ field: "id", direction: "ASC" }],
+    });
+    return unwrapList(data.routes).nodes.map(normalizeRoute);
+  }
+
+  async routesNearPoints(points: LatLon[], radiusKm: number): Promise<Route[][]> {
+    const out: Route[][] = [];
+    for (let i = 0; i < points.length; i += POINTS_PER_REQUEST) {
+      const batch = points.slice(i, i + POINTS_PER_REQUEST);
+      const vars = Object.fromEntries(
+        batch.map((p, j) => [`p${j}`, { coordinates: [p.lon, p.lat], maxDistance: Math.round(radiusKm * 1000) }]),
+      );
+      const data = await this.gql(Q.routesNearPoints(batch.length), vars);
+      for (let j = 0; j < batch.length; j++) {
+        const rows = data[`p${j}`];
+        out.push((Array.isArray(rows) ? rows.filter(isObj) : []).filter((r) => isObj(r.route)).map((r) => normalizeRoute(r.route as Raw)));
+      }
+    }
+    return out;
+  }
+
+  async cabinsNearPoints(points: LatLon[], radiusKm: number): Promise<{ cabin: Cabin; distanceM: number }[][]> {
+    const out: { cabin: Cabin; distanceM: number }[][] = [];
+    for (let i = 0; i < points.length; i += POINTS_PER_REQUEST) {
+      const batch = points.slice(i, i + POINTS_PER_REQUEST);
+      const vars = Object.fromEntries(
+        batch.map((p, j) => [`p${j}`, { coordinates: [p.lon, p.lat], maxDistance: Math.round(radiusKm * 1000) }]),
+      );
+      const data = await this.gql(Q.cabinsNearPoints(batch.length), vars);
+      for (let j = 0; j < batch.length; j++) {
+        const rows = data[`p${j}`];
+        out.push(
+          (Array.isArray(rows) ? rows.filter(isObj) : [])
+            .filter((r) => isObj(r.cabin))
+            .map((r) => ({ cabin: normalizeCabin(r.cabin as Raw), distanceM: Number(r.distance) || 0 })),
+        );
+      }
+    }
+    return out;
+  }
+
+  async signatureRoutes(): Promise<Trip[]> {
+    const data = await this.gql(Q.SIGNATURE_ROUTES, { filter: { name: { eq: SIGNATURE_LIST } } });
+    const [list] = unwrapList(data.lists).nodes;
+    const items = list && Array.isArray(list.listItems) ? list.listItems.filter(isObj) : [];
+    const ids = items.map((i) => i.entity).filter((e): e is Raw => isObj(e) && e.__typename === "Trip").map((e) => Number(e.id));
+    if (!ids.length) return [];
+    // List entries leave cabinIds empty, so fetch the trips themselves (in list order).
+    const trips = await this.gql(Q.FIND_TRIPS, { paging: { first: ids.length }, filter: { id: { in: ids } }, sorting: [] });
+    const byId = new Map(unwrapList(trips.trips).nodes.map((n) => [Number(n.id), normalizeTrip(n)]));
+    return ids.map((id) => byId.get(id)).filter((t): t is Trip => !!t);
   }
 }

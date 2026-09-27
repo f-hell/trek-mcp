@@ -1,0 +1,100 @@
+{
+  "data": {
+    "lists": {
+      "edges": [
+        {
+          "node": {
+            "id": 50380598,
+            "name": "SignaTUR - Norges ypperste langturer",
+            "listItems": [
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1112156449
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1115595
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1115313
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 115720
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 111328379
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1115975
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1115677
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1116113
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 115360
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1115807
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1115828
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 116245
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1115271
+                }
+              },
+              {
+                "entity": {
+                  "__typename": "Trip",
+                  "id": 1112160032
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

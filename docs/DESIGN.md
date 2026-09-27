@@ -69,6 +69,15 @@ availability and plans), and `access` (summer/winter travel: boats, buses, parki
 Cabins booked elsewhere keep their `bookingUrl` (e.g. memurubu.no), and nights in a period ut.no lists as closed
 (`serviceStatus`) are marked closed, since the booking calendar only reports them as 0 beds.
 
+## Route planning
+
+- Well-known routes first: `find_signature_routes` (DNT SignaTUR), then `get_trip` for their day stages.
+- The marked-route network: `get_cabin_routes` walks it one cabin at a time; `find_routes_between_cabins` gives direct
+  routes and two-leg options via one cabin. Plan legs carry the direct marked routes, foot in June–October and ski
+  otherwise when both exist, and a warning when there's no direct route.
+- Direction: names decide (`startsAtEnd` in `src/planning/routes.ts`); geometry is a fallback. The cabin at a route's far
+  end is matched by the route's place name first, then by the cabin listing the route, then by distance.
+
 ## Caching and politeness
 
 | Data | TTL |
@@ -97,7 +106,15 @@ or routes whose endpoints are the two cabins (roadmap).
 
 1. ~~Recon~~ ([RECON.md](RECON.md)), ~~real queries and normalisers with recorded fixtures~~, ~~booking ids from `bookingUrl`~~ (done 2026-09-30).
 2. Use ut.no `search` for fuzzier cabin/trip lookup (it matches "Memurubu" in trip names too).
-3. Use `routes`/`routesNear` (marked paths) for real leg distances instead of straight lines.
+3. ~~Marked routes between cabins and well-known (SignaTUR) routes~~ (done). Next: chains longer than one intermediate
+   cabin, i.e. `suggest_hut_to_hut` over the route graph for N nights and a grading.
+4. **Discovery:** cabins worth visiting later, e.g. neighbours along the route network, cabins on SignaTUR routes near a
+   trip, or cabins in the same area the user hasn't planned yet.
+5. **Terrain insights:** "lots of small lakes here, probably good trout fishing". Start from ut.no POIs (`poisNear`,
+   types fishing, lookout point, bathing spot, fording place, bridge); lakes from open map data (Kartverket/N50 or OSM)
+   if needed, kept API-based.
+6. **Weather:** MET Norway's Locationforecast API (open use with an identifying User-Agent) per cabin and leg, and
+   avalanche warnings (Varsom) for winter routes.
 4. `find_route_between_cabins`: ut.no routes/trips connecting two cabins, with real distance, time and ascent.
 5. `suggest_hut_to_hut`: given an area, number of nights and grading, propose cabin chains from the trip graph, then check availability.
 6. Season awareness: opening periods, "hytteslipp" (the date bookings open for next season), and summer vs. winter beds.

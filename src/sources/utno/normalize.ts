@@ -1,4 +1,4 @@
-import type { Area, Cabin, CabinOpening, Grading, LatLon, ServiceLevel, Trip } from "../../domain.js";
+import type { Area, Cabin, CabinOpening, Grading, LatLon, Route, RouteDirection, ServiceLevel, Trip } from "../../domain.js";
 import { bool, htmlToText, isObj, latLon, num, pick, type Raw, str } from "../normalize.js";
 
 // Field names verified against ut.no's GraphQL schema (see docs/RECON.md and
@@ -99,6 +99,7 @@ export function normalizeCabin(raw: Raw): Cabin {
     access: summer || winter ? { summer, winter } : undefined,
     bookingNotes: bookingNotes(description),
     url: `${WEB}/hytte/${id}`,
+    routeIds: idList(pick(raw, "routeIds")),
     bookingId: bookingIdFromUrl(str(raw, "bookingUrl")),
     bookingUrl: bool(raw, "bookingEnabled") === false ? undefined : str(raw, "bookingUrl"),
     bookingOnly: bool(raw, "bookingOnly"),
@@ -161,6 +162,56 @@ export function normalizeTrip(raw: Raw): Trip {
     cabinIds: Array.isArray(cabinIds) ? cabinIds.map(String) : undefined,
     description: htmlToText(str(raw, "description")),
     url: `${WEB}/tur/${id}`,
+  };
+}
+
+const idList = (v: unknown) => (Array.isArray(v) ? v.map(String) : undefined);
+
+/** Hours from day/hour/minute fields; ski routes often report 0/0, meaning unknown. */
+function duration(raw: Raw, suffix: string): Pick<RouteDirection, "durationDays" | "durationHours"> {
+  const days = num(raw, `durationDays${suffix}`);
+  if (days) return { durationDays: days };
+  const hours = (num(raw, `durationHours${suffix}`) ?? 0) + (num(raw, `durationMinutes${suffix}`) ?? 0) / 60;
+  return hours > 0 ? { durationHours: round1(hours) } : {};
+}
+
+export function normalizeRoute(raw: Raw): Route {
+  const id = str(raw, "id") ?? "";
+  const distanceM = num(raw, "distance");
+  const polyline = str(raw, "encodedPolyline");
+  const path = polyline ? decodePolyline(polyline) : [];
+  const nonEmpty = (k: string) => str(raw, k) || undefined;
+  return {
+    id,
+    name: str(raw, "name") ?? `Route ${id}`,
+    code: nonEmpty("code"),
+    type: nonEmpty("type"),
+    from: nonEmpty("placeA"),
+    to: nonEmpty("placeB"),
+    via: nonEmpty("placeVia"),
+    distanceKm: distanceM !== undefined ? round1(distanceM / 1000) : undefined,
+    // The polyline runs from placeA to placeB.
+    start: path[0],
+    end: path.at(-1),
+    maxElevationM: num(raw, "elevationMax"),
+    // elevationGainA is the ascent when starting from A.
+    forward: {
+      grading: grading(str(raw, "gradingAb")),
+      ...duration(raw, "Ab"),
+      ascentM: num(raw, "elevationGainA"),
+      descentM: num(raw, "elevationLossA"),
+      description: htmlToText(str(raw, "descriptionAb")),
+    },
+    reverse: {
+      grading: grading(str(raw, "gradingBa") ?? str(raw, "gradingAb")),
+      ...duration(raw, "Ba"),
+      ascentM: num(raw, "elevationGainB"),
+      descentM: num(raw, "elevationLossB"),
+      description: htmlToText(str(raw, "descriptionBa")),
+    },
+    winterMarking: nonEmpty("waymarkWinter"),
+    notes: htmlToText(str(raw, "notes")),
+    url: `${WEB}/rutebeskrivelse/${id}`,
   };
 }
 

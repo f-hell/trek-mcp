@@ -26,6 +26,7 @@ export const CABIN_FIELDS = /* GraphQL */ `
   serviceStatus { serviceLevel from to beds openAllYear key }
   serviceStatusToday { serviceLevel beds key }
   areas { id name areaType }
+  routeIds
 `;
 
 export const FIND_CABINS = /* GraphQL */ `
@@ -103,6 +104,95 @@ export const FIND_AREAS = /* GraphQL */ `
     areas(paging: $paging, filter: $filter, sorting: $sorting) {
       totalCount
       edges { node { id name description areaType } }
+    }
+  }
+`;
+
+export const ROUTE_SUMMARY_FIELDS = /* GraphQL */ `
+  id
+  name
+  code
+  type
+  placeA
+  placeB
+  placeVia
+  distance
+  gradingAb
+  gradingBa
+  durationDaysAb
+  durationHoursAb
+  durationMinutesAb
+  durationDaysBa
+  durationHoursBa
+  durationMinutesBa
+  elevationGainA
+  elevationLossA
+  elevationGainB
+  elevationLossB
+  elevationMax
+  waymarkWinter
+  encodedPolyline
+`;
+
+/** Routes near several points in one request (aliased routesNear). */
+export const routesNearPoints = (count: number) => /* GraphQL */ `
+  query RoutesNearPoints(${Array.from({ length: count }, (_, i) => `$p${i}: FindNearInput!`).join(", ")}) {
+    ${Array.from({ length: count }, (_, i) => `p${i}: routesNear(input: $p${i}) { route { ${ROUTE_SUMMARY_FIELDS} } }`).join("\n    ")}
+  }
+`;
+
+export const ROUTE_FIELDS = /* GraphQL */ `
+  id
+  name
+  code
+  type
+  placeA
+  placeB
+  placeVia
+  distance
+  gradingAb
+  gradingBa
+  durationDaysAb
+  durationHoursAb
+  durationMinutesAb
+  durationDaysBa
+  durationHoursBa
+  durationMinutesBa
+  elevationGainA
+  elevationLossA
+  elevationGainB
+  elevationLossB
+  elevationMax
+  notes
+  descriptionAb
+  descriptionBa
+  waymarkWinter
+  encodedPolyline
+`;
+
+export const GET_ROUTES = /* GraphQL */ `
+  query GetRoutes($paging: CursorPaging!, $filter: RouteFilter!, $sorting: [RouteSort!]!) {
+    routes(paging: $paging, filter: $filter, sorting: $sorting) {
+      edges { node { ${ROUTE_FIELDS} } }
+    }
+  }
+`;
+
+/**
+ * Nearest cabins around several points in one request (one aliased
+ * cabinsNear per point), used to find the cabin at the far end of a route.
+ */
+export const cabinsNearPoints = (count: number) => /* GraphQL */ `
+  query CabinsNearPoints(${Array.from({ length: count }, (_, i) => `$p${i}: FindNearInput!`).join(", ")}) {
+    ${Array.from({ length: count }, (_, i) => `p${i}: cabinsNear(input: $p${i}) { distance cabin { id name serviceLevel dntCabin geojson bookingUrl routeIds } }`).join("\n    ")}
+  }
+`;
+
+/** DNT's own list of its signature long-distance routes ("SignaTUR"), as trips. */
+export const SIGNATURE_ROUTES = /* GraphQL */ `
+  query SignatureRoutes($filter: ListFilter!) {
+    lists(paging: { first: 1 }, filter: $filter, sorting: []) {
+      edges { node { id name listItems { entity { __typename ... on Trip { id } } } } }
     }
   }
 `;

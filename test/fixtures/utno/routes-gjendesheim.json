@@ -1,0 +1,68 @@
+{
+  "data": {
+    "routes": {
+      "edges": [
+        {
+          "node": {
+            "id": 135600,
+            "name": "Fra Gjendesheim til Memurubu via Besseggen",
+            "code": "jot2",
+            "type": "foot",
+            "placeA": "Gjendesheim",
+            "placeB": "Memurubu",
+            "placeVia": "Besseggen",
+            "distance": 14252,
+            "gradingAb": "VERY_TOUGH",
+            "gradingBa": "VERY_TOUGH",
+            "durationDaysAb": null,
+            "durationHoursAb": 7,
+            "durationMinutesAb": 0,
+            "durationDaysBa": null,
+            "durationHoursBa": 7,
+            "durationMinutesBa": 0,
+            "elevationGainA": null,
+            "elevationLossA": null,
+            "elevationGainB": null,
+            "elevationLossB": null,
+            "elevationMax": 1742,
+            "notes": null,
+            "descriptionAb": "<p>Bratt rute med et luftig part, utsatt i dårlig vær og vind. Bratt opp mot Gjendehalsen til stidelet for til Glitterheim. Videre bratt opp mot nordvest på Veslfjellet, stidele til Bessheim før toppen. Fra toppvarden 1743 moh. ned mot Besseggen og så meget bratt ned selve eggen. Eggen er luftig for folk som er redd høyder. Imponerende utsikt innover i Jotunheimen fra toppen og nedover. Midtveis i den bratte nedstigningen er passasjen noe smal og temmelig luftig. Ned på Bandet mellom Bessvatnet og Gjende. 400 m stup ned mot Gjende. Herfra opp til Bjørnbøltjønne innunder Besshøe og til stidelet til Glitterheim. Herfra meget bratt ned til Memurubu. NB! Det anbefales å gå turen i motsatt retning hvis man er høyderedd. Med lett sekk bruker man kortere tid enn angitt. Det er helt nødvendig å ha gode fjellstøvler. Det er store høydeforskjeller på turen og det kan være et helt annet vær i høyden enn nede ved Gjendesheim. Ta med varmt og vindtett tøy.</p>",
+            "descriptionBa": "<p>Bratt rute med et luftig parti, utsatt i dårlig vær og vind. Meget bratt opp fra Memurubu til stidelet til Glitterheim. Videre i kupert og steinete terreng langs foten av Besshøe til Bjørnbøltjønne som er høyeste punkt på ruta før man går opp selve eggen. Ned til sørenden av Bessvatnet og på bandet mot Gjende med 400 meters stup ned til Gjende. Her starter selve Besseggen. Luftig og meget bratt oppover. 350 meter stigning opp til toppvarden på Veslfjellet 1743 moh. Den mest luftige delen med stup ned på begge sider har en lengde på ca 1 km. Fra eggen er det imponerende utsikt innover i Jotunheimen. Ved toppvarden passeres stidele til Bessheim før nedstigningen mot Gjendesheim. 700 meter ned i løpet av ca 2 km bratt nedover. Den siste delen med steinheller ned til Gjendesheim. Dersom man er høyderedd er det best å gå turen fra Memurubu til Gjendesheim. Det er helt nødvendig å ha gode fjellstøvler. Husk at det er store høydeforskjeller på turen og at det derfor kan være et helt annet vær i høyden enn ved Memurubu. Ta derfor med varmt og vindtett tøy.</p>",
+            "waymarkWinter": null,
+            "encodedPolyline": "azivJ}uwt@?EAKEYAKAI?SGc@AQ?G?G??@I@E@[?UBY@O?M@UAGBU@K?A?EAQAUAKAOAQ?KAI?K?K?OAK?G?E?E?C?C?C?AAAAA?AAA?A?C?C?C?G?E?CAEAGAGAG?C?E?C?G@E?A?C?CAG?IAEAK?IAIAEAECCCAEAE@C?CACCAAEGAE??C?C@AACCCCGGEICGAACAACAAACAA?AA?C?CAECGCE?EAE?C?E?AAAAEAE@E?C?GBEBE@CBA?ECC?EBE?C?EAAAGEGAEAKCIAECC?I@G@MDGFCBA???C?ECEAC???KHKHIBGBI?G@MDK@G?IAGAKECAC@A?C?AAACE?C@A@C@CFEDA??AA?AAAAA@A@GDC@C?C?ICECE?A?CAE?GEIEICCCAAGGKGIEMECAEAEAKCGCEEIKAAQASGOEQ@KAG?ICA?C?GDGBMDI@A?A?AC?AAAAACAEAA?C@A?CAAACEKQGGIKICIAQDMHWLGDM@EAGG??CCAAE?K@GAI?IBEBCBGD??C?EDCBCBG@E?I@G?I?E@A?ABCBA@G@I@I@E@C@GHINCHEHAFA@CBABMJSXCB?BA@??A?AAA?AAA@A@?@E@E?CAGAC?CAC@A?C@C@AAA@A?A@CFEJADA@A?A@CBEDEBC?E@E?C?C@GBC?EAGEIEGAE?CBGFCBCA[j@GVGRQv@c@jCIlAA`DDtEBpCFlAFzABFUj@Mb@Sx@Sd@c@nAYz@[h@CBu@z@iA~@o@^i@Zg@RwAc@KEOiAEqAUYAASBEDKDKz@AtABnAUfAAHa@I_@uAi@e@Q?Q?_@TQ`@Id@a@nCC`AG|BOjBUrAUt@Sp@i@pBQlAIn@]bCObAU`BcAlECHg@xEU~CG`A@rBJlAJjAb@fDTxABxB@j@L~Bn@zFFtBDzAAzB?JC|DEtFFvDHxBB|@^pIXtDHfAn@xETz@TtA`@|AZtAHXL\\b@fAVhALz@\\vD@LJhDr@fIH~@LjBHn@RzBHhBElCFfEa@tDYjFG`CQrEEt@IfAGjAWfBQtCOdCT|Bj@tJVfBRbCt@pG\\bF`@vBRnBTvAXtBXzCXnAZlCItBKdBIhBIzAGnAEnAAp@Ct@EtAGrCLnD^nEL`EJnBTnB\\~CZtAd@bHZrANnAF|B\\zC@Bx@pCXv@dAhE@FF~BCp@Cv@KhE?PE`CE|BC|CGlFD~A`@vDfAzGBL`@jCTzADXj@fDHd@TvAVzAb@hC^`BJrAJbBPnB@`@?r@RhCF|@VjEJfBPlGHfB@RA|ABpCElBG|@Kv@Kr@Gv@A~@Cl@At@AP?HGTG`@Kj@ETCLG\\G^CPEPMXMZEFE@K?M?M?I?CBCBMVK^S`@QLKLEHGJGJAHANAJABGNEFEDM@MDKDE?SASAMIH^HZFj@@NBf@BRDh@DRDLPJDFDJHXBPR`@Nb@JZDRCTCV?F?VI^Il@EXCNCVAb@?NATE^EVETGTEZCP?f@?b@El@I^ERCZ?N?J?LA@CLCDAZ?NAJAR@d@@\\APCHMLGRELIVIZGf@EVIVGNMVM^GZEb@EXGd@G`@GLGZETCNCJ?LBX@Z?L?JBLFVFVBL?HB^@R@PBZBLFVBJBd@B\\BP?d@?ZBhAAV?NEVEZCLETGh@ARATCT?^A^?RCPAL?D?JCVA`@Gf@CPAJAl@CPKVENELCVAVCXGXC^C~@A`@?Z@T?J?N@V@b@?\\@^@VAh@E`@Cd@?N?JBJBHB`@@z@@LDP?J?\\?f@?L@JBPBl@Dj@BVFj@Fn@Dl@@`@Bj@?P?R?XAZBh@HrAFl@F^Bb@Jp@BBD@F@@F?R?f@Ad@Ad@Bp@Fz@HdABVFh@Hj@Bh@@X@RA`@ATCNCNM`@OVMRCFMf@Kf@Mp@APGh@AXA`@ARANCVADGPCL?T?LCLG^AT?R?LAX@DBLDTD\\BN@DFFFDBD@FB^BFJRBF@FD\\DNBFJVBNBLHdA@JJb@FJNNBJL^BHFJHHJHJPRXNVDHLTDDDBNNX\\NP@BDZ@N@F@D@D@FBV@P@FFR@F?FBZDZBTBL@^?DDR@L?V@V@TBXD^?H@BTb@LRHLDJHd@Dd@BPH\\BL@XDb@?LBl@@lA@R@NBN?D?j@AT?DBd@Bz@@X?PBXB\\?TF^BV?JAX?ZANAN?L?T?HAVCZALGXENCJAJAJAJAD?DDP@J@^ATC\\AFCFCLAFAFEX?NAH?B@DF`@Jf@Dd@H^Fp@FXJh@BRDd@@V?HE^?F?DBFLP@D@BCh@?Z?j@Gl@?F?H@N?H?BMf@Of@KZ?B?B?fA@P@P@ZDv@BPBP?DFd@BXBRBNBRBPBHNVLPHPDNLZDNDLH`@Hb@BJHPNd@HVLb@NXFLBLDRDp@BLBDFFBFDJJ^HPHL@DBJ@L@J@\\BNDNFNHNFDLFDDBDFLBN?BA^?N@D?@JZDPH`@BP@L?FAt@?\\@RDTDT@D?DAT@^?T?HF\\@P?LAREXELMd@I\\Mv@G\\AN?t@ATAD?\\?v@CZAP?^?N?HIPGNAHAZCHCRCVAFCH?FA@Bf@Dh@?L?JGn@MrAAH?L?JBn@@DAx@?RBXHl@Jx@DVBN@F@N@PBJJZDFFF@DHVJTNb@Lh@BFDJDFFJL`@DJ@BF?B?@BL\\L`@Hh@@J?D?JAFCFMXCF?J?`@@HFj@L|@@P?L?DG\\AV?HADABMTCH?F?F@L@LBd@@P?DBNHRBN@H?J?JIZ?F?FBV@H?FCVCR?J?h@@Z@J@LBDFFBH@L@^?R?N?PAb@Ct@AJG^?B?DBT?H@D?DCj@?T?L@PJz@BT?L?HCx@A\\@t@@`@BTFj@@VBdAD~@Bt@Bb@@\\?\\@b@?PAN?HGp@?J@V@\\DTDTNl@BN@L?N@LBJHV@J@DH|@?P?NA|@Av@A`@Ep@Ex@AV?P@P@d@?J?FA`AAX?P?NAPAJ@LFr@@X@JAHC`@?T@Z@NL|@H^BN?LBFBPBZFf@B`@BH@FFLBLFb@Bh@@ZAb@?`@?V?L?F@N?N?L@H?FEPAH?H@JAN?HAFCRE^CPAH?J@H@L@HADCNAN?TAJAP?Z?T?NCTCZ?P@LDVBN?T@FDT@RDd@@F?H?P@F@L@HDN?D?N?ZA`@?RBRBZ@N?D?JAHGPAFAH?F@PBR@H@JJ\\@J?J@D@FNDFDDB?B@H?\\@T@LDPFXDPFNDDBD@B@BFDBDF@BABN@RBPDRFRBNFZBJBDPDNHPLFFBHBDD@DHBPHPDFFBDJHRHNTJBKBKDGFGFEDC@ABI@G@CDGFELEDCFI@C@?@AB?@?BADGBCBA@ABEDKDMBMBE@??A?G@G@C@AB?B?@?@?BC@E?G@O@O@G@C@ABA?ABK@A@?DA@?@CDGBGBG@CFIDI@IDS@IDKDKBCDGBA?AB@@?FJB@B?JE@CB?FDB?@AFIBEBA@?@?DH@B@@@?BAHEBCJ?F?BA@G@C??B@DB@?@A@C@K@C@?B@DHHF@@BH@@??@?@CFWBKBC@ABA@?BBLHB@B?BAB@@?DBB@@@DF@@B?@?FCBADAD@FAD?F@HBB@BAB?FC@?B?BB@?@?@?@ABCFKHIFIFCFABAFEFIDCD@D@@?@A@E?E?K@A?C@A@A@A@?@@BB@???@?BEDK@A@AD@@A@??C@G@O?E?C@AHEJIDGHMDI@IDWFo@Fw@DU@IRa@FOBUBSDOFQFKDG?G@WBSDUFMX_@LWJSHU@K@O?OFa@L_@DODGDKBQBABEBCDIBANILIBEFMDEBGLYXo@@q@"
+          }
+        },
+        {
+          "node": {
+            "id": 136778,
+            "name": "Fra Sikkilsdalsseter til Gjendesheim via Sikkilsdalsvatna",
+            "code": "hul31",
+            "type": "foot",
+            "placeA": "Sikkilsdalsseter",
+            "placeB": "Gjendesheim",
+            "placeVia": "Sikkilsdalsvatna",
+            "distance": 14780,
+            "gradingAb": "TOUGH",
+            "gradingBa": "TOUGH",
+            "durationDaysAb": null,
+            "durationHoursAb": 5,
+            "durationMinutesAb": 0,
+            "durationDaysBa": null,
+            "durationHoursBa": 5,
+            "durationMinutesBa": 0,
+            "elevationGainA": null,
+            "elevationLossA": null,
+            "elevationGainB": null,
+            "elevationLossB": null,
+            "elevationMax": null,
+            "notes": null,
+            "descriptionAb": "Del av Jotunheimstien. Langs Sikkilsdalsvatna i til dels grov ur. Så opp gjennom bjørkeskog til Sikkilsdalsskardet, fin utsikt. I skaret stikryss med ruta over Sikkilsdalshøa. Vestover og ned til Maurvangen. Herfra en drøy 1/2 t (2,5 km) på vei til Gjendesheim.",
+            "descriptionBa": "En drøy 1/2 t (2,5 km) på vei til Maurvangen. På skrå opp gjennom lia og inn i Sikkilsdalsskardet. I skaret stikryss med ruta over Sikkilsdalshøa. Ned til øvre Sikkilsdalsvatnet gjennom bjørkeskog, og langs vannene (øvre og nedre Sikkilsdalsvatnet) i til dels grov ur. På vei de siste par hundre metrene til Sikkilsdalsseter.",
+            "waymarkWinter": null,
+            "encodedPolyline": "oqivJamxt@JUBKFKBKDIFKDKDIDKFKDIDOFGDIHOxQkUtB{Q|AeHJeGbCyKBOBOBK@OBSDOBOBKBOBOBMBODM@KHW@G@GDKBKDKDMBGFODKBKFIBGFKDMDKFMFKDGFMFKBGFMFGDMDGFKDIFKFMDKBGFMBKDGDOBGDKBMDGBODGDODMDKDKDKFMFGFIFGDEFEDCFEDCFEFEFCHEDEHADCFEHEFCHEFEFEHCFEFIFCFIHEDGFIHEDGDEFGFIFKFKDMBKDO@S?QAMASAMCQEMEMEIEIEIGMGEEIGKGIEEIIGIIIEIIGGIIIEIIIGKGIGMKSCEGMEMGIIOEIGMGMIKCKGKGMEIGIGQIKEIGMGMGMGKIQEMEEGICIEIEIEIEEEIEICIEKEIGICEGIEIEIEIEIEICEEMEEEKGGEKEIEEEIGICIEIEEEIEIEIIMGIGKGMGMIKIMGIGMEIGGGMGMGIEMEMEMEIEMCMAQCMCMASAQAQAM?SAQ?G?s@Aa@?M?]AW?A?G?C?C@C?G?G@M?K@?LJPJNFJFPJPFPFPBXDVD\\@H@NBPBTBB@H@D@H@D@F@@Q?O@Q@[@M?S@Q@S?S?E@W?G@YAI@S?U?K?C?C?E?CAG?CAI???GAGAEAG?CCEAGCECECKCECIACEMEIEM??EMEECICCCEACCECCCAACGEA?EEA?AAA?EEACEEACEEACCECEA?CIEGAEI[CIEKEICIEICMEIEMCIEICMCKCIACAEGMEIEIEIGECIEIGEEIEGGIGGIIEEIIIKIMCEGEEIGEEIEIMMIWEMAMAMCOAMAMCMCQAGAMAOAQCMAMAOCMCMCIAGFGBKDIDKDGDMBCFKDEFGDEDGDIDGBKDGDMBGFGBIBGCUKgAIk@Ki@CQ?UAO?QAM?CAOAI?OCQAI?GAIAOCIAKAMAMAKAIAKAM?G?ACUAGAECGAGCEACAEAC?CAE?CCCAECCAACKAACKAE?CAGAIAICOAMAIAC?GAE?G?CAC?ECGAEAGCECK?E?GAC?CCECGEEEEAEEGCEGMEECEEECGCEAGCEAKEOGMCGEIISEICECGCECECGAACGCEAGCIAG???AAC???C?C?C?GAACCCAC?AAECAACGACAIAGCICIAGCECUAM?GAMAGAEAK@O@GAMCUAQCMAGCEEMGMCMAKAQCI?KCECECKAI?G?K?M?O@MSq@Ow@KoA]uCEiACmA?GDuBJ_BHg@Ne@Tw@Fm@FyAGy@@{@Hy@D}@?y@Cy@Gw@Ku@Iy@I}@Iy@G}@E_AAo@@q@?o@Co@Gg@@e@J]MuDMOCeAEqAC{@Cs@Gm@Ic@Ce@Aw@Bw@As@Mg@Qe@Qa@Kc@Bs@Fu@Bu@Ik@Oi@Ik@Hq@Hq@Ko@Qk@Ce@?i@Be@By@Ds@Bu@Ho@Lc@Jc@Jg@@q@?w@Aw@Aq@@o@Fk@Lg@Jg@Fq@By@Dq@La@RYRUZ_@V_@Pg@Ls@Du@@_A?}@CaAA_AE}@C_AE}@Ew@Ew@Cw@Gy@Aw@As@?u@As@Co@Ey@Gw@C{@?k@@m@?i@E}@Ky@Ou@Ss@Wk@Wk@Q_@O]Mm@Io@Mi@Se@Sc@Qm@Qq@Iy@Gq@Es@C{@Aw@@{@Aw@?{@Cw@Gs@Km@Kq@Om@Mo@Mm@Oo@Om@K[M_@K_@Os@Ky@Ky@I}@Ky@Iy@Ky@Oq@Om@Ue@SYUYSUUa@Qe@Oi@Mm@Oo@Ku@Ou@Om@Sa@UQ[E[A]@]A[A_@C[A]A[@WBU?UEQKOWMYK_@Ic@Co@Cw@E_@K_@Qi@UYOOQMMSM_@Gc@C{@@w@B{@@y@?s@Cu@Cq@Gs@Mm@Mm@Mm@Mu@Gw@Cy@A_A@eAD_AHaAHaAFu@Hw@Hu@@KFi@Hw@Ju@Jw@Ju@Jw@Ls@Lw@Nu@Js@Fy@B}@AEAu@C}@CcA?_AB{@F}@Lw@Pk@Ti@Pi@Jo@@m@Eq@Es@Cs@Ai@@i@?g@Cs@Ew@Es@Ew@AaA?cABaAJaAN_AD{@BmBCo@Qy@AMAQEQAU?K?i@?UBa@B[@UB[?UBK?OAYCY?YAUB[@a@BMBMDSDSD]Hc@B[@MBW?ODKJQBGZ}Br@cDf@kEn@gBTaBBaCJ}BfA{DJc@G{AY_BaAeAiBuAw@Y_AmCg@q@YuDBwAXqBh@sCLs@n@uHVmDZ}@r@yC`AkB`BoDhAaDJaAXgDIsC?gARkEN}B|@wAb@_Cb@uAj@kAr@eBd@wBRwBJy@j@wAn@_Bh@cBrAyFd@uA^gD`@aAp@{B^gDvCiNdAsClBgGtCkL`@_BHgDTaFr@mCz@wArAqFNmCPkGPyCPcApAiFp@_D`@mCb@aDXmDf@cErAcFp@g@d@qAb@iBj@sGRmG\\_Df@cCD_B^gDl@yB|A_Cp@kBl@oEj@gEh@sCZmDLkBZy@d@}CLoEd@}FdAmEhByI?}IGcJX{DUuJL}L]uEuCsEiEmFyCiB}BuCo@eCMmHSuIu@eIkAoFg@_F^}DXeFm@cDS}BVyEZaEzAeGf@cISeHMoGu@uJiBkHGUCQCWGs@C]CYE_@Eg@Ec@Ci@EUCSAOAMCU?QCQASCUK{@I}@ASEWAOCI?MAYAi@Ao@Cs@Ci@Ak@Gu@GiAEo@CQAa@Io@Gi@OoAIu@Gi@AQEUCSEY"
+          }
+        }
+      ]
+    }
+  }
+}

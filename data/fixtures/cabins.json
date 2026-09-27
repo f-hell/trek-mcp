@@ -18,7 +18,12 @@
     },
     "description": "ILLUSTRATIVE FIXTURE, not real data.",
     "url": "https://ut.no",
-    "bookingId": "fx-9001"
+    "bookingId": "fx-9001",
+    "routeIds": [
+      "fx-r1",
+      "fx-r5",
+      "fx-r6"
+    ]
   },
   {
     "id": "fx-memurubu",
@@ -39,7 +44,12 @@
     },
     "description": "ILLUSTRATIVE FIXTURE, not real data.",
     "url": "https://ut.no",
-    "bookingId": "fx-9002"
+    "bookingId": "fx-9002",
+    "routeIds": [
+      "fx-r1",
+      "fx-r2",
+      "fx-r6"
+    ]
   },
   {
     "id": "fx-gjendebu",
@@ -60,7 +70,12 @@
     },
     "description": "ILLUSTRATIVE FIXTURE, not real data.",
     "url": "https://ut.no",
-    "bookingId": "fx-9003"
+    "bookingId": "fx-9003",
+    "routeIds": [
+      "fx-r2",
+      "fx-r3",
+      "fx-r4"
+    ]
   },
   {
     "id": "fx-leirvassbu",
@@ -81,7 +96,10 @@
     },
     "description": "ILLUSTRATIVE FIXTURE, not real data.",
     "url": "https://ut.no",
-    "bookingId": "fx-9004"
+    "bookingId": "fx-9004",
+    "routeIds": [
+      "fx-r3"
+    ]
   },
   {
     "id": "fx-glitterheim",
@@ -102,7 +120,10 @@
     },
     "description": "ILLUSTRATIVE FIXTURE, not real data.",
     "url": "https://ut.no",
-    "bookingId": "fx-9005"
+    "bookingId": "fx-9005",
+    "routeIds": [
+      "fx-r5"
+    ]
   },
   {
     "id": "fx-olavsbu",
@@ -124,7 +145,10 @@
     "description": "ILLUSTRATIVE FIXTURE, not real data.",
     "url": "https://ut.no",
     "requiresDntKey": true,
-    "bookingId": "fx-9006"
+    "bookingId": "fx-9006",
+    "routeIds": [
+      "fx-r4"
+    ]
   },
   {
     "id": "fx-skogadalsboen-bu",

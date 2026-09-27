@@ -85,6 +85,66 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     async ({ text, limit }) => json(await svc.trails.searchAreas(text, limit)),
   );
 
+  const routeType = z.enum(["foot", "ski"]).optional().describe("foot = summer (T-marked), ski = winter (pole-marked)");
+
+  server.registerTool(
+    "find_signature_routes",
+    {
+      title: "Find well-known routes",
+      description:
+        "Start here for well-known multi-day routes: DNT's SignaTUR list of its signature long-distance hikes (e.g. Høgruta i Jotunheimen, SAGA, MASSIV), " +
+        "with days, distance, grading and the cabins on the way (cabinIds). Filter by name/area text, area id, a cabin on the route, proximity or max days. " +
+        "Use get_trip for the day-by-day stages, and plan_hut_to_hut to check the cabins.",
+      inputSchema: {
+        text: z.string().optional(),
+        areaId: z.string().optional(),
+        cabinId: z.string().optional().describe("Only routes through this cabin"),
+        near: near.optional(),
+        maxDays: z.number().int().positive().optional(),
+      },
+    },
+    async (args) => json(await svc.signatureRoutes(args)),
+  );
+
+  server.registerTool(
+    "get_cabin_routes",
+    {
+      title: "Routes from a cabin",
+      description:
+        "DNT marked routes out of a cabin, with the cabin at the other end (toCabin), distance, and grading, time and ascent in the direction away from this cabin. " +
+        "Use it to explore the route network one step at a time. Also lists signature routes that pass the cabin.",
+      inputSchema: { cabinId: z.string(), type: routeType },
+    },
+    async ({ cabinId, type }) => json(await svc.routesFromCabin(cabinId, type)),
+  );
+
+  server.registerTool(
+    "find_routes_between_cabins",
+    {
+      title: "Routes between two cabins",
+      description:
+        "Marked routes from one cabin to another: direct routes, and two-leg alternatives via one intermediate cabin, with times and ascent in the direction of travel. " +
+        "Times are DNT's estimates for a normally fit hiker.",
+      inputSchema: { fromCabinId: z.string(), toCabinId: z.string(), type: routeType },
+    },
+    async ({ fromCabinId, toCabinId, type }) => json(await svc.routesBetween(fromCabinId, toCabinId, type)),
+  );
+
+  server.registerTool(
+    "get_route",
+    {
+      title: "Get route",
+      description:
+        "Full description of one marked route in both directions (terrain, exposure, river crossings, bridges), winter marking dates for ski routes, and the ut.no link.",
+      inputSchema: { id: z.string() },
+    },
+    async ({ id }) => {
+      const [route] = await svc.trails.getRoutes([id]);
+      if (!route) throw new Error(`No route with id ${id}`);
+      return json(route);
+    },
+  );
+
   server.registerTool(
     "check_availability",
     {
@@ -127,7 +187,7 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     {
       title: "Plan hut-to-hut trip",
       description:
-        "Check a chain of cabins night by night for a group, cross-checked between ut.no and hyttebestilling. Reports blocked nights and stays over a cabin's max length (problems), " +
+        "Check a chain of cabins night by night for a group, cross-checked between ut.no and hyttebestilling. Each leg lists the direct marked routes (foot in June–October, else ski, when both exist). Reports blocked nights and stays over a cabin's max length (problems), " +
         "nights that rely on drop-in beds, other booking channels, cabin notices or source disagreements (warnings), each cabin's own notes (cabinNotes), site-wide notices, " +
         "and straight-line leg distances, and optionally find alternative start dates within a flexible window.",
       inputSchema: {

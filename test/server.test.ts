@@ -27,7 +27,11 @@ describe("MCP server (fixture mode)", () => {
     const { tools } = await client.listTools();
     expect(tools.map((t) => t.name).sort()).toEqual([
       "check_availability",
+      "find_routes_between_cabins",
+      "find_signature_routes",
       "get_cabin",
+      "get_cabin_routes",
+      "get_route",
       "get_trip",
       "plan_hut_to_hut",
       "search_areas",
@@ -56,5 +60,32 @@ describe("MCP server (fixture mode)", () => {
     expect(res.itinerary.legs.map((l: { to: string }) => l.to)).toEqual(["Memurubu", "Gjendebu"]);
     expect(Array.isArray(res.alternatives)).toBe(true);
     expect(res.bookingLinks.Gjendebu).toMatch(/hyttebestilling\.dnt\.no\/hytte\//);
+    // July: the summer route, not the ski route over the lake
+    expect(res.itinerary.legs[0].routes.map((r: { routeId: string }) => r.routeId)).toEqual(["fx-r1"]);
+  });
+
+  it("finds well-known routes through a cabin", async () => {
+    const res = await call("find_signature_routes", { cabinId: "fx-memurubu" });
+    expect(res.map((t: { id: string }) => t.id)).toEqual(["fx-sig1"]);
+  });
+
+  it("lists routes out of a cabin with the cabin at the other end", async () => {
+    const res = await call("get_cabin_routes", { cabinId: "fx-memurubu", type: "foot" });
+    const byTarget = Object.fromEntries(res.routes.map((r: { toCabin: { id: string } }) => [r.toCabin.id, r]));
+    expect(Object.keys(byTarget).sort()).toEqual(["fx-gjendebu", "fx-gjendesheim"]);
+    // fx-r1 is stored Gjendesheim → Memurubu; from Memurubu it runs in reverse
+    expect(byTarget["fx-gjendesheim"]).toMatchObject({ routeId: "fx-r1", reversed: true, from: "Memurubu", to: "Gjendesheim" });
+    expect(res.signatureRoutes.map((s: { id: string }) => s.id)).toEqual(["fx-sig1"]);
+  });
+
+  it("finds direct and one-stop routes between cabins", async () => {
+    const res = await call("find_routes_between_cabins", { fromCabinId: "fx-gjendesheim", toCabinId: "fx-gjendebu", type: "foot" });
+    expect(res.direct).toEqual([]);
+    expect(res.viaOneCabin).toHaveLength(1);
+    expect(res.viaOneCabin[0]).toMatchObject({ via: { id: "fx-memurubu" }, totalKm: 27, totalHours: 12 });
+    expect(res.viaOneCabin[0].legs.map((l: { from: string; to: string }) => `${l.from}→${l.to}`)).toEqual([
+      "Gjendesheim→Memurubu",
+      "Memurubu→Gjendebu",
+    ]);
   });
 });

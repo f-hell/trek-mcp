@@ -161,6 +161,13 @@
                 "name": "Jotunheimen",
                 "areaType": "DNT_AREA"
               }
+            ],
+            "routeIds": [
+              135221,
+              135551,
+              136222,
+              136636,
+              136012
             ]
           }
         },
@@ -330,6 +337,23 @@
                 "name": "Jotunheimen",
                 "areaType": "DNT_AREA"
               }
+            ],
+            "routeIds": [
+              137057,
+              1342912,
+              135221,
+              13394459,
+              135551,
+              136012,
+              136112,
+              136636,
+              136222,
+              13394481,
+              1343862,
+              13394458,
+              135865,
+              136380,
+              136515
             ]
           }
         },
@@ -379,7 +403,8 @@
                 "name": "Jotunheimen",
                 "areaType": "DNT_AREA"
               }
-            ]
+            ],
+            "routeIds": []
           }
         },
         {
@@ -468,6 +493,10 @@
                 "name": "Jotunheimen",
                 "areaType": "DNT_AREA"
               }
+            ],
+            "routeIds": [
+              136778,
+              137025
             ]
           }
         }

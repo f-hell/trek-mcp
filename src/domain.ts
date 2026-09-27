@@ -52,6 +52,8 @@ export interface Cabin {
   /** Lines from the description about booking, drop-in, arrival times and beds */
   bookingNotes?: string[];
   url: string;
+  /** Marked routes (see Route) that start or end at this cabin */
+  routeIds?: string[];
   /** hyttebestilling.dnt.no id, when the cabin can be booked there */
   bookingId?: string;
   /** Where to book: hyttebestilling or the cabin's own site */
@@ -81,6 +83,42 @@ export interface Trip {
   area?: { id: string; name: string };
   cabinIds?: string[];
   description?: string;
+  url: string;
+}
+
+/** One direction of a marked route. */
+export interface RouteDirection {
+  grading: Grading;
+  durationHours?: number;
+  durationDays?: number;
+  ascentM?: number;
+  descentM?: number;
+  description?: string;
+}
+
+/**
+ * A DNT marked route (rutebeskrivelse) between two places, usually cabins.
+ * `forward` is from → to; `reverse` is to → from.
+ */
+export interface Route {
+  id: string;
+  name: string;
+  /** DNT route code, e.g. "jot2" */
+  code?: string;
+  /** "foot" (summer, T-marked) or "ski" (winter, marked with poles) */
+  type?: string;
+  from?: string;
+  to?: string;
+  via?: string;
+  distanceKm?: number;
+  start?: LatLon;
+  end?: LatLon;
+  maxElevationM?: number;
+  forward: RouteDirection;
+  reverse: RouteDirection;
+  /** When the winter route is marked, e.g. "13.mars-12.april 2026" */
+  winterMarking?: string;
+  notes?: string;
   url: string;
 }
 

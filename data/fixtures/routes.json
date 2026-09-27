@@ -1,0 +1,185 @@
+[
+  {
+    "id": "fx-r1",
+    "name": "Gjendesheim – Memurubu via Besseggen (ILLUSTRATIVE FIXTURE)",
+    "code": "fx-r1",
+    "type": "foot",
+    "from": "Gjendesheim",
+    "to": "Memurubu",
+    "via": "Besseggen",
+    "distanceKm": 14,
+    "start": {
+      "lat": 61.4945,
+      "lon": 8.8117
+    },
+    "end": {
+      "lat": 61.5025,
+      "lon": 8.57
+    },
+    "forward": {
+      "grading": "expert",
+      "durationHours": 7,
+      "ascentM": 1100,
+      "descentM": 1090
+    },
+    "reverse": {
+      "grading": "expert",
+      "durationHours": 7,
+      "ascentM": 1090,
+      "descentM": 1100
+    },
+    "url": "https://ut.no"
+  },
+  {
+    "id": "fx-r2",
+    "name": "Memurubu – Gjendebu via Bukkelægret (ILLUSTRATIVE FIXTURE)",
+    "code": "fx-r2",
+    "type": "foot",
+    "from": "Memurubu",
+    "to": "Gjendebu",
+    "via": "Bukkelægret",
+    "distanceKm": 13,
+    "start": {
+      "lat": 61.5025,
+      "lon": 8.57
+    },
+    "end": {
+      "lat": 61.4779,
+      "lon": 8.3926
+    },
+    "forward": {
+      "grading": "tough",
+      "durationHours": 5,
+      "ascentM": 700,
+      "descentM": 710
+    },
+    "reverse": {
+      "grading": "tough",
+      "durationHours": 5,
+      "ascentM": 710,
+      "descentM": 700
+    },
+    "url": "https://ut.no"
+  },
+  {
+    "id": "fx-r3",
+    "name": "Gjendebu – Leirvassbu (ILLUSTRATIVE FIXTURE)",
+    "code": "fx-r3",
+    "type": "foot",
+    "from": "Gjendebu",
+    "to": "Leirvassbu",
+    "distanceKm": 21,
+    "start": {
+      "lat": 61.4779,
+      "lon": 8.3926
+    },
+    "end": {
+      "lat": 61.551,
+      "lon": 8.247
+    },
+    "forward": {
+      "grading": "tough",
+      "durationHours": 7,
+      "ascentM": 700,
+      "descentM": 300
+    },
+    "reverse": {
+      "grading": "tough",
+      "durationHours": 7,
+      "ascentM": 300,
+      "descentM": 700
+    },
+    "url": "https://ut.no"
+  },
+  {
+    "id": "fx-r4",
+    "name": "Gjendebu – Olavsbu (ILLUSTRATIVE FIXTURE)",
+    "code": "fx-r4",
+    "type": "foot",
+    "from": "Gjendebu",
+    "to": "Olavsbu",
+    "distanceKm": 11,
+    "start": {
+      "lat": 61.4779,
+      "lon": 8.3926
+    },
+    "end": {
+      "lat": 61.421,
+      "lon": 8.418
+    },
+    "forward": {
+      "grading": "tough",
+      "durationHours": 5,
+      "ascentM": 650,
+      "descentM": 200
+    },
+    "reverse": {
+      "grading": "tough",
+      "durationHours": 5,
+      "ascentM": 200,
+      "descentM": 650
+    },
+    "url": "https://ut.no"
+  },
+  {
+    "id": "fx-r5",
+    "name": "Gjendesheim – Glitterheim (ILLUSTRATIVE FIXTURE)",
+    "code": "fx-r5",
+    "type": "foot",
+    "from": "Gjendesheim",
+    "to": "Glitterheim",
+    "distanceKm": 22,
+    "start": {
+      "lat": 61.4945,
+      "lon": 8.8117
+    },
+    "end": {
+      "lat": 61.6524,
+      "lon": 8.5577
+    },
+    "forward": {
+      "grading": "expert",
+      "durationHours": 8,
+      "ascentM": 900,
+      "descentM": 510
+    },
+    "reverse": {
+      "grading": "expert",
+      "durationHours": 8,
+      "ascentM": 510,
+      "descentM": 900
+    },
+    "url": "https://ut.no"
+  },
+  {
+    "id": "fx-r6",
+    "name": "Gjendesheim – Memurubu over Gjende (ILLUSTRATIVE FIXTURE)",
+    "code": "fx-r6",
+    "type": "ski",
+    "from": "Gjendesheim",
+    "to": "Memurubu",
+    "via": "Gjende",
+    "distanceKm": 10,
+    "start": {
+      "lat": 61.4945,
+      "lon": 8.8117
+    },
+    "end": {
+      "lat": 61.5025,
+      "lon": 8.57
+    },
+    "forward": {
+      "grading": "moderate",
+      "durationHours": 3,
+      "ascentM": 50,
+      "descentM": 40
+    },
+    "reverse": {
+      "grading": "moderate",
+      "durationHours": 3,
+      "ascentM": 40,
+      "descentM": 50
+    },
+    "url": "https://ut.no"
+  }
+]

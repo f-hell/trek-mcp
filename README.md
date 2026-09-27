@@ -58,7 +58,11 @@ claude mcp add trek-demo -e TREK_MCP_FIXTURES=1 -- node /absolute/path/to/trek-m
 | `get_cabin` | Beds, service level, DNT key, location, booking id |
 | `search_trips` / `get_trip` | Suggested hikes with grading, distance, duration, ascent |
 | `check_availability` | Nightly free beds for one cabin over a date range |
-| `plan_hut_to_hut` | Checks a chain of cabins night by night for a group, reports blocked nights and leg distances, and searches a flexible window for start dates that work |
+| `find_signature_routes` | Well-known routes: DNT's SignaTUR long-distance hikes (Høgruta, SAGA, MASSIV …) with days, distance and cabins |
+| `get_cabin_routes` | Marked routes out of a cabin, with the cabin at the other end and time/ascent in the direction of travel |
+| `find_routes_between_cabins` | Direct marked routes between two cabins, and two-leg options via one cabin |
+| `get_route` | One marked route in full: terrain descriptions both ways, winter marking dates |
+| `plan_hut_to_hut` | Checks a chain of cabins night by night for a group, reports blocked nights, the marked routes for each leg (summer or winter), and searches a flexible window for start dates that work |
 
 ## Configuration
 
