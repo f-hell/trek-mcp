@@ -6,6 +6,8 @@ It combines trail, area and cabin data from [ut.no](https://ut.no) with cabin av
 questions such as *"find a 4-night hut-to-hut route in Jotunheimen for 3 people in mid-July, with
 beds free every night"*.
 
+*Note: This project is still under development, and fixes and new features will be pushed continuously.*
+
 > **Personal use only.** It runs locally over stdio, is never hosted, and only reads data: it
 > links to the booking page, it never books. Requests are rate-limited (1 per second per host by
 > default) and cached on disk.
