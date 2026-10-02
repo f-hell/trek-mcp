@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { addDays } from "./dates.js";
 import type { BookingInfo, Cabin, LatLon, NightAvailability, Route } from "./domain.js";
 import { haversineKm } from "./geo.js";
-import { cabinAtEnd, endsAt, farEnd, orient, orientTowards, preferType, seasonType, sortHours } from "./planning/routes.js";
+import { cabinAtEnd, ENDPOINT_KM, endsAt, farEnd, orient, orientTowards, preferType, seasonType, sortHours } from "./planning/routes.js";
 
 /** How far from a route's endpoint to look for the cabin there. */
 const END_RADIUS_KM = 1.5;
@@ -139,9 +139,13 @@ export class TrekService {
   async routesBetween(fromId: string, toId: string, type?: string) {
     const [a, b] = [await this.getCabin(fromId), await this.getCabin(toId)];
     const { routes: first } = await this.neighbours(a, type);
-    const direct = first.filter((r) => r.toCabin?.id === b.id).map(({ toCabin: _, ...r }) => r);
+    // A staffed hut and its self-service quarters are separate cabins at one
+    // spot (Gjendebu, Gjendebu Selvbetjent); a route to either reaches both.
+    const atB = (c?: Cabin) =>
+      !!c && (c.id === b.id || (!!c.location && !!b.location && haversineKm(c.location, b.location) <= ENDPOINT_KM));
+    const direct = first.filter((r) => atB(r.toCabin)).map(({ toCabin: _, ...r }) => r);
 
-    const vias = [...new Map(first.flatMap((r) => (r.toCabin && r.toCabin.id !== b.id ? [[r.toCabin.id, r.toCabin]] : []))).values()];
+    const vias = [...new Map(first.flatMap((r) => (r.toCabin && !atB(r.toCabin) ? [[r.toCabin.id, r.toCabin]] : []))).values()];
     const second = await this.routesAt(vias, type);
     const viaOneCabin = vias.flatMap((via, i) => {
       const toB = (second[i] ?? []).filter((r) => endsAt(r, b)).map((r) => orientTowards(r, b));

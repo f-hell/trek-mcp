@@ -4,6 +4,8 @@ import { describe, expect, it } from "vitest";
 import type { Cabin, Route } from "../src/domain.js";
 import { haversineKm } from "../src/geo.js";
 import { cabinAtEnd, endsAt, farEnd, orient, orientTowards, preferType, seasonType } from "../src/planning/routes.js";
+import { TrekService } from "../src/service.js";
+import { FixtureBookingSource, FixtureTrailSource } from "../src/sources/fixtures.js";
 import { normalizeRoute, unwrapList } from "../src/sources/utno/normalize.js";
 
 const route: Route = {
@@ -96,5 +98,18 @@ describe("real ut.no routes", () => {
     // The far end is still the geometric one.
     expect(haversineKm(farEnd(sikkilsdal!, gjendesheim)!, gjendesheim.location)).toBeGreaterThan(10);
     expect(endsAt(sikkilsdal!, gjendesheim)).toBe(true);
+  });
+});
+
+describe("routes between cabins", () => {
+  it("reaches a self-service annex by the routes to the staffed hut next to it", async () => {
+    const trails = new FixtureTrailSource();
+    const annex = { ...cabin("fx-gjendebu-selvbetjent", 61.4781, 8.3929), name: "Gjendebu Selvbetjent", serviceLevel: "self-service" } as Cabin;
+    (trails as unknown as { cabins: Cabin[] }).cabins.push(annex);
+    const svc = new TrekService(trails, new FixtureBookingSource(), {});
+    const res = await svc.routesBetween("fx-olavsbu", annex.id, "foot");
+    expect(res.direct.map((r) => r.routeId)).toEqual(["fx-r4"]);
+    // The staffed hut at the same spot isn't a stop on the way.
+    expect(res.viaOneCabin.map((v) => v.via.id)).not.toContain("fx-gjendebu");
   });
 });
