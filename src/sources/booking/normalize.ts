@@ -28,10 +28,26 @@ interface ProductInfo {
 
 const key = (p: Raw) => `${str(p, "product_id") ?? ""}:${str(p, "unit_id") ?? ""}`;
 
-function productInfo(products: unknown): Map<string, ProductInfo> {
+/**
+ * Which products a cabin sells when a staffed hut and its self-service
+ * quarters share one calendar (Gjendebu: 10581): the hut sells categories
+ * (unit_id 0), the self-service quarters single-bed units.
+ */
+export type ProductKind = "units" | "categories";
+
+const isCategory = (p: Raw) => num(p, "unit_id") === 0;
+
+/** The calendar's products, only those of `kind` when it mixes both kinds. */
+function productsOf(data: unknown, kind?: ProductKind): { all: Raw[]; kept: Raw[] } {
+  const raw = isObj(data) ? pick(data, "products") : undefined;
+  const all = Array.isArray(raw) ? raw.filter(isObj) : [];
+  if (!kind || all.every(isCategory) || !all.some(isCategory)) return { all, kept: all };
+  return { all, kept: all.filter((p) => isCategory(p) === (kind === "categories")) };
+}
+
+function productInfo(products: Raw[]): Map<string, ProductInfo> {
   const out = new Map<string, ProductInfo>();
-  if (!Array.isArray(products)) return out;
-  for (const p of products.filter(isObj)) {
+  for (const p of products) {
     const attrs = Array.isArray(p.attributes) ? p.attributes.filter(isObj) : [];
     const attr = (name: string) => attrs.find((a) => str(a, "group.name") === name);
     const max = attr("persons_max");
@@ -53,12 +69,10 @@ const optionName = (info: ProductInfo | undefined) => (!info ? "Ukjent" : /, sen
  * conditions ("Minst en i turfølge må være medlem ... DNT-nøkkelen") or what's
  * included ("3-retters middag, frokost, nistepakke").
  */
-export function productNotes(payload: unknown): string[] {
+export function productNotes(payload: unknown, kind?: ProductKind): string[] {
   const data = isObj(payload) ? pick(payload, "data") : undefined;
-  const products = isObj(data) ? pick(data, "products") : undefined;
-  if (!Array.isArray(products)) return [];
   const notes = new Set<string>();
-  for (const p of products.filter(isObj)) {
+  for (const p of productsOf(data, kind).kept) {
     const name = str(p, "unit_name") ?? str(p, "product_name");
     for (const a of Array.isArray(p.attributes) ? p.attributes.filter(isObj) : []) {
       if (str(a, "group.name") !== "description_short") continue;
@@ -75,20 +89,21 @@ export function productNotes(payload: unknown): string[] {
  * unit (self-service: "rom 2, seng 1"). Staffed cabins sell categories with a
  * count (unit_id 0), whose size the payload doesn't give.
  */
-function bedCapacity(products: unknown, info: Map<string, ProductInfo>): number | undefined {
-  if (!Array.isArray(products)) return undefined;
-  const beds = products.filter(isObj).filter((p) => info.get(key(p))?.isBed ?? true);
+function bedCapacity(products: Raw[], info: Map<string, ProductInfo>): number | undefined {
+  const beds = products.filter((p) => info.get(key(p))?.isBed ?? true);
   if (!beds.length || beds.some((p) => num(p, "unit_id") === 0)) return undefined;
   return beds.reduce((sum, p) => sum + (info.get(key(p))?.persons ?? 1), 0);
 }
 
-export function normalizeAvailability(payload: unknown): NightAvailability[] {
+export function normalizeAvailability(payload: unknown, kind?: ProductKind): NightAvailability[] {
   const data = isObj(payload) ? pick(payload, "data") : undefined;
   if (!isObj(data)) return [];
   const list = pick(data, "availabilityList");
   if (!Array.isArray(list)) return [];
-  const info = productInfo(pick(data, "products"));
-  const bookableBeds = bedCapacity(pick(data, "products"), info);
+  const { all, kept } = productsOf(data, kind);
+  const dropped = new Set(all.filter((p) => !kept.includes(p)).map(key));
+  const info = productInfo(kept);
+  const bookableBeds = bedCapacity(kept, info);
 
   return list
     .filter(isObj)
@@ -98,7 +113,9 @@ export function normalizeAvailability(payload: unknown): NightAvailability[] {
       let beds = 0;
       const options = new Map<string, number>();
       for (const p of Array.isArray(day.products) ? day.products.filter(isObj) : []) {
-        const i = info.get(key(isObj(p.product) ? p.product : {}));
+        const k = key(isObj(p.product) ? p.product : {});
+        if (dropped.has(k)) continue;
+        const i = info.get(k);
         const places = (num(p, "available") ?? 0) * (i?.persons ?? 1);
         if (!places) continue;
         if (i?.isBed ?? true) beds += places;

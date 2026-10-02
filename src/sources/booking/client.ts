@@ -3,7 +3,7 @@ import { addDays, dateRange, toIsoDate } from "../../dates.js";
 import type { BookingInfo, NightAvailability } from "../../domain.js";
 import { PoliteHttp } from "../../http.js";
 import type { BookingSource } from "../types.js";
-import { normalizeAvailability, productNotes } from "./normalize.js";
+import { normalizeAvailability, type ProductKind, productNotes } from "./normalize.js";
 import { normalizeCabinPage } from "./page.js";
 
 /** Guards against a response that never advances. */
@@ -34,7 +34,7 @@ export class HyttebestillingClient implements BookingSource {
    * With `parsePages` (off by default) it also reads notices and limits from
    * the cabin's booking page; only parsed fields are cached.
    */
-  async getBookingInfo(bookingId: string): Promise<BookingInfo | undefined> {
+  async getBookingInfo(bookingId: string, kind?: ProductKind): Promise<BookingInfo | undefined> {
     const info = this.parsePages
       ? await this.http.text(this.bookingUrl(encodeURIComponent(bookingId)), normalizeCabinPage, {
           ttlMs: config.booking.infoTtlMs,
@@ -44,7 +44,7 @@ export class HyttebestillingClient implements BookingSource {
     const calendar = await this.http.json<unknown>(this.calendarUrl(bookingId, today, addDays(today, 1)), {
       ttlMs: config.booking.infoTtlMs,
     });
-    const conditions = productNotes(calendar);
+    const conditions = productNotes(calendar, kind);
     return info || conditions.length ? { ...info, bookingConditions: conditions.length ? conditions : undefined } : undefined;
   }
 
@@ -57,19 +57,19 @@ export class HyttebestillingClient implements BookingSource {
   }
 
   /** Nights in [from, to) that the response actually covers. */
-  private async window(bookingId: string, from: string, to: string): Promise<NightAvailability[]> {
+  private async window(bookingId: string, from: string, to: string, kind?: ProductKind): Promise<NightAvailability[]> {
     const payload = await this.http.json<unknown>(this.calendarUrl(bookingId, from, to), { ttlMs: config.booking.ttlMs });
-    return normalizeAvailability(payload).filter((n) => n.date >= from && n.date < to);
+    return normalizeAvailability(payload, kind).filter((n) => n.date >= from && n.date < to);
   }
 
-  async getAvailability(bookingId: string, from: string, to: string): Promise<NightAvailability[]> {
+  async getAvailability(bookingId: string, from: string, to: string, kind?: ProductKind): Promise<NightAvailability[]> {
     const wanted = dateRange(from, to);
     if (!wanted.length) return [];
     const last = wanted[wanted.length - 1]!;
     const byDate = new Map<string, NightAvailability>();
     let cursor = from;
     for (let i = 0; i < MAX_WINDOWS && cursor <= last; i++) {
-      const nights = await this.window(bookingId, cursor, to);
+      const nights = await this.window(bookingId, cursor, to, kind);
       for (const n of nights) byDate.set(n.date, n);
       const end = nights.at(-1)?.date;
       if (!end || end < cursor) break;

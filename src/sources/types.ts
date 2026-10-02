@@ -1,4 +1,5 @@
 import type { Area, BookingInfo, Cabin, Grading, LatLon, NightAvailability, Paged, Route, ServiceLevel, Trip } from "../domain.js";
+import type { ProductKind } from "./booking/normalize.js";
 
 export interface NearQuery {
   near?: LatLon & { radiusKm: number };
@@ -38,9 +39,9 @@ export interface TrailSource {
 
 /** Cabin availability (hyttebestilling.dnt.no). */
 export interface BookingSource {
-  /** Nights from `from` (inclusive) to `to` (exclusive), ISO dates. */
-  getAvailability(bookingId: string, from: string, to: string): Promise<NightAvailability[]>;
+  /** Nights from `from` (inclusive) to `to` (exclusive), ISO dates; `kind` picks one cabin on a shared calendar. */
+  getAvailability(bookingId: string, from: string, to: string, kind?: ProductKind): Promise<NightAvailability[]>;
   /** Notices and booking limits from the cabin's booking page. */
-  getBookingInfo(bookingId: string): Promise<BookingInfo | undefined>;
+  getBookingInfo(bookingId: string, kind?: ProductKind): Promise<BookingInfo | undefined>;
   bookingUrl(bookingId: string): string;
 }

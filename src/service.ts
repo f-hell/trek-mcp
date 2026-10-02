@@ -12,6 +12,7 @@ const END_RADIUS_KM = 1.5;
 const AT_CABIN_KM = 0.5;
 const round1 = (n: number) => Math.round(n * 10) / 10;
 import { buildItinerary, DNT_BED_RULES, findStartDates, indexAvailability, type Stop, totalNights } from "./planning/itinerary.js";
+import type { ProductKind } from "./sources/booking/normalize.js";
 import type { BookingSource, TrailSource } from "./sources/types.js";
 
 function loadCabinMap(): Record<string, string> {
@@ -27,6 +28,10 @@ function loadCabinMap(): Record<string, string> {
 const periodOn = (cabin: Cabin, date: string) =>
   cabin.openings?.find((o) => !o.openAllYear && o.from && o.to && o.from <= date && date < o.to) ??
   cabin.openings?.find((o) => o.openAllYear);
+
+/** Which of a shared booking calendar's products belong to this cabin (see ProductKind). */
+const productKind = (cabin: Cabin): ProductKind | undefined =>
+  cabin.serviceLevel === "staffed" ? "categories" : cabin.serviceLevel === "self-service" || cabin.serviceLevel === "no-service" ? "units" : undefined;
 
 /** True when the cabin's opening periods put `date` in a closed period. */
 export function isClosed(cabin: Cabin, date: string): boolean {
@@ -67,7 +72,7 @@ export class TrekService {
    */
   async availability(cabin: Cabin, from: string, to: string): Promise<NightAvailability[]> {
     if (!cabin.bookingId) return [];
-    const nights = await this.booking.getAvailability(cabin.bookingId, from, to);
+    const nights = await this.booking.getAvailability(cabin.bookingId, from, to, productKind(cabin));
     return nights.map((n): NightAvailability => {
       if (isClosed(cabin, n.date)) {
         if (!n.bedsAvailable) return { date: n.date, status: "closed" };
@@ -177,7 +182,7 @@ export class TrekService {
 
   /** hyttebestilling's notices and booking limits for the cabin, if it's booked there. */
   async bookingInfo(cabin: Cabin): Promise<BookingInfo | undefined> {
-    return cabin.bookingId ? this.booking.getBookingInfo(cabin.bookingId) : undefined;
+    return cabin.bookingId ? this.booking.getBookingInfo(cabin.bookingId, productKind(cabin)) : undefined;
   }
 
   async planHutToHut(opts: {

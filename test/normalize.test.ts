@@ -147,6 +147,19 @@ describe("booking normaliser", () => {
     expect(night!.bookableBeds).toBeUndefined();
   });
 
+  it("splits a calendar shared by a staffed hut and its self-service quarters", () => {
+    const payload = fixture("booking/calendar-10581-summer.json");
+    const [all] = normalizeAvailability(payload);
+    const [selfService] = normalizeAvailability(payload, "units");
+    const [staffed] = normalizeAvailability(payload, "categories");
+    // Gjendebu selvbetjent sells 17 single beds.
+    expect(selfService!.bookableBeds).toBe(17);
+    expect(selfService!.options?.map((o) => o.name) ?? []).toEqual(selfService!.bedsAvailable ? ["Seng"] : []);
+    expect(staffed!.options?.map((o) => o.name)).not.toContain("Seng");
+    expect(selfService!.bedsAvailable! + staffed!.bedsAvailable!).toBe(all!.bedsAvailable);
+    expect(productNotes(payload, "units").every((n) => !n.includes("3-retters middag"))).toBe(true);
+  });
+
   it("weights units by persons_max", () => {
     const payload = {
       data: {
