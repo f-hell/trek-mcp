@@ -160,6 +160,27 @@ describe("booking normaliser", () => {
     expect(productNotes(payload, "units").every((n) => !n.includes("3-retters middag"))).toBe(true);
   });
 
+  it("groups family bunks into the shared lower and the single upper bunk", () => {
+    const unit = (unit_id: number, unit_name: string) => ({ product_id: 9, unit_id, unit_name });
+    const products = [
+      unit(1, "Storfiskhytta, Rom 1, Familieseng 1 (nede, venstre side)"),
+      unit(2, "Storfiskhytta, Rom 1, Familieseng 2 (nede, høyre side)"),
+      unit(3, "Storfiskhytta, Rom 1, Familieseng 3 (oppe)"),
+      unit(4, "Trollstua, Rom 3 (hunderom), Familieseng 3 (oppe)"),
+    ];
+    const payload = {
+      data: {
+        products,
+        availabilityList: [{ date: "2027-07-01T00:00:00.000Z", products: products.map((p) => ({ available: 1, product: p })) }],
+      },
+    };
+    expect(normalizeAvailability(payload)[0]!.options).toEqual([
+      { name: "Familieseng nede", available: 2 },
+      { name: "Familieseng oppe", available: 1 },
+      { name: "Familieseng oppe (hunderom)", available: 1 },
+    ]);
+  });
+
   it("weights units by persons_max", () => {
     const payload = {
       data: {

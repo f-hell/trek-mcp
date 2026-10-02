@@ -32,6 +32,7 @@ export const DNT_BED_RULES = [
   "As a general rule a pre-booked bed must be claimed by 19:00. After that, unclaimed beds go to drop-in guests.",
   "A late arrival keeps a paid stay but loses the right to that bed, and takes whatever beds are free on arrival.",
   "Individual cabins, staffed ones especially, can have other times or rules. The cabin's own notes (bookingNotes, and description via get_cabin) take precedence.",
+  "A \"Familieseng\" bunk sleeps three: a wider lower bunk shared by two (nede, often only 120–140 cm) and a single upper bunk (oppe). Each spot is booked separately and open to anyone: book one lower spot and a stranger can book the other half of the same bed. Travelling alone, book the upper bunk; to have a lower bunk to yourselves, book both spots.",
 ];
 
 export interface PlannedNight {

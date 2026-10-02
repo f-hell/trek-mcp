@@ -61,8 +61,17 @@ function productInfo(products: Raw[]): Map<string, ProductInfo> {
   return out;
 }
 
-/** Self-service units are single beds named "<cabin>, rom 2, seng 1"; group them as "Seng". */
-const optionName = (info: ProductInfo | undefined) => (!info ? "Ukjent" : /, seng \d+/i.test(info.name) ? "Seng" : info.name);
+/**
+ * Self-service units are single beds named "<cabin>, rom 2, seng 1"; group them
+ * as "Seng". Family bunks ("Rom 1, Familieseng 1 (nede, venstre side)") are
+ * grouped by bunk, since the lower one is a shared double: "Familieseng nede/oppe".
+ */
+function optionName(info: ProductInfo | undefined): string {
+  if (!info) return "Ukjent";
+  const family = /familieseng \d+\s*\((nede|oppe)/i.exec(info.name);
+  if (family) return `Familieseng ${family[1]!.toLowerCase()}${/hunderom/i.test(info.name) ? " (hunderom)" : ""}`;
+  return /, seng \d+/i.test(info.name) ? "Seng" : info.name;
+}
 
 /**
  * Distinct short descriptions of the bookable products, which carry booking
