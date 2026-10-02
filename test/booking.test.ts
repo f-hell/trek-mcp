@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import type { Cabin } from "../src/domain.js";
 import type { PoliteHttp } from "../src/http.js";
-import { dropInBeds, isClosed, TrekService } from "../src/service.js";
+import { currentOpenings, dropInBeds, isClosed, TrekService } from "../src/service.js";
 import { HyttebestillingClient } from "../src/sources/booking/client.js";
 import { FixtureBookingSource, FixtureTrailSource } from "../src/sources/fixtures.js";
 
@@ -81,6 +81,12 @@ describe("closed periods", () => {
     expect(isClosed(cabin, "2026-10-14")).toBe(false);
     expect(isClosed(cabin, "2026-10-15")).toBe(true);
     expect(isClosed(cabin, "2027-03-01")).toBe(false);
+  });
+
+  it("keeps current and future openings, or all of them when every one is past", () => {
+    expect(currentOpenings(cabin, "2026-10-14")).toEqual(cabin.openings);
+    expect(currentOpenings(cabin, "2026-10-15")).toEqual([cabin.openings![1]]);
+    expect(currentOpenings(cabin, "2027-03-01")).toEqual(cabin.openings);
   });
 
   it("derives drop-in beds from season beds minus beds sold online", () => {

@@ -43,6 +43,8 @@ describe("MCP server (fixture mode)", () => {
   it("searches cabins near a point", async () => {
     const res = await call("search_cabins", { near: { lat: 61.49, lon: 8.6, radiusKm: 15 } });
     expect(res.items.map((c: { name: string }) => c.name)).toContain("Memurubu");
+    // Long texts are for get_cabin.
+    expect(res.items.some((c: object) => "description" in c || "access" in c || "bookingNotes" in c)).toBe(false);
   });
 
   it("plans a hut-to-hut trip with alternatives", async () => {

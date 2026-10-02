@@ -1,7 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { toIsoDate } from "./dates.js";
 import { DNT_BED_RULES } from "./planning/itinerary.js";
-import type { TrekService } from "./service.js";
+import { currentOpenings, type TrekService } from "./service.js";
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD");
 const serviceLevel = z.enum(["staffed", "self-service", "no-service", "emergency", "closed", "unknown"]);
@@ -10,7 +11,8 @@ const near = z
   .object({ lat: z.number(), lon: z.number(), radiusKm: z.number().positive().max(200) })
   .describe("Search around a point (WGS84).");
 
-const json = (value: unknown) => ({ content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }] });
+// Compact: indentation nearly doubles the size of nested results.
+const json = (value: unknown) => ({ content: [{ type: "text" as const, text: JSON.stringify(value) }] });
 
 export function registerTools(server: McpServer, svc: TrekService): void {
   server.registerTool(
@@ -18,7 +20,8 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     {
       title: "Search cabins",
       description:
-        "Find DNT and other cabins on ut.no by name, area, service level (staffed = betjent, self-service = selvbetjent, no-service = ubetjent) or proximity.",
+        "Find DNT and other cabins on ut.no by name, area, service level (staffed = betjent, self-service = selvbetjent, no-service = ubetjent) or proximity. " +
+        "Results include beds, location and open periods (openings); use get_cabin for the description, access and booking notes.",
       inputSchema: {
         text: z.string().optional(),
         areaId: z.string().optional(),
@@ -29,7 +32,12 @@ export function registerTools(server: McpServer, svc: TrekService): void {
     },
     async (args) => {
       const res = await svc.trails.searchCabins(args);
-      return json({ ...res, items: res.items.map((c) => svc.withBookingId(c)) });
+      // The long texts are left to get_cabin; with them, 50 results overflow the client's tool output limit.
+      const today = toIsoDate(new Date());
+      const items = res.items.map(({ description: _d, access: _a, bookingNotes: _b, ...c }) =>
+        svc.withBookingId({ ...c, openings: currentOpenings(c, today) }),
+      );
+      return json({ ...res, items });
     },
   );
 

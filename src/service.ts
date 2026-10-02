@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { addDays } from "./dates.js";
-import type { BookingInfo, Cabin, LatLon, NightAvailability, Route } from "./domain.js";
+import type { BookingInfo, Cabin, CabinOpening, LatLon, NightAvailability, Route } from "./domain.js";
 import { haversineKm } from "./geo.js";
 import { cabinAtEnd, ENDPOINT_KM, endsAt, farEnd, orient, orientTowards, preferType, seasonType, sortHours } from "./planning/routes.js";
 
@@ -32,6 +32,15 @@ const periodOn = (cabin: Cabin, date: string) =>
 /** Which of a shared booking calendar's products belong to this cabin (see ProductKind). */
 const productKind = (cabin: Cabin): ProductKind | undefined =>
   cabin.serviceLevel === "staffed" ? "categories" : cabin.serviceLevel === "self-service" || cabin.serviceLevel === "no-service" ? "units" : undefined;
+
+/**
+ * Opening periods that haven't ended by `today`, or all of them if none are
+ * left (the source may give a past year for a recurring season).
+ */
+export function currentOpenings(cabin: Cabin, today: string): CabinOpening[] | undefined {
+  const current = cabin.openings?.filter((o) => !o.to || o.to > today);
+  return current?.length ? current : cabin.openings;
+}
 
 /** True when the cabin's opening periods put `date` in a closed period. */
 export function isClosed(cabin: Cabin, date: string): boolean {
