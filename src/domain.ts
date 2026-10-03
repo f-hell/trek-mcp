@@ -52,6 +52,11 @@ export interface Cabin {
   /** Lines from the description about booking, drop-in, arrival times and beds */
   bookingNotes?: string[];
   url: string;
+  /** Tagged on ut.no, e.g. "fishing", "boat", "sauna" (see FACILITIES). Not every cabin is tagged fully. */
+  facilities?: string[];
+  /** e.g. "children", "dogs" (see SUITABLE_FOR) */
+  suitableFor?: string[];
+  municipalities?: string[];
   /** Marked routes (see Route) that start or end at this cabin */
   routeIds?: string[];
   /** hyttebestilling.dnt.no id, when the cabin can be booked there */
@@ -122,9 +127,12 @@ export interface Route {
   url: string;
 }
 
+export type AreaType = "dnt" | "protected" | "reindeer" | "dnt-association" | "other";
+
 export interface Area {
   id: string;
   name: string;
+  type: AreaType;
   description?: string;
   url: string;
 }
@@ -169,5 +177,8 @@ export interface BookingInfo {
 
 export interface Paged<T> {
   items: T[];
+  /** Unknown when a filtered search stopped at its limit before seeing every candidate */
   total?: number;
+  /** True when the search stopped at its limit and more may match */
+  more?: boolean;
 }

@@ -6,7 +6,9 @@
 //   xs(paging: CursorPaging!, filter: XFilter!, sorting: [XSort!]!) -> { totalCount, edges { node } }
 // and the *Near fields take { coordinates: [lon, lat], maxDistance: metres }.
 
-export const CABIN_FIELDS = /* GraphQL */ `
+// Without the relations that are slow to resolve in bulk (municipalities
+// ~5 ms per cabin, suitableFor ~1 ms); for paging through many cabins.
+const CABIN_SCAN_FIELDS = /* GraphQL */ `
   id
   name
   description
@@ -27,6 +29,13 @@ export const CABIN_FIELDS = /* GraphQL */ `
   serviceStatusToday { serviceLevel beds key }
   areas { id name areaType }
   routeIds
+  facilityIdsString
+`;
+
+export const CABIN_FIELDS = /* GraphQL */ `
+  ${CABIN_SCAN_FIELDS}
+  suitableFor { id }
+  municipalities { name }
 `;
 
 export const FIND_CABINS = /* GraphQL */ `
@@ -34,6 +43,15 @@ export const FIND_CABINS = /* GraphQL */ `
     cabins(paging: $paging, filter: $filter, sorting: $sorting) {
       totalCount
       edges { node { ${CABIN_FIELDS} } }
+    }
+  }
+`;
+
+export const SCAN_CABINS = /* GraphQL */ `
+  query ScanCabins($paging: CursorPaging!, $filter: CabinFilter!, $sorting: [CabinSort!]!) {
+    cabins(paging: $paging, filter: $filter, sorting: $sorting) {
+      pageInfo { hasNextPage endCursor }
+      edges { node { ${CABIN_SCAN_FIELDS} } }
     }
   }
 `;
@@ -96,6 +114,14 @@ export const TRIPS_NEAR = /* GraphQL */ `
 export const GET_TRIP = /* GraphQL */ `
   query GetTrip($id: Int!) {
     trip(id: $id) { ${TRIP_FIELDS} }
+  }
+`;
+
+export const FIND_MUNICIPALITIES = /* GraphQL */ `
+  query FindMunicipalities($filter: MunicipalityFilter!) {
+    municipalities(paging: { first: 1 }, filter: $filter, sorting: []) {
+      edges { node { id name } }
+    }
   }
 `;
 
@@ -184,7 +210,7 @@ export const GET_ROUTES = /* GraphQL */ `
  */
 export const cabinsNearPoints = (count: number) => /* GraphQL */ `
   query CabinsNearPoints(${Array.from({ length: count }, (_, i) => `$p${i}: FindNearInput!`).join(", ")}) {
-    ${Array.from({ length: count }, (_, i) => `p${i}: cabinsNear(input: $p${i}) { distance cabin { id name serviceLevel dntCabin geojson bookingUrl routeIds } }`).join("\n    ")}
+    ${Array.from({ length: count }, (_, i) => `p${i}: cabinsNear(input: $p${i}) { distance cabin { id name serviceLevel dntCabin geojson bookingUrl routeIds serviceStatus { serviceLevel from to beds openAllYear key } } }`).join("\n    ")}
   }
 `;
 

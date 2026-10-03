@@ -1,4 +1,4 @@
-import type { Area, BookingInfo, Cabin, Grading, LatLon, NightAvailability, Paged, Route, ServiceLevel, Trip } from "../domain.js";
+import type { Area, AreaType, BookingInfo, Cabin, Grading, LatLon, NightAvailability, Paged, Route, ServiceLevel, Trip } from "../domain.js";
 import type { ProductKind } from "./booking/normalize.js";
 
 export interface NearQuery {
@@ -9,8 +9,22 @@ export interface CabinQuery extends NearQuery {
   text?: string;
   areaId?: string;
   serviceLevels?: ServiceLevel[];
+  /** Municipality name, e.g. "Aure" */
+  municipality?: string;
+  /** Cabins tagged with all of these (Cabin.facilities keys) */
+  facilities?: string[];
+  /** Cabins tagged with all of these (Cabin.suitableFor keys) */
+  suitableFor?: string[];
+  /** Extra condition the source can't filter on; the source keeps fetching until `limit` cabins pass it */
+  where?: (c: Cabin) => boolean;
   limit?: number;
 }
+
+/** The tag and municipality parts of a CabinQuery, for sources that filter client-side. */
+export const matchesTags = (c: Cabin, q: CabinQuery): boolean =>
+  (q.facilities ?? []).every((f) => c.facilities?.includes(f)) &&
+  (q.suitableFor ?? []).every((s) => c.suitableFor?.includes(s)) &&
+  (!q.municipality || !!c.municipalities?.some((m) => m.toLowerCase() === q.municipality!.toLowerCase()));
 
 export interface TripQuery extends NearQuery {
   text?: string;
@@ -26,7 +40,8 @@ export interface TrailSource {
   getCabin(id: string): Promise<Cabin | undefined>;
   searchTrips(q: TripQuery): Promise<Paged<Trip>>;
   getTrip(id: string): Promise<Trip | undefined>;
-  searchAreas(text: string, limit?: number): Promise<Paged<Area>>;
+  /** Areas whose name contains `text`, of the given types (all types when omitted). */
+  searchAreas(text: string, limit?: number, types?: AreaType[]): Promise<Paged<Area>>;
   /** Marked routes by id (missing ids are skipped). */
   getRoutes(ids: string[]): Promise<Route[]>;
   /** For each point, marked routes passing within `radiusKm` (summary fields, no descriptions). */

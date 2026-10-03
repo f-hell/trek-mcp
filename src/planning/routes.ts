@@ -94,6 +94,24 @@ export const endsAt = (route: Route, cabin: { location?: LatLon; routeIds?: stri
   (!!cabin.location && [route.start, route.end].some((p) => p && haversineKm(p, cabin.location!) <= ENDPOINT_KM));
 
 /**
+ * True when the route names the place at one end ("Dyrkolbotn" for Dyrkolbotn
+ * Fjellstove) and that end of the line is within `km`: a trailhead a short
+ * walk from the cabin, further than ENDPOINT_KM.
+ */
+export function namedEndAt(route: Route, place: { location?: LatLon; name?: string }, km: number): boolean {
+  if (!place.location || !route.start || !route.end) return false;
+  const name = norm(place.name);
+  const ends: [string | undefined, LatLon][] = [
+    [route.from, route.start],
+    [route.to, route.end],
+    // The line may be drawn the other way round (see startsAtEnd).
+    [route.from, route.end],
+    [route.to, route.start],
+  ];
+  return ends.some(([n, p]) => sameName(name, norm(n)) && haversineKm(place.location!, p) <= km);
+}
+
+/**
  * Picks the cabin at a route's far end from nearby candidates, in order: the
  * one named exactly like the route's place (Glitterheim, not "Glitterheim
  * Selvbetjent"), one whose name contains it, one that lists the route among

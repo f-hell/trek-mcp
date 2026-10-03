@@ -3,9 +3,9 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { Cabin, Route } from "../src/domain.js";
 import { haversineKm } from "../src/geo.js";
-import { cabinAtEnd, endsAt, farEnd, orient, orientTowards, preferType, seasonType } from "../src/planning/routes.js";
+import { cabinAtEnd, endsAt, farEnd, namedEndAt, orient, orientTowards, preferType, seasonType } from "../src/planning/routes.js";
 import { TrekService } from "../src/service.js";
-import { FixtureBookingSource, FixtureTrailSource } from "../src/sources/fixtures.js";
+import { FixtureBookingSource, FixtureTrailSource } from "./fake-sources.js";
 import { normalizeRoute, unwrapList } from "../src/sources/utno/normalize.js";
 
 const route: Route = {
@@ -56,6 +56,17 @@ describe("cabin at a route's end", () => {
     ];
     expect(cabinAtEnd("r1", near, "a", "Glitterheim")?.id).toBe("main");
     expect(cabinAtEnd("r1", near, "a", "Memurubu")?.id).toBe("annex");
+  });
+});
+
+describe("named trailhead near a cabin", () => {
+  it("matches a route end named after the cabin a short walk away, either way the line is drawn", () => {
+    const r: Route = { ...route, from: "Dyrkolbotn", to: "Skavlabu", start: { lat: 60.7, lon: 5.6 }, end: { lat: 60.8, lon: 5.8 } };
+    const lodge = { name: "Dyrkolbotn Fjellstove", location: { lat: 60.71, lon: 5.6 } }; // ~1.1 km from the start
+    expect(namedEndAt(r, lodge, 1.5)).toBe(true);
+    expect(namedEndAt(r, lodge, 0.75)).toBe(false);
+    expect(namedEndAt({ ...r, start: r.end, end: r.start }, lodge, 1.5)).toBe(true);
+    expect(namedEndAt(r, { ...lodge, name: "Somewhere else" }, 1.5)).toBe(false);
   });
 });
 

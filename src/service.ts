@@ -2,18 +2,17 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { addDays } from "./dates.js";
-import type { BookingInfo, Cabin, CabinOpening, LatLon, NightAvailability, Route } from "./domain.js";
+import type { BookingInfo, Cabin, LatLon, NightAvailability, Route } from "./domain.js";
 import { haversineKm } from "./geo.js";
-import { cabinAtEnd, ENDPOINT_KM, endsAt, farEnd, orient, orientTowards, preferType, seasonType, sortHours } from "./planning/routes.js";
+import { cabinAtEnd, ENDPOINT_KM, endsAt, farEnd, namedEndAt, orient, orientTowards, preferType, seasonType, sortHours } from "./planning/routes.js";
 
 /** How far from a route's endpoint to look for the cabin there. */
 const END_RADIUS_KM = 1.5;
-/** Routes passing this close to a cabin are candidates for starting or ending there. */
-const AT_CABIN_KM = 0.5;
 const round1 = (n: number) => Math.round(n * 10) / 10;
-import { buildItinerary, DNT_BED_RULES, findStartDates, indexAvailability, type Stop, totalNights } from "./planning/itinerary.js";
+import { buildItinerary, DNT_BED_RULES, findStartDates, indexAvailability, judgeNight, type Stop, totalNights } from "./planning/itinerary.js";
+import { compareTrips, findTrips, type Place, type Step, tripStats } from "./planning/trips.js";
 import type { ProductKind } from "./sources/booking/normalize.js";
-import type { BookingSource, TrailSource } from "./sources/types.js";
+import type { BookingSource, CabinQuery, TrailSource } from "./sources/types.js";
 
 function loadCabinMap(): Record<string, string> {
   try {
@@ -29,17 +28,46 @@ const periodOn = (cabin: Cabin, date: string) =>
   cabin.openings?.find((o) => !o.openAllYear && o.from && o.to && o.from <= date && date < o.to) ??
   cabin.openings?.find((o) => o.openAllYear);
 
-/** Which of a shared booking calendar's products belong to this cabin (see ProductKind). */
-const productKind = (cabin: Cabin): ProductKind | undefined =>
-  cabin.serviceLevel === "staffed" ? "categories" : cabin.serviceLevel === "self-service" || cabin.serviceLevel === "no-service" ? "units" : undefined;
-
 /**
- * Opening periods that haven't ended by `today`, or all of them if none are
- * left (the source may give a past year for a recurring season).
+ * Which of a shared booking calendar's products belong to this cabin (see
+ * ProductKind), by its service level on `date`: a staffed hut is
+ * self-service outside its staffed season (Gjendebu after mid-September).
  */
-export function currentOpenings(cabin: Cabin, today: string): CabinOpening[] | undefined {
-  const current = cabin.openings?.filter((o) => !o.to || o.to > today);
-  return current?.length ? current : cabin.openings;
+export function productKind(cabin: Cabin, date?: string): ProductKind | undefined {
+  const onDate = date ? periodOn(cabin, date)?.serviceLevel : undefined;
+  const level = onDate && onDate !== "closed" && onDate !== "unknown" ? onDate : cabin.serviceLevel;
+  return level === "staffed" ? "categories" : level === "self-service" || level === "no-service" ? "units" : undefined;
+}
+
+const SNIPPET_CHARS = 120;
+
+/** Gathers calls made in the same tick into one `run` call over all their keys. */
+function batched<K, V>(run: (keys: K[]) => Promise<V[]>): (key: K) => Promise<V> {
+  let queue: { key: K; resolve: (v: V) => void; reject: (e: unknown) => void }[] = [];
+  return (key) =>
+    new Promise<V>((resolve, reject) => {
+      if (!queue.length) {
+        setTimeout(() => {
+          const q = queue;
+          queue = [];
+          run(q.map((x) => x.key)).then(
+            (values) => q.forEach((x, i) => x.resolve(values[i]!)),
+            (e) => q.forEach((x) => x.reject(e)),
+          );
+        });
+      }
+      queue.push({ key, resolve, reject });
+    });
+}
+
+/** Text around the first match of `word` in `text`, or undefined if there is none. */
+export function snippet(text: string | undefined, word: string): string | undefined {
+  const flat = (text ?? "").replace(/\s+/g, " ");
+  const at = flat.toLowerCase().indexOf(word.toLowerCase());
+  if (at < 0) return undefined;
+  const from = Math.max(0, at - SNIPPET_CHARS);
+  const to = Math.min(flat.length, at + word.length + SNIPPET_CHARS);
+  return `${from > 0 ? "…" : ""}${flat.slice(from, to).trim()}${to < flat.length ? "…" : ""}`;
 }
 
 /** True when the cabin's opening periods put `date` in a closed period. */
@@ -67,6 +95,40 @@ export class TrekService {
     return mapped && !cabin.bookingId ? { ...cabin, bookingId: mapped } : cabin;
   }
 
+  /**
+   * Cabin search as one short row per cabin; get_cabin has the full record.
+   * `openOn` drops cabins in a closed period that day and adds the service
+   * level then; `keyword` keeps cabins whose description mentions it and adds
+   * the text around the match.
+   */
+  async searchCabins(q: CabinQuery & { openOn?: string; keyword?: string }) {
+    const { openOn, keyword, ...query } = q;
+    const where = (c: Cabin) =>
+      (!openOn || periodOn(c, openOn)?.serviceLevel !== "closed") && (!keyword || snippet(c.description, keyword) !== undefined);
+    const res = await this.trails.searchCabins(openOn || keyword ? { ...query, where } : query);
+    const items = res.items.map((c) => {
+      const period = openOn ? periodOn(c, openOn) : undefined;
+      const match = keyword ? snippet(c.description, keyword) : undefined;
+      const seasonBeds = [c.beds.staffed, c.beds.selfService, c.beds.noService].filter((n): n is number => n !== undefined);
+      return {
+        id: c.id,
+        name: c.name,
+        serviceLevel: c.serviceLevel,
+        beds: period?.beds ?? (seasonBeds.length ? Math.max(...seasonBeds) : undefined),
+        location: c.location,
+        area: c.area?.name,
+        municipalities: c.municipalities,
+        facilities: c.facilities,
+        suitableFor: c.suitableFor,
+        requiresDntKey: c.requiresDntKey,
+        bookable: !!this.withBookingId(c).bookingId,
+        ...(openOn && { serviceLevelOn: period?.serviceLevel ?? "unknown" }),
+        ...(match && { match }),
+      };
+    });
+    return { ...res, items };
+  }
+
   async getCabin(id: string): Promise<Cabin> {
     const cabin = await this.trails.getCabin(id);
     if (!cabin) throw new Error(`No cabin with id ${id}`);
@@ -81,7 +143,8 @@ export class TrekService {
    */
   async availability(cabin: Cabin, from: string, to: string): Promise<NightAvailability[]> {
     if (!cabin.bookingId) return [];
-    const nights = await this.booking.getAvailability(cabin.bookingId, from, to, productKind(cabin));
+    // ponytail: one kind for the whole range, from its first night; split the request if ranges start crossing season changes.
+    const nights = await this.booking.getAvailability(cabin.bookingId, from, to, productKind(cabin, from));
     return nights.map((n): NightAvailability => {
       if (isClosed(cabin, n.date)) {
         if (!n.bedsAvailable) return { date: n.date, status: "closed" };
@@ -96,16 +159,16 @@ export class TrekService {
    * Marked routes that start or end at each cabin: routes passing close to it
    * (one batched request) whose line ends there, plus the cabin's own route ids.
    */
-  async routesAt(cabins: Cabin[], type?: string): Promise<Route[][]> {
+  async routesAt(cabins: Place[], type?: string): Promise<Route[][]> {
     const located = cabins.filter((c) => c.location);
-    const near = located.length ? await this.trails.routesNearPoints(located.map((c) => c.location!), AT_CABIN_KM) : [];
+    const near = located.length ? await this.trails.routesNearPoints(located.map((c) => c.location!), END_RADIUS_KM) : [];
     const byCabin = new Map(located.map((c, i) => [c.id, near[i] ?? []]));
     const missing = cabins.flatMap((c) => (c.routeIds ?? []).filter((id) => !byCabin.get(c.id)?.some((r) => r.id === id)));
     const extra = new Map((await this.trails.getRoutes(missing)).map((r) => [r.id, r]));
     return cabins.map((c) => {
       const all = [...(byCabin.get(c.id) ?? []), ...(c.routeIds ?? []).map((id) => extra.get(id)).filter((r): r is Route => !!r)];
       const unique = [...new Map(all.map((r) => [r.id, r])).values()];
-      return unique.filter((r) => endsAt(r, c) && (!type || r.type === type));
+      return unique.filter((r) => (endsAt(r, c) || namedEndAt(r, c, END_RADIUS_KM)) && (!type || r.type === type));
     });
   }
 
@@ -119,7 +182,7 @@ export class TrekService {
     const signature = (await this.trails.signatureRoutes()).filter((t) => t.cabinIds?.includes(cabin.id));
     return {
       cabin: { id: cabin.id, name: cabin.name },
-      routes: routes.map(({ toCabin, ...r }) => ({
+      routes: routes.map(({ toCabin, end: _, ...r }) => ({
         ...r,
         toCabin: toCabin && { id: toCabin.id, name: toCabin.name, serviceLevel: toCabin.serviceLevel },
       })),
@@ -127,18 +190,34 @@ export class TrekService {
     };
   }
 
-  /** Routes out of `cabin`, oriented away from it, with the cabin at each far end. */
-  private async neighbours(cabin: Cabin, type?: string) {
-    const [routes = []] = await this.routesAt([cabin], type);
-    const ends = routes.map((r) => farEnd(r, cabin));
-    const located = ends.filter((p): p is LatLon => !!p);
+  /**
+   * Routes out of `cabin`, oriented away from it, with the line's far end and
+   * the cabin there. With `usable`, only cabins passing it count (a closed
+   * staffed hut gives way to the self-service quarters next to it).
+   */
+  private async neighbours(cabin: Place, type?: string, usable?: (c: Cabin) => boolean) {
+    const [routes = []] = await this.neighboursMany([cabin], type, usable);
+    return { routes };
+  }
+
+  /** neighbours() for several places, in one batched request per lookup. */
+  private async neighboursMany(places: Place[], type?: string, usable?: (c: Cabin) => boolean) {
+    const routesPer = await this.routesAt(places, type);
+    const ends = routesPer.map((routes, i) => routes.map((r) => farEnd(r, places[i]!)));
+    const located = ends.flat().filter((p): p is LatLon => !!p);
     const near = located.length ? await this.trails.cabinsNearPoints(located, END_RADIUS_KM) : [];
     let k = 0;
-    const out = routes.map((r, i) => {
-      const o = orient(r, cabin);
-      return { ...o, toCabin: ends[i] ? cabinAtEnd(r.id, near[k++] ?? [], cabin.id, o.to) : undefined };
-    });
-    return { routes: out.sort((a, b) => sortHours(a) - sortHours(b)) };
+    return routesPer.map((routes, i) =>
+      routes
+        .map((r, j) => {
+          const place = places[i]!;
+          const end = ends[i]![j];
+          const o = orient(r, place);
+          const candidates = end ? (near[k++] ?? []).filter((c) => !usable || usable(c.cabin)) : [];
+          return { ...o, end, toCabin: end ? cabinAtEnd(r.id, candidates, place.id, o.to) : undefined };
+        })
+        .sort((a, b) => sortHours(a) - sortHours(b)),
+    );
   }
 
   /**
@@ -152,14 +231,14 @@ export class TrekService {
     // spot (Gjendebu, Gjendebu Selvbetjent); a route to either reaches both.
     const atB = (c?: Cabin) =>
       !!c && (c.id === b.id || (!!c.location && !!b.location && haversineKm(c.location, b.location) <= ENDPOINT_KM));
-    const direct = first.filter((r) => atB(r.toCabin)).map(({ toCabin: _, ...r }) => r);
+    const direct = first.filter((r) => atB(r.toCabin)).map(({ toCabin: _, end: _e, ...r }) => r);
 
     const vias = [...new Map(first.flatMap((r) => (r.toCabin && !atB(r.toCabin) ? [[r.toCabin.id, r.toCabin]] : []))).values()];
     const second = await this.routesAt(vias, type);
     const viaOneCabin = vias.flatMap((via, i) => {
       const toB = (second[i] ?? []).filter((r) => endsAt(r, b)).map((r) => orientTowards(r, b));
       const toVia = first.filter((r) => r.toCabin?.id === via.id);
-      return toVia.flatMap(({ toCabin: _, ...leg1 }) =>
+      return toVia.flatMap(({ toCabin: _, end: _e, ...leg1 }) =>
         toB.map((leg2) => ({
           via: { id: via.id, name: via.name, serviceLevel: via.serviceLevel },
           legs: [leg1, leg2],
@@ -175,6 +254,109 @@ export class TrekService {
       straightLineKm,
       direct,
       viaOneCabin: viaOneCabin.sort((x, y) => (x.totalHours ?? 1e9) - (y.totalHours ?? 1e9) || x.totalKm - y.totalKm),
+    };
+  }
+
+  /**
+   * Hut trips over the marked-route network: from a cabin or a point (a car
+   * park), `nights` nights in different cabins, then back to the start (loop),
+   * to `endCabinId`, or ending at the last cabin. With a start date, cabins
+   * closed on their night are skipped and the best options get a bed check.
+   */
+  async findHutTrips(q: {
+    startCabinId?: string;
+    start?: LatLon;
+    startName?: string;
+    endCabinId?: string;
+    loop?: boolean;
+    nights: number;
+    maxHoursPerDay?: number;
+    type?: "foot" | "ski";
+    startDate?: string;
+    guests?: number;
+    limit?: number;
+  }) {
+    const start: Place = q.startCabinId
+      ? await this.getCabin(q.startCabinId)
+      : { id: "start", name: q.startName ?? "Start", location: q.start };
+    if (!start.location) throw new Error("Give startCabinId or start coordinates");
+    const end: Place | undefined = q.loop ? start : q.endCabinId ? await this.getCabin(q.endCabinId) : undefined;
+    const type = q.type ?? (q.startDate ? seasonType(q.startDate) : undefined);
+    const dateOf = (day: number) => (q.startDate ? addDays(q.startDate, day) : undefined);
+
+    // ut.no is asked about one search day's places together (one batched
+    // request per lookup), not one cabin at a time: requests are throttled.
+    const cache = new Map<string, Promise<Step[]>>();
+    const lookups = new Map<string, (p: Place) => Promise<Step[]>>();
+    const steps = (from: Place, day: number) => {
+      // Cabins for a night must be open that night; the last day just walks out.
+      const date = day < q.nights ? dateOf(day) : undefined;
+      const key = `${from.id}:${date ?? ""}`;
+      if (!lookups.has(date ?? "")) {
+        lookups.set(date ?? "", batched((places: Place[]) => this.neighboursMany(places, type, date ? (c) => !isClosed(c, date) : undefined)));
+      }
+      if (!cache.has(key)) cache.set(key, lookups.get(date ?? "")!(from));
+      return cache.get(key)!;
+    };
+
+    const trips = (await findTrips({ start, end, nights: q.nights, maxHoursPerDay: q.maxHoursPerDay, steps }))
+      .map((legs) => ({ legs, stats: tripStats(legs) }))
+      .sort((a, b) => compareTrips(a.stats, b.stats));
+    const limit = q.limit ?? 5;
+
+    // Bed check for the best options only: one calendar request per cabin.
+    const guests = q.guests ?? 1;
+    const calendars = new Map<string, Promise<NightAvailability[]>>();
+    const nightVerdicts = async (legs: typeof trips[number]["legs"]) =>
+      Promise.all(
+        legs.slice(0, q.nights).map(async (l, i) => {
+          const cabin = l.to as Cabin;
+          if (!calendars.has(cabin.id)) calendars.set(cabin.id, this.availability(this.withBookingId(cabin), q.startDate!, dateOf(q.nights)!));
+          const night = (await calendars.get(cabin.id)!).find((n) => n.date === dateOf(i));
+          return { verdict: judgeNight(cabin, night, guests), bedsAvailable: night?.bedsAvailable };
+        }),
+      );
+    const BLOCKED = new Set(["full", "closed", "insufficient"]);
+    const checked = q.startDate
+      ? (await Promise.all(trips.slice(0, limit * 2).map(async (t) => ({ ...t, beds: await nightVerdicts(t.legs) }))))
+          // Stable sort: trips with a blocked night sink, otherwise the ranking holds.
+          .sort((a, b) => Number(a.beds.some((n) => BLOCKED.has(n.verdict))) - Number(b.beds.some((n) => BLOCKED.has(n.verdict))))
+      : trips.map((t) => ({ ...t, beds: undefined }));
+
+    // With nothing found, say what is reachable so the caller can widen the search.
+    let hint: string | undefined;
+    if (!trips.length) {
+      const firstDay = [...new Set((await steps(start, 0)).flatMap((st) => (st.toCabin ? [st.toCabin.name] : [])))];
+      hint =
+        `No ${end === start ? "loop" : "trip"} of ${q.nights} night(s) found${q.maxHoursPerDay ? ` within ${q.maxHoursPerDay} h a day` : ""}. ` +
+        `Cabins one marked route from ${start.name}: ${firstDay.join(", ") || "none"}. ` +
+        "Marked routes often branch out from hubs without closing into rings: try fewer nights, loop false (one way), a higher maxHoursPerDay, or a start among more cabins.";
+    }
+
+    return {
+      start: start.name,
+      end: end?.name,
+      tripsFound: trips.length,
+      hint,
+      options: checked.slice(0, limit).map(({ legs, stats, beds }) => ({
+        summary: [legs[0]?.from.name ?? start.name, ...legs.map((l) => l.to.name)].join(" → "),
+        ...stats,
+        days: legs.map((l, i) => ({
+          date: dateOf(i),
+          from: l.from.name,
+          to: l.to.name,
+          routeId: l.step.routeId,
+          code: l.step.code,
+          name: l.step.name,
+          distanceKm: l.step.distanceKm,
+          durationHours: l.step.durationHours,
+          ascentM: l.step.ascentM,
+          grading: l.step.grading,
+          link: l.link,
+          night: i < q.nights ? { cabinId: l.to.id, ...beds?.[i] } : undefined,
+        })),
+      })),
+      bedRules: q.startDate ? DNT_BED_RULES : undefined,
     };
   }
 
@@ -194,8 +376,8 @@ export class TrekService {
   }
 
   /** hyttebestilling's notices and booking limits for the cabin, if it's booked there. */
-  async bookingInfo(cabin: Cabin): Promise<BookingInfo | undefined> {
-    return cabin.bookingId ? this.booking.getBookingInfo(cabin.bookingId, productKind(cabin)) : undefined;
+  async bookingInfo(cabin: Cabin, date?: string): Promise<BookingInfo | undefined> {
+    return cabin.bookingId ? this.booking.getBookingInfo(cabin.bookingId, productKind(cabin, date)) : undefined;
   }
 
   async planHutToHut(opts: {
@@ -220,7 +402,7 @@ export class TrekService {
 
     // Cross-check with each cabin's booking page and its ut.no text.
     const info: Record<string, BookingInfo | undefined> = {};
-    for (const { cabin } of stops) if (!(cabin.id in info)) info[cabin.id] = await this.bookingInfo(cabin);
+    for (const { cabin } of stops) if (!(cabin.id in info)) info[cabin.id] = await this.bookingInfo(cabin, opts.startDate);
     let date = opts.startDate;
     for (const { cabin, nights } of stops) {
       const i = info[cabin.id];

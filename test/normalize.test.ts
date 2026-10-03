@@ -123,6 +123,31 @@ describe("htmlToText", () => {
   });
 });
 
+describe("cabin tags and area types", () => {
+  it("maps ut.no facility, suitability and municipality fields to keys", () => {
+    const cabin = normalizeCabin({
+      id: 10567,
+      name: "Storfiskhytta",
+      facilityIdsString: "|2|3|13|15|20|99|",
+      suitableFor: [{ id: 1 }, { id: 2 }],
+      municipalities: [{ name: "Aure" }],
+    });
+    // Unknown ids (99) are dropped.
+    expect(cabin).toMatchObject({
+      facilities: ["water", "mobile-coverage", "12v", "wood-stove", "fishing"],
+      suitableFor: ["children", "dogs"],
+      municipalities: ["Aure"],
+    });
+    expect(normalizeCabin({ id: 1, facilityIdsString: "||" }).facilities).toBeUndefined();
+  });
+
+  it("tells DNT hiking areas from protected and other areas", () => {
+    expect(normalizeArea({ id: 1262, name: "Nordmøre med Fjordruta", areaType: "DNT_AREA" }).type).toBe("dnt");
+    expect(normalizeArea({ id: 122114, name: "Aure naturreservat", areaType: "PROTECTED_AREA" }).type).toBe("protected");
+    expect(normalizeArea({ id: 1, name: "Papirkart 1", areaType: "MAP_AREA" }).type).toBe("other");
+  });
+});
+
 describe("booking normaliser", () => {
   it("counts free beds per night at a self-service cabin", () => {
     const nights = normalizeAvailability(fixture("booking/calendar-101265-autumn.json"));

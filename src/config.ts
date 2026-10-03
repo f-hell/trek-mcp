@@ -12,8 +12,6 @@ export const config = {
   cacheDir:
     env.TREK_MCP_CACHE_DIR ??
     join(env.XDG_CACHE_HOME ?? join(homedir(), ".cache"), "trek-mcp"),
-  /** Serve bundled fixtures instead of calling the real sites. */
-  fixtures: env.TREK_MCP_FIXTURES === "1",
   utno: {
     // The site's own GraphQL proxy; api.ut.no/v1/graphql refuses anonymous
     // data queries but allows introspection. See docs/RECON.md.

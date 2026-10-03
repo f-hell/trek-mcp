@@ -17,24 +17,30 @@ beds free every night"*.
 | Part | State |
 | --- | --- |
 | MCP server, tools, planning logic, caching and rate limiting | Working, tested |
-| Fixture mode (offline sample data) | Working, so you can try it in Claude now |
 | ut.no adapter | Working against the live GraphQL API (`https://ut.no/api/graphql`), tested on recorded responses |
 | hyttebestilling adapter | Working against the live availability calendar, tested on recorded responses |
 
 ## Setup
 
+Needs Node.js 20 or later.
+
 ```bash
-npm install
-npm run build
+git clone https://github.com/f-hell/trek-mcp.git
+cd trek-mcp
+npm install   # also builds dist/
 npm test
 ```
 
+After a `git pull`, run `npm run build` (or `npm install`) and reconnect the server, since it runs
+the compiled `dist/`.
+
 ### Use with Claude Code
+
+Start `claude` in this folder. The bundled `.mcp.json` registers `trek`; approve it when prompted.
+To use the server from other folders:
 
 ```bash
 claude mcp add trek -- node /absolute/path/to/trek-mcp/dist/index.js
-# fixture mode, for trying it out:
-claude mcp add trek-demo -e TREK_MCP_FIXTURES=1 -- node /absolute/path/to/trek-mcp/dist/index.js
 ```
 
 ### Use with Claude Desktop
@@ -44,8 +50,7 @@ claude mcp add trek-demo -e TREK_MCP_FIXTURES=1 -- node /absolute/path/to/trek-m
   "mcpServers": {
     "trek": {
       "command": "node",
-      "args": ["/absolute/path/to/trek-mcp/dist/index.js"],
-      "env": { "TREK_MCP_FIXTURES": "1" }
+      "args": ["/absolute/path/to/trek-mcp/dist/index.js"]
     }
   }
 }
@@ -55,8 +60,8 @@ claude mcp add trek-demo -e TREK_MCP_FIXTURES=1 -- node /absolute/path/to/trek-m
 
 | Tool | What it does |
 | --- | --- |
-| `search_areas` | Find areas (Jotunheimen, Hardangervidda…) |
-| `search_cabins` | Cabins by text, area, service level (betjent/selvbetjent/ubetjent) or distance from a point |
+| `search_areas` | Find DNT hiking areas (Jotunheimen, Hardangervidda…); protected and reindeer areas on request |
+| `search_cabins` | Cabins by name, area, municipality, service level (betjent/selvbetjent/ubetjent), facilities (fishing, boat, sauna…), suitability or distance from a point; optionally only those open on a date or whose description mentions a keyword. One short row per cabin |
 | `get_cabin` | Beds, service level, DNT key, location, booking id |
 | `search_trips` / `get_trip` | Suggested hikes with grading, distance, duration, ascent |
 | `check_availability` | Nightly free beds for one cabin over a date range |
@@ -64,13 +69,13 @@ claude mcp add trek-demo -e TREK_MCP_FIXTURES=1 -- node /absolute/path/to/trek-m
 | `get_cabin_routes` | Marked routes out of a cabin, with the cabin at the other end and time/ascent in the direction of travel |
 | `find_routes_between_cabins` | Direct marked routes between two cabins, and two-leg options via one cabin |
 | `get_route` | One marked route in full: terrain descriptions both ways, winter marking dates |
+| `find_hut_trips` | Searches the marked-route network for multi-day trips from a cabin or a car park: loops back to the start, to an end cabin, or one way; skips cabins closed on their night, checks free beds, and flags links only matched by distance |
 | `plan_hut_to_hut` | Checks a chain of cabins night by night for a group, reports blocked nights, the marked routes for each leg (summer or winter), and searches a flexible window for start dates that work |
 
 ## Configuration
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `TREK_MCP_FIXTURES` | unset | `1` = use bundled sample data, no network |
 | `UTNO_GRAPHQL_URL` | `https://ut.no/api/graphql` | ut.no GraphQL endpoint |
 | `BOOKING_AVAILABILITY_PATH` | `/api/booking/availability-calendar?cabinId={id}&fromDate={from}&toDate={to}` | Availability path template |
 | `TREK_MCP_PARSE_BOOKING_PAGES` | unset | `1` also reads notices and booking limits from hyttebestilling's HTML cabin pages (off: JSON APIs only) |

@@ -1,20 +1,21 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { TrekService } from "../src/service.js";
+import { registerTools } from "../src/tools.js";
+import { FixtureBookingSource, FixtureTrailSource } from "./fake-sources.js";
 
-// End-to-end over stdio in fixture mode: no network.
-describe("MCP server (fixture mode)", () => {
+// The real tool layer over MCP, in process, with fake sources: no network.
+describe("MCP server", () => {
   const client = new Client({ name: "test", version: "0" });
 
   beforeAll(async () => {
-    await client.connect(
-      new StdioClientTransport({
-        command: "npx",
-        args: ["tsx", "src/index.ts"],
-        env: { ...process.env, TREK_MCP_FIXTURES: "1" } as Record<string, string>,
-      }),
-    );
-  }, 30_000);
+    const server = new McpServer({ name: "trek-mcp", version: "test" });
+    registerTools(server, new TrekService(new FixtureTrailSource(), new FixtureBookingSource(), {}));
+    const [clientSide, serverSide] = InMemoryTransport.createLinkedPair();
+    await Promise.all([server.connect(serverSide), client.connect(clientSide)]);
+  });
   afterAll(() => client.close());
 
   const call = async (name: string, args: Record<string, unknown>) => {
@@ -27,6 +28,7 @@ describe("MCP server (fixture mode)", () => {
     const { tools } = await client.listTools();
     expect(tools.map((t) => t.name).sort()).toEqual([
       "check_availability",
+      "find_hut_trips",
       "find_routes_between_cabins",
       "find_signature_routes",
       "get_cabin",

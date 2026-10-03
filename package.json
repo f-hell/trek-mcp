@@ -4,8 +4,12 @@
   "description": "Personal-use MCP server for planning hiking trips in Norway using ut.no and DNT hyttebestilling data.",
   "private": true,
   "type": "module",
-  "bin": { "trek-mcp": "dist/index.js" },
-  "engines": { "node": ">=20" },
+  "bin": {
+    "trek-mcp": "dist/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
@@ -14,7 +18,8 @@
     "test": "vitest run",
     "recon": "tsx scripts/recon.ts",
     "introspect:utno": "tsx scripts/introspect.ts",
-    "fixtures:record": "tsx scripts/record-fixtures.ts"
+    "fixtures:record": "tsx scripts/record-fixtures.ts",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.31.0",

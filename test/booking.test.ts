@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import type { Cabin } from "../src/domain.js";
 import type { PoliteHttp } from "../src/http.js";
-import { currentOpenings, dropInBeds, isClosed, TrekService } from "../src/service.js";
+import { dropInBeds, isClosed, productKind, TrekService } from "../src/service.js";
 import { HyttebestillingClient } from "../src/sources/booking/client.js";
-import { FixtureBookingSource, FixtureTrailSource } from "../src/sources/fixtures.js";
+import { FixtureBookingSource, FixtureTrailSource } from "./fake-sources.js";
 
 /**
  * Fake calendar like the site's: a window from the start of `fromDate`'s month
@@ -83,10 +83,21 @@ describe("closed periods", () => {
     expect(isClosed(cabin, "2027-03-01")).toBe(false);
   });
 
-  it("keeps current and future openings, or all of them when every one is past", () => {
-    expect(currentOpenings(cabin, "2026-10-14")).toEqual(cabin.openings);
-    expect(currentOpenings(cabin, "2026-10-15")).toEqual([cabin.openings![1]]);
-    expect(currentOpenings(cabin, "2027-03-01")).toEqual(cabin.openings);
+  it("picks a shared calendar's products by the service level on the date", () => {
+    const gjendebu = {
+      ...cabin,
+      serviceLevel: "staffed",
+      openings: [
+        { serviceLevel: "staffed", from: "2026-06-19", to: "2026-09-13", openAllYear: false },
+        { serviceLevel: "self-service", from: "2026-09-17", to: "2026-10-15", openAllYear: false },
+        { serviceLevel: "closed", from: "2026-10-15", to: "2027-02-15", openAllYear: false },
+      ],
+    } as Cabin;
+    expect(productKind(gjendebu, "2026-07-01")).toBe("categories");
+    expect(productKind(gjendebu, "2026-10-10")).toBe("units");
+    // Closed or unlisted dates fall back to the cabin's own level.
+    expect(productKind(gjendebu, "2026-12-01")).toBe("categories");
+    expect(productKind(gjendebu)).toBe("categories");
   });
 
   it("derives drop-in beds from season beds minus beds sold online", () => {

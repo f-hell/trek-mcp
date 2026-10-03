@@ -1,17 +1,17 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { dateRange } from "../dates.js";
-import type { Area, BookingInfo, Cabin, LatLon, Route, NightAvailability, Paged, Trip } from "../domain.js";
-import { haversineKm } from "../geo.js";
-import type { BookingSource, CabinQuery, TrailSource, TripQuery } from "./types.js";
+import { dateRange } from "../src/dates.js";
+import type { Area, AreaType, BookingInfo, Cabin, LatLon, Route, NightAvailability, Paged, Trip } from "../src/domain.js";
+import { haversineKm } from "../src/geo.js";
+import { type BookingSource, type CabinQuery, matchesTags, type TrailSource, type TripQuery } from "../src/sources/types.js";
 
-// Offline sources backed by data/fixtures. The data is ILLUSTRATIVE ONLY
-// (approximate coordinates, made-up ids and availability) and exists so the
-// MCP server can be exercised offline. Enable with TREK_MCP_FIXTURES=1.
+// Fake sources for tests, backed by test/fixtures/sample. The data is MADE UP
+// (approximate coordinates, invented ids and availability) and never reaches
+// the server: it only runs in tests.
 
-const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const load = <T>(name: string): T => JSON.parse(readFileSync(join(root, "data", "fixtures", name), "utf8")) as T;
+const dir = join(dirname(fileURLToPath(import.meta.url)), "fixtures", "sample");
+const load = <T>(name: string): T => JSON.parse(readFileSync(join(dir, name), "utf8")) as T;
 
 const matches = (text: string | undefined, ...fields: (string | undefined)[]) =>
   !text || fields.some((f) => f?.toLowerCase().includes(text.toLowerCase()));
@@ -29,7 +29,9 @@ export class FixtureTrailSource implements TrailSource {
         matches(q.text, c.name, c.description) &&
         (!q.areaId || c.area?.id === q.areaId) &&
         (!q.serviceLevels?.length || q.serviceLevels.includes(c.serviceLevel)) &&
-        (!q.near || (c.location && haversineKm(q.near, c.location) <= q.near.radiusKm)),
+        (!q.near || (c.location && haversineKm(q.near, c.location) <= q.near.radiusKm)) &&
+        matchesTags(c, q) &&
+        (!q.where || q.where(c)),
     );
     return { items: items.slice(0, q.limit ?? 20), total: items.length };
   }
@@ -54,8 +56,8 @@ export class FixtureTrailSource implements TrailSource {
     return this.trips.find((t) => t.id === id);
   }
 
-  async searchAreas(text: string, limit = 20): Promise<Paged<Area>> {
-    const items = this.areas.filter((a) => matches(text, a.name, a.description));
+  async searchAreas(text: string, limit = 20, types?: AreaType[]): Promise<Paged<Area>> {
+    const items = this.areas.filter((a) => matches(text, a.name, a.description) && (!types?.length || types.includes(a.type)));
     return { items: items.slice(0, limit), total: items.length };
   }
 

@@ -1,9 +1,9 @@
 import { config } from "../../config.js";
-import type { Area, Cabin, Grading, LatLon, Paged, Route, ServiceLevel, Trip } from "../../domain.js";
+import type { Area, AreaType, Cabin, Grading, LatLon, Paged, Route, ServiceLevel, Trip } from "../../domain.js";
 import { PoliteHttp } from "../../http.js";
-import { isObj, pick, type Raw, str } from "../normalize.js";
-import type { CabinQuery, TrailSource, TripQuery } from "../types.js";
-import { normalizeArea, normalizeCabin, normalizeRoute, normalizeTrip, unwrapList } from "./normalize.js";
+import { isObj, num, pick, type Raw, str } from "../normalize.js";
+import { type CabinQuery, matchesTags, type TrailSource, type TripQuery } from "../types.js";
+import { AREA_TYPES, FACILITIES, normalizeArea, normalizeCabin, normalizeRoute, normalizeTrip, SUITABLE_FOR, unwrapList } from "./normalize.js";
 import * as Q from "./queries.js";
 
 interface GqlResponse {
@@ -28,8 +28,13 @@ const GRADINGS: Record<Grading, string[]> = {
   unknown: [],
 };
 
+const escapeLike = (text: string) => text.replace(/[%_\\]/g, "");
 /** Case-insensitive substring match for nestjs-query's iLike. */
-const iLike = (text: string) => ({ iLike: `%${text.replace(/[%_\\]/g, "")}%` });
+const iLike = (text: string) => ({ iLike: `%${escapeLike(text)}%` });
+
+/** The ut.no id for one of our keys (FACILITIES, SUITABLE_FOR, AREA_TYPES). */
+const idFor = <K extends string | number>(map: Record<K, string>, key: string): string | undefined =>
+  Object.entries(map).find(([, v]) => v === key)?.[0];
 
 const areaIds = (raw: Raw): string[] => {
   const areas = pick(raw, "areas");
@@ -41,6 +46,11 @@ const POINTS_PER_REQUEST = 10;
 
 /** Name of DNT's list of its signature routes. */
 const SIGNATURE_LIST = "SignaTUR - Norges ypperste langturer";
+
+/** Cabins per page when a `where` condition is filtered here. */
+const WHERE_PAGE = 1000;
+/** Stop a `where` scan after this many cabins (ut.no has about 2000). */
+const WHERE_MAX_SCANNED = 3000;
 
 /** Upper bound for client-side filtering after a *Near query or a duration limit. */
 const OVERFETCH = 50;
@@ -69,7 +79,7 @@ export class UtnoClient implements TrailSource {
       });
       const rows = Array.isArray(data.cabinsNear) ? data.cabinsNear.filter(isObj) : [];
       const text = q.text?.toLowerCase();
-      const nodes = rows
+      const cabins = rows
         .map((r) => r.cabin)
         .filter(isObj)
         .filter(
@@ -77,21 +87,55 @@ export class UtnoClient implements TrailSource {
             (!text || (str(c, "name") ?? "").toLowerCase().includes(text)) &&
             (!levels?.length || levels.includes(str(c, "serviceLevel") ?? "UNKNOWN")) &&
             (!q.areaId || areaIds(c).includes(q.areaId)),
-        );
-      return { items: nodes.slice(0, limit).map(normalizeCabin), total: nodes.length };
+        )
+        .map(normalizeCabin)
+        .filter((c) => matchesTags(c, q) && (!q.where || q.where(c)));
+      return { items: cabins.slice(0, limit), total: cabins.length };
     }
 
     const and: Raw[] = [];
     if (q.text) and.push({ name: iLike(q.text) });
     if (levels?.length) and.push({ serviceLevel: { in: levels } });
     if (q.areaId) and.push({ areas: { id: { eq: Number(q.areaId) } } });
-    const data = await this.gql(Q.FIND_CABINS, {
-      paging: { first: limit },
-      filter: and.length ? { and } : {},
-      sorting: [{ field: "name", direction: "ASC" }],
-    });
-    const { nodes, total } = unwrapList(data.cabins);
-    return { items: nodes.map(normalizeCabin), total };
+    if (q.municipality) and.push({ municipalities: { id: { eq: await this.municipalityId(q.municipality) } } });
+    // facilityIdsString is "|2|3|13|20|"
+    for (const f of q.facilities ?? []) and.push({ facilityIdsString: { iLike: `%|${idFor(FACILITIES, f)}|%` } });
+    for (const s of q.suitableFor ?? []) and.push({ suitableFor: { id: { eq: Number(idFor(SUITABLE_FOR, s)) } } });
+    const filter = and.length ? { and } : {};
+    const sorting = [{ field: "name", direction: "ASC" }];
+    if (!q.where) {
+      const data = await this.gql(Q.FIND_CABINS, { paging: { first: limit }, filter, sorting });
+      const { nodes, total } = unwrapList(data.cabins);
+      return { items: nodes.map(normalizeCabin), total };
+    }
+
+    // ut.no can't filter on `where`, so page through light records until
+    // enough pass it, then fetch the full records of those.
+    const ids: number[] = [];
+    let after: string | undefined;
+    let scanned = 0;
+    do {
+      const data = await this.gql(Q.SCAN_CABINS, { paging: { first: WHERE_PAGE, after }, filter, sorting });
+      const page = unwrapList(data.cabins);
+      ids.push(...page.nodes.map(normalizeCabin).filter(q.where).map((c) => Number(c.id)));
+      scanned += page.nodes.length;
+      const info = isObj(data.cabins) ? pick(data.cabins, "pageInfo") : undefined;
+      after = isObj(info) && info.hasNextPage === true ? str(info, "endCursor") : undefined;
+    } while (after && ids.length < limit && scanned < WHERE_MAX_SCANNED);
+    const kept = ids.slice(0, limit);
+    const full = kept.length
+      ? unwrapList((await this.gql(Q.FIND_CABINS, { paging: { first: kept.length }, filter: { id: { in: kept } }, sorting })).cabins).nodes
+      : [];
+    const items = full.map(normalizeCabin);
+    return after ? { items, more: true } : { items, total: ids.length };
+  }
+
+  private async municipalityId(name: string): Promise<number> {
+    const data = await this.gql(Q.FIND_MUNICIPALITIES, { filter: { name: { iLike: escapeLike(name) } } });
+    const [m] = unwrapList(data.municipalities).nodes;
+    const id = m && num(m, "id");
+    if (!id) throw new Error(`No municipality named "${name}" on ut.no`);
+    return id;
   }
 
   /** Runs a by-id query, mapping ut.no's "Unable to find" error to undefined. */
@@ -156,10 +200,11 @@ export class UtnoClient implements TrailSource {
     return node && normalizeTrip(node);
   }
 
-  async searchAreas(text: string, limit = 20): Promise<Paged<Area>> {
+  async searchAreas(text: string, limit = 20, types?: AreaType[]): Promise<Paged<Area>> {
+    const areaTypes = types?.flatMap((t) => idFor(AREA_TYPES, t) ?? []);
     const data = await this.gql(Q.FIND_AREAS, {
       paging: { first: limit },
-      filter: { name: iLike(text) },
+      filter: areaTypes?.length ? { and: [{ name: iLike(text) }, { areaType: { in: areaTypes } }] } : { name: iLike(text) },
       sorting: [{ field: "name", direction: "ASC" }],
     });
     const { nodes, total } = unwrapList(data.areas);

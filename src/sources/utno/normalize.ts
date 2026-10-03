@@ -1,4 +1,4 @@
-import type { Area, Cabin, CabinOpening, Grading, LatLon, Route, RouteDirection, ServiceLevel, Trip } from "../../domain.js";
+import type { Area, AreaType, Cabin, CabinOpening, Grading, LatLon, Route, RouteDirection, ServiceLevel, Trip } from "../../domain.js";
 import { bool, htmlToText, isObj, latLon, num, pick, type Raw, str } from "../normalize.js";
 
 // Field names verified against ut.no's GraphQL schema (see docs/RECON.md and
@@ -27,6 +27,41 @@ export function grading(v: string | undefined): Grading {
   if (["verytough", "expert", "ekspert", "black", "svart"].includes(s)) return "expert";
   return "unknown";
 }
+
+/** ut.no's cabin facility ids (CabinFacility), as stable English keys. */
+export const FACILITIES: Record<number, string> = {
+  1: "prebooking", 2: "water", 3: "mobile-coverage", 4: "tent-pitch", 5: "bike-rental", 6: "rental",
+  7: "local-food", 8: "oven", 9: "shower", 10: "card-payment", 11: "meals", 12: "heating", 13: "12v",
+  14: "220v", 15: "wood-stove", 16: "sauna", 17: "boat", 18: "toilet", 19: "drying-room", 20: "fishing",
+  21: "fireplace", 22: "swimming", 23: "phone", 24: "canoe",
+};
+
+/** ut.no's SuitableFor ids. */
+export const SUITABLE_FOR: Record<number, string> = { 1: "children", 2: "dogs", 4: "school-classes", 5: "pram" };
+
+/** ut.no's AreaTypeEnum; REPORT_AREA and MAP_AREA are internal. */
+export const AREA_TYPES: Record<string, AreaType> = {
+  DNT_AREA: "dnt",
+  PROTECTED_AREA: "protected",
+  REINDEER_AREA: "reindeer",
+  DNT_WORK_AREA: "dnt-association",
+};
+
+/** facilityIdsString is "|2|3|13|20|". */
+const facilityKeys = (s: string | undefined) => {
+  const keys = (s ?? "").split("|").flatMap((id) => FACILITIES[Number(id)] ?? []);
+  return keys.length ? keys : undefined;
+};
+
+const suitableKeys = (v: unknown) => {
+  const keys = Array.isArray(v) ? v.filter(isObj).flatMap((x) => SUITABLE_FOR[num(x, "id") ?? -1] ?? []) : [];
+  return keys.length ? keys : undefined;
+};
+
+const names = (v: unknown) => {
+  const out = Array.isArray(v) ? v.filter(isObj).flatMap((x) => str(x, "name") ?? []) : [];
+  return out.length ? out : undefined;
+};
 
 /** Prefers the DNT area ("Jotunheimen") over protected or reindeer areas. */
 function mainArea(raw: Raw): { id: string; name: string } | undefined {
@@ -98,6 +133,9 @@ export function normalizeCabin(raw: Raw): Cabin {
     description,
     access: summer || winter ? { summer, winter } : undefined,
     bookingNotes: bookingNotes(description),
+    facilities: facilityKeys(str(raw, "facilityIdsString")),
+    suitableFor: suitableKeys(pick(raw, "suitableFor")),
+    municipalities: names(pick(raw, "municipalities")),
     url: `${WEB}/hytte/${id}`,
     routeIds: idList(pick(raw, "routeIds")),
     bookingId: bookingIdFromUrl(str(raw, "bookingUrl")),
@@ -217,7 +255,13 @@ export function normalizeRoute(raw: Raw): Route {
 
 export function normalizeArea(raw: Raw): Area {
   const id = str(raw, "id") ?? "";
-  return { id, name: str(raw, "name") ?? `Area ${id}`, description: htmlToText(str(raw, "description")), url: `${WEB}/omrade/${id}` };
+  return {
+    id,
+    name: str(raw, "name") ?? `Area ${id}`,
+    type: AREA_TYPES[str(raw, "areaType") ?? ""] ?? "other",
+    description: htmlToText(str(raw, "description")),
+    url: `${WEB}/omrade/${id}`,
+  };
 }
 
 /** Unwraps a connection `{ totalCount, edges: [{ node }] }` or a plain array. */

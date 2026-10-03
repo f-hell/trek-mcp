@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "trek": {
+      "command": "node",
+      "args": ["dist/index.js"]
+    }
+  }
+}
